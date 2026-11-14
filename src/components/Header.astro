@@ -1,0 +1,178 @@
+---
+// Header.astro
+// Barra de navegação flutuante sobre a Hero com Logo, links, menu mobile e ícones sociais
+// `current`: item marcado como página atual no menu ('home' na home, 'tratamentos' nas páginas de tratamento).
+const { current = 'home' } = Astro.props;
+---
+<div class="ds-nav">
+  <header
+    data-elementor-type="header"
+    data-elementor-id="14"
+    class="elementor elementor-14 elementor-location-header"
+    data-elementor-post-type="elementor_library"
+  >
+    <div
+      class="elementor-element elementor-element-8ad80d5 e-flex e-con-boxed e-con e-parent"
+      data-id="8ad80d5"
+      data-element_type="container"
+      data-e-type="container"
+    >
+      <div class="e-con-inner">
+        <div
+          class="elementor-element elementor-element-ac70087 e-con-full e-flex e-con e-child"
+          data-id="ac70087"
+          data-element_type="container"
+          data-e-type="container"
+        >
+          <!-- Logo Napele -->
+          <div
+            class="elementor-element elementor-element-b3529a7 elementor-widget elementor-widget-image"
+            data-id="b3529a7"
+            data-element_type="widget"
+            data-widget_type="image.default"
+          >
+            <div class="elementor-widget-container">
+              <a href="#" aria-label="Napele Clínica - Início">
+                <img
+                  fetchpriority="high"
+                  width="472"
+                  height="158"
+                  src="/logo/LogoNapele.svg"
+                  class="attachment-large size-large wp-image-26"
+                  alt="Napele Clínica"
+                />
+              </a>
+            </div>
+          </div>
+
+          <!-- Menu Principal -->
+          <div
+            class="elementor-element elementor-element-642fb96 elementor-nav-menu__align-center elementor-nav-menu__text-align-aside elementor-widget elementor-widget-nav-menu"
+            data-id="642fb96"
+            data-element_type="widget"
+            data-widget_type="nav-menu.default"
+          >
+            <div class="elementor-widget-container">
+              <nav
+                id="ds-menu"
+                aria-label="Menu Principal"
+                class="elementor-nav-menu--main elementor-nav-menu__container elementor-nav-menu--layout-horizontal e--pointer-none"
+              >
+                <ul id="ds-tabs" class="elementor-nav-menu">
+                  <li class:list={['menu-item', current === 'home' && 'current-menu-item']}>
+                    <a href="#" class:list={['elementor-item', current === 'home' && 'elementor-item-active']} aria-current={current === 'home' ? 'page' : undefined}>Início</a>
+                  </li>
+                  <li class:list={['menu-item', current === 'tratamentos' && 'current-menu-item']}>
+                    <a href="#tratamentos" class:list={['elementor-item elementor-item-anchor', current === 'tratamentos' && 'elementor-item-active']} aria-current={current === 'tratamentos' ? 'page' : undefined}>Tratamentos</a>
+                  </li>
+                  <li class="menu-item">
+                    <a href="#sobre-a-clinica" class="elementor-item elementor-item-anchor">A Clínica</a>
+                  </li>
+                  <li class="menu-item">
+                    <a href="#como-chegar" class="elementor-item">Como chegar</a>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+          </div>
+
+          <!-- Botão Hambúrguer Mobile -->
+          <button
+            type="button"
+            class="np-burger"
+            aria-label="Abrir menu"
+            aria-expanded="false"
+            aria-controls="ds-menu"
+          >
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+
+          <!-- Ícones Sociais e Rota -->
+          <div
+            class="elementor-element elementor-element-e4f37f1 e-con-full e-flex e-con e-child"
+            data-id="e4f37f1"
+            data-element_type="container"
+            data-e-type="container"
+          >
+            <div class="np-nav-social">
+              <a class="np-icon" data-np-icon="instagram" aria-label="Instagram da Napele Clínica">
+                <svg aria-hidden="true"><use href="#np-i-instagram"></use></svg>
+              </a>
+              <a class="np-icon" data-np-icon="whatsapp" aria-label="WhatsApp da Napele Clínica">
+                <svg aria-hidden="true"><use href="#np-i-whatsapp"></use></svg>
+              </a>
+              <a
+                class="np-icon"
+                href="https://www.google.com/maps/dir/?api=1&destination=Napele%20Cl%C3%ADnica%20An%C3%A1polis"
+                target="_blank"
+                rel="noopener"
+                aria-label="Como chegar à Napele Clínica"
+              >
+                <svg aria-hidden="true"><use href="#np-i-pin"></use></svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+</div>
+
+<!-- Header original do Overview, invisível: ocupa o seu lugar no fluxo. O hero do design system tem margin-top:-120px e sobe
+     para debaixo dele; no index.html isso vem do estilo ds-overview-overrides (header.elementor-location-header{visibility:hidden}). -->
+<div class="np-header-spacer" aria-hidden="true">
+<header data-elementor-type="header" data-elementor-id="14" class="elementor elementor-14 elementor-location-header" data-elementor-post-type="elementor_library">
+			<div class="elementor-element elementor-element-8ad80d5 e-flex e-con-boxed e-con e-parent" data-id="8ad80d5" data-element_type="container" data-e-type="container" data-settings="{&quot;sticky&quot;:&quot;top&quot;,&quot;sticky_on&quot;:[&quot;desktop&quot;,&quot;tablet&quot;,&quot;mobile&quot;],&quot;sticky_offset&quot;:0,&quot;sticky_effects_offset&quot;:0,&quot;sticky_anchor_link_offset&quot;:0}">
+					<div class="e-con-inner">
+		<div class="elementor-element elementor-element-ac70087 e-con-full e-flex e-con e-child" data-id="ac70087" data-element_type="container" data-e-type="container" data-settings="{&quot;background_background&quot;:&quot;classic&quot;}">
+				<div class="elementor-element elementor-element-b3529a7 elementor-widget elementor-widget-image" data-id="b3529a7" data-element_type="widget" data-e-type="widget" data-widget_type="image.default">
+				<div class="elementor-widget-container">
+																<a href="#">
+							<img fetchpriority="high" width="472" height="158" class="attachment-large size-large wp-image-26" alt="Napele Clínica" src="/logo/LogoNapele.svg" />								</a>
+															</div>
+				</div>
+				<div class="elementor-element elementor-element-642fb96 elementor-nav-menu__align-center elementor-nav-menu--stretch elementor-nav-menu--dropdown-tablet elementor-nav-menu__text-align-aside elementor-nav-menu--toggle elementor-nav-menu--burger elementor-widget elementor-widget-nav-menu" data-id="642fb96" data-element_type="widget" data-e-type="widget" data-settings="{&quot;full_width&quot;:&quot;stretch&quot;,&quot;submenu_icon&quot;:{&quot;value&quot;:&quot;&quot;,&quot;library&quot;:&quot;&quot;},&quot;layout&quot;:&quot;horizontal&quot;,&quot;toggle&quot;:&quot;burger&quot;}" data-widget_type="nav-menu.default">
+				<div class="elementor-widget-container">
+								<nav aria-label="Menu" class="elementor-nav-menu--main elementor-nav-menu__container elementor-nav-menu--layout-horizontal e--pointer-none">
+				<ul id="menu-1-642fb96" class="elementor-nav-menu"><li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-home current-menu-item page_item page-item-11 current_page_item menu-item-340"><a href="#" aria-current="page" class="elementor-item elementor-item-active">Início</a></li>
+<li class="menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item menu-item-home menu-item-21"><a href="#tratamentos" aria-current="page" class="elementor-item elementor-item-anchor">Tratamentos</a></li>
+<li class="menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item menu-item-home menu-item-22"><a href="#sobre-a-clinica" aria-current="page" class="elementor-item elementor-item-anchor">A Clínica</a></li>
+<li class="menu-item menu-item-type-custom menu-item-object-custom"><a href="#como-chegar" class="elementor-item">Como chegar</a></li>
+</ul>			</nav>
+					<div class="elementor-menu-toggle" role="button" tabindex="0" aria-label="Menu Toggle" aria-expanded="false">
+			<span class="elementor-menu-toggle__icon--open"><svg xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 24 24" width="512" height="512"><rect y="11" width="24" height="2"></rect><rect y="4" width="24" height="2"></rect><rect y="18" width="24" height="2"></rect></svg></span><span class="elementor-menu-toggle__icon--close"><svg xmlns="http://www.w3.org/2000/svg" id="Layer_1" data-name="Layer 1" viewBox="0 0 24 24" width="512" height="512"><polygon points="24 1.414 22.586 0 12 10.586 1.414 0 0 1.414 10.586 12 0 22.586 1.414 24 12 13.414 22.586 24 24 22.586 13.414 12 24 1.414"></polygon></svg></span>		</div>
+					<nav class="elementor-nav-menu--dropdown elementor-nav-menu__container" aria-hidden="true">
+				<ul id="menu-2-642fb96" class="elementor-nav-menu"><li class="menu-item menu-item-type-post_type menu-item-object-page menu-item-home current-menu-item page_item page-item-11 current_page_item menu-item-340"><a href="#" aria-current="page" class="elementor-item elementor-item-active" tabindex="-1">Início</a></li>
+<li class="menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item menu-item-home menu-item-21"><a href="#tratamentos" aria-current="page" class="elementor-item elementor-item-anchor" tabindex="-1">Tratamentos</a></li>
+<li class="menu-item menu-item-type-custom menu-item-object-custom current-menu-item current_page_item menu-item-home menu-item-22"><a href="#sobre-a-clinica" aria-current="page" class="elementor-item elementor-item-anchor" tabindex="-1">A Clínica</a></li>
+<li class="menu-item menu-item-type-custom menu-item-object-custom"><a href="#como-chegar" class="elementor-item" tabindex="-1">Como chegar</a></li>
+</ul>			</nav>
+						</div>
+				</div>
+		<div class="elementor-element elementor-element-e4f37f1 e-con-full e-flex e-con e-child" data-id="e4f37f1" data-element_type="container" data-e-type="container">
+				<div class="elementor-element elementor-element-dc1eb8e elementor-widget elementor-widget-html" data-id="dc1eb8e" data-element_type="widget" data-e-type="widget" data-widget_type="html.default">
+				<div class="elementor-widget-container">
+					<div class="gtranslate_wrapper" id="gt-wrapper-88328568"></div>				</div>
+				</div>
+				</div>
+				</div>
+					</div>
+				</div>
+				</header>
+</div>
+
+<style is:global>
+  .np-header-spacer { visibility: hidden; }
+  /* âncoras: a navbar fixa não pode cobrir o topo da seção de destino (no design system a navbar não fica sobre o Overview) */
+  #tratamentos { scroll-margin-top: var(--np-nav-h-scrolled); }
+  .ds-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 30;
+    width: 100%;
+  }
+</style>

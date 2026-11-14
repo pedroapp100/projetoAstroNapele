@@ -1,0 +1,168 @@
+---
+// Doctor.astro
+// Seção "Quem Sou Eu" / Dra. Nayana Fialho (Ato 4 · Doutora)
+// Perfil com foto, chips animados flutuantes, apresentação e bloco "Sempre em evolução" com mentor Igor Alves
+---
+
+<section class="np-doctor" id="quem-sou" aria-labelledby="np-doctor-title">
+  <div
+    class="elementor-element elementor-element-689e3441 e-flex e-con-boxed e-con e-parent"
+    data-id="689e3441"
+    data-element_type="container"
+    data-e-type="container"
+  >
+    <div class="e-con-inner">
+      <!-- Coluna da Foto com Chips Flutuantes -->
+      <div
+        class="elementor-element elementor-element-5fc2b593 e-con-full e-flex e-con e-child"
+        data-id="5fc2b593"
+        data-element_type="container"
+        data-e-type="container"
+      >
+        <div
+          class="elementor-element elementor-element-25971ad5 elementor-widget elementor-widget-image"
+          data-id="25971ad5"
+          data-element_type="widget"
+          data-e-type="widget"
+          data-widget_type="image.default"
+        >
+          <div class="elementor-widget-container">
+            <img
+              decoding="async"
+              width="480"
+              height="600"
+              src="/assets/quesoueu/quem-sou-eu-960.webp"
+              class="attachment-full size-full wp-image-379"
+              alt="Nayana Fialho, da Napele Clínica"
+              loading="lazy"
+            />
+          </div>
+        </div>
+
+        <!-- Chip Flutuante 1: Napele Clínica -->
+        <div
+          class="elementor-element elementor-element-3eff8abd elementor-absolute flutua elementor-icon-list--layout-traditional elementor-list-item-link-full_width elementor-widget elementor-widget-icon-list"
+          data-id="3eff8abd"
+          data-element_type="widget"
+          data-e-type="widget"
+          data-settings='{"_position":"absolute"}'
+          data-widget_type="icon-list.default"
+        >
+          <div class="elementor-widget-container">
+            <ul class="elementor-icon-list-items">
+              <li class="elementor-icon-list-item">
+                <span class="elementor-icon-list-icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="33" height="33" viewBox="0 0 33 33" fill="none">
+                    <rect width="32.75" height="32.75" rx="16.375" fill="#F8BA00"></rect>
+                    <path d="M15.75 9.5V7.625C15.75 7.45924 15.8158 7.30027 15.9331 7.18306C16.0503 7.06585 16.2092 7 16.375 7C16.5408 7 16.6997 7.06585 16.8169 7.18306C16.9342 7.30027 17 7.45924 17 7.625V9.5C17 9.66576 16.9342 9.82473 16.8169 9.94194C16.6997 10.0592 16.5408 10.125 16.375 10.125C16.2092 10.125 16.0503 10.0592 15.9331 9.94194C15.8158 9.82473 15.75 9.66576 15.75 9.5ZM21.375 16.375C21.375 17.3639 21.0818 18.3306 20.5323 19.1529C19.9829 19.9751 19.202 20.616 18.2884 20.9944C17.3748 21.3728 16.3695 21.4719 15.3995 21.2789C14.4296 21.086 13.5387 20.6098 12.8395 19.9105C12.1402 19.2113 11.664 18.3204 11.4711 17.3505C11.2781 16.3805 11.3772 15.3752 11.7556 14.4616C12.134 13.548 12.7749 12.7671 13.5971 12.2177C14.4194 11.6682 15.3861 11.375 16.375 11.375C17.7006 11.3764 18.9716 11.9037 19.9089 12.8411C20.8463 13.7784 21.3736 15.0494 21.375 16.375ZM20.125 16.375C20.125 15.6333 19.9051 14.9083 19.493 14.2916C19.081 13.6749 18.4953 13.1943 17.8101 12.9105C17.1248 12.6266 16.3708 12.5524 15.6434 12.6971C14.916 12.8418 14.2478 13.1989 13.7233 13.7233C13.1989 14.2478 12.8418 14.916 12.6971 15.6434C12.5524 16.3708 12.6266 17.1248 12.9105 17.8101C13.1943 18.4953 13.6749 19.081 14.2916 19.493C14.9083 19.9051 15.6333 20.125 16.375 20.125C17.3692 20.124 18.3225 19.7285 19.0255 19.0255C19.7285 18.3225 20.124 17.3692 20.125 16.375ZM10.9328 11.8172C11.0501 11.9345 11.2091 12.0003 11.375 12.0003C11.5409 12.0003 11.6999 11.9345 11.8172 11.8172C11.9345 11.6999 12.0003 11.5409 12.0003 11.375C12.0003 11.2091 11.9345 11.0501 11.8172 10.9328L10.5672 9.68281C10.4499 9.56554 10.2909 9.49965 10.125 9.49965C9.95915 9.49965 9.80009 9.56554 9.68281 9.68281C9.56554 9.80009 9.49965 9.95915 9.49965 10.125C9.49965 10.2909 9.56554 10.4499 9.68281 10.5672L10.9328 11.8172ZM10.9328 20.9328L9.68281 22.1828C9.56554 22.3001 9.49965 22.4591 9.49965 22.625C9.49965 22.7909 9.56554 22.9499 9.68281 23.0672C9.80009 23.1845 9.95915 23.2503 10.125 23.2503C10.2909 23.2503 10.4499 23.1845 10.5672 23.0672L11.8172 21.8172C11.8753 21.7591 11.9213 21.6902 11.9527 21.6143C11.9842 21.5384 12.0003 21.4571 12.0003 21.375C12.0003 21.2929 11.9842 21.2116 11.9527 21.1357C11.9213 21.0598 11.8753 20.9909 11.8172 20.9328C11.7591 20.8747 11.6902 20.8287 11.6143 20.7973C11.5384 20.7658 11.4571 20.7497 11.375 20.7497C11.2929 20.7497 11.2116 20.7658 11.1357 20.7973C11.0598 20.8287 10.9909 20.8747 10.9328 20.9328ZM21.375 12C21.4571 12.0001 21.5384 11.984 21.6143 11.9526C21.6902 11.9212 21.7591 11.8752 21.8172 11.8172L23.0672 10.5672C23.1845 10.4499 23.2503 10.2909 23.2503 10.125C23.2503 9.95915 23.1845 9.80009 23.0672 9.68281C22.9499 9.56554 22.7909 9.49965 22.625 9.49965C22.4591 9.49965 22.3001 9.56554 22.1828 9.68281L20.9328 10.9328C20.8453 11.0202 20.7857 11.1316 20.7615 11.2529C20.7374 11.3742 20.7498 11.5 20.7971 11.6142C20.8445 11.7285 20.9246 11.8262 21.0275 11.8948C21.1304 11.9635 21.2513 12.0001 21.375 12ZM21.8172 20.9328C21.6999 20.8155 21.5409 20.7497 21.375 20.7497C21.2091 20.7497 21.0501 20.8155 20.9328 20.9328C20.8155 21.0501 20.7497 21.2091 20.7497 21.375C20.7497 21.5409 20.8155 21.6999 20.9328 21.8172L22.1828 23.0672C22.2409 23.1253 22.3098 23.1713 22.3857 23.2027C22.4616 23.2342 22.5429 23.2503 22.625 23.2503C22.7071 23.2503 22.7884 23.2342 22.8643 23.2027C22.9402 23.1713 23.0091 23.1253 23.0672 23.0672C23.1253 23.0091 23.1713 22.9402 23.2027 22.8643C23.2342 22.7884 23.2503 22.7071 23.2503 22.625C23.2503 22.5429 23.2342 22.4616 23.2027 22.3857C23.1713 22.3098 23.1253 22.2409 23.0672 22.1828L21.8172 20.9328ZM10.125 16.375C10.125 16.2092 10.0592 16.0503 9.94194 15.9331C9.82473 15.8158 9.66576 15.75 9.5 15.75H7.625C7.45924 15.75 7.30027 15.8158 7.18306 15.9331C7.06585 16.0503 7 16.2092 7 16.375C7 16.5408 7.06585 16.6997 7.18306 16.8169C7.30027 16.9342 7.45924 17 7.625 17H9.5C9.66576 17 9.82473 16.9342 9.94194 16.8169C10.0592 16.6997 10.125 16.5408 10.125 16.375ZM16.375 22.625C16.2092 22.625 16.0503 22.6908 15.9331 22.8081C15.8158 22.9253 15.75 23.0842 15.75 23.25V25.125C15.75 25.2908 15.8158 25.4497 15.9331 25.5669C16.0503 25.6842 16.2092 25.75 16.375 25.75C16.5408 25.75 16.6997 25.6842 16.8169 25.5669C16.9342 25.4497 17 25.2908 17 25.125V23.25C17 23.0842 16.9342 22.9253 16.8169 22.8081C16.6997 22.6908 16.5408 22.625 16.375 22.625ZM25.125 15.75H23.25C23.0842 15.75 22.9253 15.8158 22.8081 15.9331C22.6908 16.0503 22.625 16.2092 22.625 16.375C22.625 16.5408 22.6908 16.6997 22.8081 16.8169C22.9253 16.9342 23.0842 17 23.25 17H25.125C25.2908 17 25.4497 16.9342 25.5669 16.8169C25.6842 16.6997 25.75 16.5408 25.75 16.375C25.75 16.2092 25.6842 16.0503 25.5669 15.9331C25.4497 15.8158 25.2908 15.75 25.125 15.75Z" fill="white"></path>
+                  </svg>
+                </span>
+                <span class="elementor-icon-list-text">Napele Clínica</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Chip Flutuante 2: Anápolis, GO -->
+        <div
+          class="elementor-element elementor-element-7345111f elementor-absolute flutua elementor-icon-list--layout-traditional elementor-list-item-link-full_width elementor-widget elementor-widget-icon-list"
+          data-id="7345111f"
+          data-element_type="widget"
+          data-e-type="widget"
+          data-settings='{"_position":"absolute"}'
+          data-widget_type="icon-list.default"
+        >
+          <div class="elementor-widget-container">
+            <ul class="elementor-icon-list-items">
+              <li class="elementor-icon-list-item">
+                <span class="elementor-icon-list-icon">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
+                    <rect width="31.5007" height="31.5007" rx="15.7503" fill="#AD9052"></rect>
+                    <path d="M24.3175 10.9332L20.5675 7.18316C20.5095 7.12509 20.4405 7.07903 20.3647 7.0476C20.2888 7.01618 20.2075 7 20.1253 7C20.0432 7 19.9619 7.01618 19.886 7.0476C19.8102 7.07903 19.7412 7.12509 19.6832 7.18316C19.6251 7.24123 19.579 7.31017 19.5476 7.38604C19.5162 7.46191 19.5 7.54323 19.5 7.62535C19.5 7.70747 19.5162 7.78879 19.5476 7.86466C19.579 7.94053 19.6251 8.00947 19.6832 8.06754L21.1168 9.50035L18.8753 11.7418L16.1925 9.05816C16.0753 8.94088 15.9162 8.875 15.7503 8.875C15.5845 8.875 15.4254 8.94088 15.3082 9.05816C15.1909 9.17544 15.125 9.3345 15.125 9.50035C15.125 9.6662 15.1909 9.82526 15.3082 9.94253L15.8043 10.4378L9.24175 17.0003C9.12518 17.116 9.03275 17.2537 8.96985 17.4054C8.90694 17.5571 8.87482 17.7197 8.87535 17.8839V21.7418L7.18316 23.4332C7.12509 23.4912 7.07903 23.5602 7.0476 23.636C7.01618 23.7119 7 23.7932 7 23.8753C7 23.9575 7.01618 24.0388 7.0476 24.1147C7.07903 24.1905 7.12509 24.2595 7.18316 24.3175C7.30044 24.4348 7.4595 24.5007 7.62535 24.5007C7.70747 24.5007 7.78879 24.4845 7.86466 24.4531C7.94053 24.4217 8.00947 24.3756 8.06754 24.3175L9.75894 22.6253H13.6168C13.781 22.6259 13.9436 22.5938 14.0953 22.5308C14.247 22.4679 14.3847 22.3755 14.5003 22.2589L21.0628 15.6964L21.5582 16.1925C21.6162 16.2506 21.6852 16.2967 21.761 16.3281C21.8369 16.3595 21.9182 16.3757 22.0003 16.3757C22.0825 16.3757 22.1638 16.3595 22.2397 16.3281C22.3155 16.2967 22.3845 16.2506 22.4425 16.1925C22.5006 16.1345 22.5467 16.0655 22.5781 15.9897C22.6095 15.9138 22.6257 15.8325 22.6257 15.7503C22.6257 15.6682 22.6095 15.5869 22.5781 15.511C22.5467 15.4352 22.5006 15.3662 22.4425 15.3082L19.7589 12.6253L22.0003 10.3839L23.4332 11.8175C23.5504 11.9348 23.7095 12.0007 23.8753 12.0007C24.0412 12.0007 24.2003 11.9348 24.3175 11.8175C24.4348 11.7003 24.5007 11.5412 24.5007 11.3753C24.5007 11.2095 24.4348 11.0504 24.3175 10.9332ZM13.6168 21.3753H10.1253V17.8839L11.5316 16.4777L13.1207 18.0675C13.1787 18.1256 13.2477 18.1717 13.3235 18.2031C13.3994 18.2345 13.4807 18.2507 13.5628 18.2507C13.645 18.2507 13.7263 18.2345 13.8022 18.2031C13.878 18.1717 13.947 18.1256 14.005 18.0675C14.0631 18.0095 14.1092 17.9405 14.1406 17.8647C14.172 17.7888 14.1882 17.7075 14.1882 17.6253C14.1882 17.5432 14.172 17.4619 14.1406 17.386C14.1092 17.3102 14.0631 17.2412 14.005 17.1832L12.4152 15.5941L13.4066 14.6027L14.9957 16.1925C15.1129 16.3098 15.272 16.3757 15.4378 16.3757C15.6037 16.3757 15.7628 16.3098 15.88 16.1925C15.9973 16.0753 16.0632 15.9162 16.0632 15.7503C16.0632 15.5845 15.9973 15.4254 15.88 15.3082L14.2902 13.7191L16.6878 11.3214L20.1793 14.8128L13.6168 21.3753Z" fill="white"></path>
+                  </svg>
+                </span>
+                <span class="elementor-icon-list-text">Anápolis, GO</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Coluna de Texto e Apresentação -->
+      <div
+        class="elementor-element elementor-element-55d886a2 e-con-full e-flex e-con e-child"
+        data-id="55d886a2"
+        data-element_type="container"
+        data-e-type="container"
+      >
+        <div
+          class="elementor-element elementor-element-6776c9b6 elementor-widget elementor-widget-image-box"
+          data-id="6776c9b6"
+          data-element_type="widget"
+          data-e-type="widget"
+          data-widget_type="image-box.default"
+        >
+          <div class="elementor-widget-container">
+            <div class="elementor-image-box-wrapper">
+              <div class="elementor-image-box-content">
+                <h2 class="elementor-image-box-title" id="np-doctor-title">
+                  Nayana Fialho, à frente da Napele em Anápolis
+                </h2>
+                <p class="elementor-image-box-description">
+                  Nayana Fialho está à frente da Napele Clínica, em Anápolis, e acompanha de perto o atendimento de cada paciente. <br /><br />
+                  Todo cuidado começa por uma avaliação. Você conta o que quer mudar, e a equipe indica quais tratamentos, faciais ou corporais, fazem sentido para o seu caso. <br /><br />
+                  O ambiente foi pensado para o seu conforto, e a equipe explica cada etapa antes de começar.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bloco "Sempre em evolução" com mentor Igor Alves e foto em evento -->
+  <div class="np-doctor__evolve">
+    <div class="np-doctor__evolve-text">
+      <h3 class="np-doctor__evolve-title">Sempre em evolução</h3>
+      <p>Nayana não para de aprender. Tem Igor Alves como mentor e segue evoluindo com a orientação dele.</p>
+      <p>Participa dos eventos da área, atrás do que há de novo em técnicas e tratamentos, e traz esse aprendizado para o atendimento na Napele.</p>
+    </div>
+    <div class="np-doctor__evolve-photos">
+      <figure class="np-doctor__photo">
+        <img
+          src="/assets/quesoueu/igor-alves-960.webp"
+          srcset="/assets/quesoueu/igor-alves-480.webp 480w, /assets/quesoueu/igor-alves-960.webp 960w"
+          sizes="(max-width:767px) 46vw, (max-width:1024px) 38vw, 30vw"
+          width="960"
+          height="1280"
+          loading="lazy"
+          decoding="async"
+          alt="Igor Alves, mentor da Nayana, ao lado dela em um evento, os dois vestidos de preto"
+        />
+        <figcaption>
+          <span class="np-doctor__who">Igor Alves</span>
+          <span class="np-doctor__role">Mentor da Nayana</span>
+        </figcaption>
+      </figure>
+
+      <figure class="np-doctor__photo">
+        <img
+          src="/assets/quesoueu/nayana-evento-960.webp"
+          srcset="/assets/quesoueu/nayana-evento-480.webp 480w, /assets/quesoueu/nayana-evento-960.webp 960w"
+          sizes="(max-width:767px) 46vw, (max-width:1024px) 38vw, 30vw"
+          width="960"
+          height="1280"
+          loading="lazy"
+          decoding="async"
+          alt="Nayana Fialho em um evento da área, de terno branco, diante de um painel dourado"
+        />
+        <figcaption>
+          <span class="np-doctor__who">Nayana Fialho</span>
+          <span class="np-doctor__role">Em evento da área</span>
+        </figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+

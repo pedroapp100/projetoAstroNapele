@@ -1,0 +1,2320 @@
+/* Napele = Nudik (base, tons claros) + the animated H1 shine and the primary button from Dra. Dani Faccioni.
+   Everything else stays Nudik. Loaded last, so it overrides the Elementor kit.
+   Keep `background` and `box-shadow` free of !important on the button: an important declaration beats @keyframes. */
+
+/* ======== Fundamentos ========
+   Every colour, size and duration the Overview uses comes from the tokens below; the design system's "Fundamentos" group documents them.
+   Nothing else in this file (or in the Elementor files, see palette note) should hold a colour of its own: use a token, or add one here.
+   The tokens block is fenced by tokens:start / tokens:end so a search-and-replace over the colours leaves it alone. */
+/* tokens:start */
+:root{
+  /* ---- Cor ---- */
+  /* gold, four steps */
+  --np-gold-100:#EAD6A8;   /* highlight: top of the gold button, first stop of a gold headline */
+  --np-gold-300:#D9BE8F;   /* on dark: chip text, icons, middle stop */
+  --np-gold-500:#C9A868;   /* the base gold: the thread, the end of the button, hairlines, icon fills, tinted backgrounds */
+  --np-gold-700:#7A5C14;   /* on cream: text and emphasis (5.4:1) */
+  /* two darks */
+  --np-dark:#242321;       /* the surface of acts 1, 3 and 5 and the footer */
+  --np-black:#1B1A18;      /* behind photos and video, the pre-loader, the lightbox */
+  /* light */
+  --np-cream:#F3EFEC;      /* the page */
+  --np-cream-deep:#D8CFC4; /* edges and placeholders on the cream */
+  --np-white:#FFFFFF;
+  /* text on light */
+  --np-ink:#3F3726;
+  --np-ink-muted:#6D6656;
+  /* the same colours as r,g,b for a translucent use: rgba(var(--np-gold-500-rgb),.15) */
+  --np-gold-100-rgb:234,214,168;
+  --np-gold-300-rgb:217,190,143;
+  --np-gold-500-rgb:201,168,104;
+  --np-gold-700-rgb:122,92,20;
+  --np-dark-rgb:36,35,33;
+  --np-black-rgb:27,26,24;
+  --np-cream-rgb:243,239,236;
+  --np-ink-rgb:63,55,38;
+  --np-ink-muted-rgb:109,102,86;
+  /* the one colour that is not ours: WhatsApp's green, on the floating button and its icon */
+  --np-whatsapp:#25D366;
+  /* roles that read the steps above */
+  --np-btn-a:var(--np-gold-100);
+  --np-btn-b:var(--np-gold-500);
+  --np-btn-outline:var(--np-gold-700);
+  --np-h1-a:var(--np-ink);
+  --np-h1-b:var(--np-ink);
+  --np-h1-c:var(--np-ink);
+
+  /* ---- Tipo ---- */
+  /* one family for the page (Aeonik) and one for display (Bodoni Moda: only the pre-loader's "FULL FACE") */
+  --np-font-body:"aeonik",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --np-font-display:"Bodoni Moda","Bodoni 72","Didot",Georgia,"Times New Roman",serif;
+  /* the fluid unit: 1px up to a 1440px screen, growing with the screen to 1.35px (about 1940px and wider). The desktop sizes below, and the
+     container, are written as N x --np-u, so a laptop keeps the sizes it always had and a large monitor gets proportionally larger type. */
+  --np-u:clamp(1px,calc(100vw / 1440),1.35px);
+  --np-container:calc(1140 * var(--np-u));
+  --np-fs-h1:calc(55 * var(--np-u));
+  --np-fs-h2:calc(45 * var(--np-u));
+  --np-fs-h3:calc(36 * var(--np-u));
+  --np-fs-title:calc(24 * var(--np-u));
+  --np-fs-lead:calc(18 * var(--np-u));
+  --np-fs-body:calc(16 * var(--np-u));
+  --np-fs-label:calc(14 * var(--np-u));
+  --np-fs-button:calc(15.5 * var(--np-u));
+
+  /* ---- Espaço ---- */
+  --np-nav-h:calc(92 * var(--np-u));           /* navbar height over the hero */
+  --np-nav-h-scrolled:calc(80 * var(--np-u));  /* ... and once it turns into dark glass */
+  --np-nav-logo:calc(64 * var(--np-u));        /* logo height */
+  --np-nav-font:calc(17 * var(--np-u));        /* menu font size */
+
+  /* ---- Movimento ---- */
+  --np-ease-out:cubic-bezier(.16,1,.3,1);
+}
+/* tokens:end */
+
+/* ---- Home hero: fills the viewport. index.html carries a 120px empty header spacer above the hero, so the
+   hero is pulled up by exactly that much to start at y=0. min-height (not height) so tall content never gets clipped. */
+body:is(.home,.np-treatment) .elementor-11 .elementor-element.elementor-element-d4f0def{
+  --min-height:100svh;
+  --margin-top:-120px;
+}
+/* Treatment page: the same hero, trimmed to a banner. No portrait (napele-tiles.js does not add one here), and the hero is only as tall as
+   its text: the floor drops from 100svh to 20svh, and the top padding keeps the text clear of the navbar that floats over the hero (the dark
+   80px bar of the catalog's other views; the Overview keeps its full-screen hero). */
+body.np-treatment .elementor-11 .elementor-element.elementor-element-d4f0def{
+  --min-height:20svh;
+  --padding-top:calc(var(--np-nav-h-scrolled) + 48px);   /* the kit applies these two to .e-con-inner */
+  --padding-bottom:56px;
+}
+
+/* ---- Home hero background: the baked-in photo (daniela_bg.webp, bg_mobile_2.webp) is gone, replaced by the
+   tilted tile wall built by napele-tiles.js. Applies to the Overview hero and to the Components specimens. */
+.elementor-11 .elementor-element.elementor-element-d4f0def{
+  background-image:none!important;
+  background-color:var(--np-bg,var(--np-cream));
+  position:relative;
+  overflow:hidden;
+  isolation:isolate;
+  container-type:inline-size;
+}
+.elementor-11 .elementor-element.elementor-element-d4f0def > .e-con-inner{position:relative;z-index:2}
+
+/* portrait in front of the wall (selectors are heavy on purpose: the Elementor kit sets img{max-width:100%;height:auto}), flush with the bottom edge (the cut-out is cropped at the waist);
+   above the cream veil on purpose, so she is never washed out. Text (.e-con-inner, z 2) stays above her. */
+.elementor-11 .elementor-element-d4f0def > img.np-person{
+  position:absolute;
+  z-index:1;
+  right:12%;
+  bottom:0;
+  height:94%;
+  width:auto;
+  max-width:54%;
+  object-fit:contain;
+  object-position:right bottom;
+  pointer-events:none;
+  user-select:none;
+  filter:drop-shadow(0 18px 40px rgba(var(--np-ink-rgb),.28));
+}
+/* on the Overview and the treatment page the navbar floats over the hero: the portrait stops below it instead of running up behind it
+   (94% of the hero put her hair inside the 92px bar on short screens). The Components specimens have no navbar over them. */
+body:is(.home,.np-treatment) .elementor-11 .elementor-element-d4f0def > .np-tiles[data-layout="wide"] ~ img.np-person{
+  height:calc(100% - var(--np-nav-h) - 28px);
+}
+/* closer to the centre where the hero has room to spare (a narrow hero keeps the right:12% above, the headline needs the room). Anchored to
+   the text column instead of the right edge, so the air between her and the headline is the same on every screen: the text starts at the left
+   edge of the 1140px container and is 522px wide, so her left edge sits 522 + 64px after it. The host is the container: its width, not the window's. */
+@container (min-width:1100px){
+  body:is(.home,.np-treatment) .elementor-11 .elementor-element-d4f0def > .np-tiles[data-layout="wide"] ~ img.np-person{
+    right:auto;
+    left:calc(max(0px, (100% - 1140px) / 2) + 586px);
+  }
+}
+/* stacked (mobile): centred, anchored to the headline. napele-tiles.js measures where the text starts (--np-text-top; the fallback is the old
+   estimate, text block ~312px tall). Her bottom edge sits 60px below that line, hidden under the gradient below, and she grows upward from
+   there: at most 112px under the top of the hero, at most 140% of its width tall (about 90% wide). Keep 60 and 112 in step with
+   PORTRAIT_OVERLAP and PORTRAIT_TOP in napele-tiles.js. The mask only dissolves her last 14%, so the cut edge never shows. */
+.elementor-11 .elementor-element-d4f0def > .np-tiles[data-layout="stacked"] ~ img.np-person{
+  right:auto;
+  left:50%;
+  top:auto;
+  bottom:calc(100% - var(--np-text-top,calc(100svh - 312px)) - 60px);
+  transform:translateX(-50%);
+  height:min(140cqw,calc(var(--np-text-top,calc(100svh - 312px)) - 52px));
+  max-width:none;
+  object-position:center top;
+  -webkit-mask-image:linear-gradient(180deg,#000 0%,#000 86%,transparent 100%);
+          mask-image:linear-gradient(180deg,#000 0%,#000 86%,transparent 100%);
+}
+/* the dark gradient between her and the headline, in the veil's own colour: above her (z 1, later in the tree than the portrait) and below the
+   text (z 2). Transparent a little above the text block (42% of her height), nearly solid where the text starts, and it stays dark under the
+   text. On the hero itself, not on .e-con-inner: napele-nav.js moves and fades that one on scroll. */
+.elementor-11 .elementor-element-d4f0def:has(> .np-tiles[data-layout="stacked"]):not([data-np-no-portrait])::after{
+  --np-g:calc(.42 * min(140cqw,calc(var(--np-text-top,calc(100svh - 312px)) - 52px)));
+  content:"";
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:0;
+  top:calc(var(--np-text-top,calc(100svh - 312px)) - var(--np-g));
+  z-index:1;
+  pointer-events:none;
+  background:linear-gradient(180deg,
+    rgba(var(--np-veil,36,35,33),0) 0,
+    rgba(var(--np-veil,36,35,33),.4) calc(var(--np-g) * .4),
+    rgba(var(--np-veil,36,35,33),.8) calc(var(--np-g) * .75),
+    rgba(var(--np-veil,36,35,33),.94) var(--np-g),
+    rgba(var(--np-veil,36,35,33),.96) 100%);
+}
+@media(max-height:560px){
+  .elementor-11 .elementor-element-d4f0def > .np-tiles[data-layout="stacked"] ~ img.np-person{display:none}
+  .elementor-11 .elementor-element-d4f0def:has(> .np-tiles[data-layout="stacked"])::after{display:none}
+}
+.elementor-11 .elementor-element-d4f0def[data-np-no-portrait] > img.np-person{display:none}
+
+.np-tiles{
+  position:absolute;
+  inset:0;
+  z-index:0;
+  overflow:hidden;
+  pointer-events:none;
+  perspective:var(--np-persp,1600px);
+  perspective-origin:50% 50%;
+}
+.np-tiles__wall{
+  position:absolute;
+  left:var(--np-plane-left);
+  top:var(--np-plane-top);
+  width:var(--np-plane-w);
+  height:var(--np-plane-h);
+  display:flex;
+  gap:var(--np-gap);
+  transform-origin:var(--np-origin);
+  transform:
+    rotateX(calc(var(--np-rx) - var(--np-py,0) * 1deg))
+    rotateY(calc(var(--np-ry) + var(--np-px,0) * 1deg))
+    rotateZ(var(--np-rz));
+  transition:transform .6s cubic-bezier(.22,1,.36,1);
+}
+.np-tiles__col{flex:none;width:var(--np-tile-w);height:100%}
+.np-tiles__track{
+  display:flex;
+  flex-direction:column;
+  animation:np-tiles-up var(--np-dur,60s) linear infinite;
+  animation-delay:var(--np-delay,0s);
+}
+.np-tiles__col:nth-child(even) .np-tiles__track{animation-direction:reverse}
+.np-tiles__tile{
+  display:block;
+  flex:none;
+  width:var(--np-tile-w);
+  height:var(--np-tile-h);
+  margin-bottom:var(--np-gap);
+  object-fit:cover;
+  object-position:50% 28%;
+  border-radius:14px;
+  background:var(--np-cream-deep);
+  box-shadow:0 6px 18px rgba(var(--np-ink-rgb),.12);
+  user-select:none;
+}
+@keyframes np-tiles-up{to{transform:translateY(-50%)}}
+
+/* veil over the whole hero. Desktop: left / middle / right opacity below. Stacked (mobile) goes bottom to top and
+   keeps --np-veil-floor at the far end. A short fade at the top blends the far edge of the plane under the navbar. */
+.np-tiles{
+  --np-veil-left:.97;
+  --np-veil-mid:.95;
+  --np-veil-right:.85;
+  --np-veil-floor:.5;
+}
+.np-tiles::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:
+    linear-gradient(180deg,rgba(var(--np-veil,243,239,236),.9) 0%,rgba(var(--np-veil,243,239,236),0) 16%),
+    linear-gradient(90deg,
+      rgba(var(--np-veil,243,239,236),var(--np-veil-left)) 0%,
+      rgba(var(--np-veil,243,239,236),var(--np-veil-mid)) 50%,
+      rgba(var(--np-veil,243,239,236),var(--np-veil-right)) 100%);
+}
+.np-tiles[data-layout="stacked"]::after{
+  background:
+    linear-gradient(180deg,rgba(var(--np-veil,243,239,236),.9) 0%,rgba(var(--np-veil,243,239,236),0) 16%),
+    linear-gradient(0deg,
+      rgba(var(--np-veil,243,239,236),.97) 0%,
+      rgba(var(--np-veil,243,239,236),.94) 42%,
+      rgba(var(--np-veil,243,239,236),.62) 66%,
+      rgba(var(--np-veil,243,239,236),var(--np-veil-floor)) 100%);
+}
+
+@media(prefers-reduced-motion:reduce){
+  .np-tiles__track{animation-play-state:paused}
+  .np-tiles__wall{transition:none}
+}
+
+
+/* ---- Veil colour. napele-tiles.js sets data-np-veil on the hero: "cream" (default look) or "dark".
+   Dark flips what sits on top of the veil: the Dani light-gold gradient on the H1, cream text, a light chip. */
+.elementor-11 .elementor-element-d4f0def[data-np-veil="dark"]{
+  --np-veil:36,35,33;                 /* Nudik's own near-black (var(--np-dark), footer) */
+  --np-bg:var(--np-black);
+  --np-h1-a:var(--np-gold-100);
+  --np-h1-b:var(--np-gold-300);
+  --np-h1-c:var(--np-gold-500);
+  --np-h1-shine:255,252,244;
+}
+body:is(.home,.np-treatment) .elementor-11 .elementor-element-d4f0def[data-np-veil="dark"] .elementor-image-box-description{
+  color:rgba(var(--np-cream-rgb),.86);
+}
+body:is(.home,.np-treatment) .elementor-11 .elementor-element-d4f0def[data-np-veil="dark"] .elementor-element-5d30987 > .elementor-widget-container{
+  background-color:rgba(var(--np-cream-rgb),.08);
+  border-color:rgba(var(--np-cream-rgb),.24);
+}
+body:is(.home,.np-treatment) .elementor-11 .elementor-element-d4f0def[data-np-veil="dark"] .elementor-element-5d30987 .elementor-icon-list-text{color:var(--np-gold-300)}
+body:is(.home,.np-treatment) .elementor-11 .elementor-element-d4f0def[data-np-veil="dark"] .elementor-element-5d30987 .elementor-icon-list-icon svg{fill:var(--np-gold-300)}
+/* name lockup: replaces the "Incididunt Ut" chip in the Overview hero. The doctor's name in gold script
+   (assets/hero/nayana-fialho.svg, colour baked into the SVG, viewBox cropped to the lettering so its left edge
+   lines up with the headline). Sized by height; hidden on mobile like the chip it replaced. */
+.elementor-11 .elementor-element-d4f0def .np-name img{display:block;height:calc(56 * var(--np-u));width:auto;max-width:100%}
+/* her dark blazer would melt into a dark veil: thin light rim + deeper shadow */
+.elementor-11 .elementor-element-d4f0def[data-np-veil="dark"] > img.np-person{
+  filter:drop-shadow(0 0 1.5px rgba(var(--np-cream-rgb),.5)) drop-shadow(0 18px 40px rgba(0,0,0,.5));
+}
+
+/* ---- Treatment page, "Para quem é" section: the reception photo as a still background (no motion), darkened by the hero's veil: the same
+   colour and the same left / middle / right opacities as .np-tiles::after above (change them here to lighten or darken the photo). The kit's
+   swirl (its ::before overlay) and flat cream are dropped, and what sat on the cream takes the hero's colours. The four white cards stay.
+   The photo is the WebP made from assets/backound-sessions/recepcao-clinica-napele-panoramica.png. */
+.elementor-825 .elementor-element.elementor-element-2faac8f{
+  --np-veil:36,35,33;
+  --np-veil-left:.97;
+  --np-veil-mid:.95;
+  --np-veil-right:.85;
+  --np-h1-a:var(--np-gold-100);
+  --np-h1-b:var(--np-gold-300);
+  --np-h1-c:var(--np-gold-500);
+  background-color:var(--np-black);
+  background-image:
+    linear-gradient(90deg,
+      rgba(var(--np-veil),var(--np-veil-left)) 0%,
+      rgba(var(--np-veil),var(--np-veil-mid)) 50%,
+      rgba(var(--np-veil),var(--np-veil-right)) 100%),
+    url(backound-sessions/recepcao-clinica-napele-panoramica.webp)!important;
+  background-size:cover;
+  background-position:center;
+  background-repeat:no-repeat;
+}
+.elementor-825 .elementor-element.elementor-element-2faac8f::before{display:none}
+@media(max-width:767px){
+  /* stacked: the text is centred over the whole width, so one even veil instead of the left-to-right one; the photo shows its logo side */
+  .elementor-825 .elementor-element.elementor-element-2faac8f{--np-veil-left:.94;--np-veil-mid:.94;--np-veil-right:.94;background-position:42% center}
+}
+/* title: the hero headline's gold gradient, without the shine sweep */
+.elementor-825 .elementor-element.elementor-element-2faac8f .elementor-element-10edd60 .elementor-image-box-title{
+  background:linear-gradient(94deg,var(--np-h1-a) 0%,var(--np-h1-b) 52%,var(--np-h1-c) 100%);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+  -webkit-text-fill-color:transparent;
+}
+/* chip: the same as the hero's on a dark veil */
+.elementor-825 .elementor-element.elementor-element-2faac8f .elementor-element-a6841a6 > .elementor-widget-container{
+  background-color:rgba(var(--np-cream-rgb),.08);
+  border-color:rgba(var(--np-cream-rgb),.24);
+}
+.elementor-825 .elementor-element.elementor-element-2faac8f .elementor-element-a6841a6 .elementor-icon-list-text{color:var(--np-gold-300)}
+.elementor-825 .elementor-element.elementor-element-2faac8f .elementor-element-a6841a6 .elementor-icon-list-icon svg{fill:var(--np-gold-300)}
+
+/* ---- Overview, "A clínica" scroll tour (.np-clinic, around the #sobre-a-clinica fold; napele-clinic.js): the "Quem somos" fold plus one card, the facade
+   (.np-clinic__card, between the text and the button), which the scroll turns into a walk through the clinic. At rest it is the fold as it was; once the
+   script runs the fold is pinned inside the tall .np-clinic track (the script sets its height and the fold's `top`), the card grows into a frame that
+   plays the video (assets/clinica/passeio.mp4; passeio-m.mp4 on a phone) as you scroll, and the caption of each stop sits centred under it. The script writes the progress as custom properties on the fold: --np-g (0 to 1, the growing: it fades and moves the text and the
+   side cards), --np-ui (the tag and the bar of the frame), --np-leg (the caption), --np-cue / --np-inv (the "Role para entrar" chip, drawn at the size of
+   the card whatever the scale of the frame). The captions are the <li> of .np-clinic__stops in overview/index.html (data-from = where the stop starts,
+   as a fraction of the video). Without script, or with reduced motion, nothing is pinned and the card stays a still of the facade.
+   The photos of the grid are also a gallery: a click opens one in the lightbox of the results strip (napele-clinic-gallery.js; its rules are after the grid, below). */
+.np-clinic{position:relative}
+.np-clinic__card{
+  position:relative;
+  width:min(100%,calc(300 * var(--np-u)));
+  margin:0 auto 18px;
+  aspect-ratio:16/9;
+  border-radius:18px;
+  overflow:hidden;
+  background:var(--np-cream-deep);
+  box-shadow:0 18px 34px -16px rgba(var(--np-ink-rgb),.55);
+}
+.np-clinic__card img{display:block;width:100%;height:100%;object-fit:cover}
+.np-clinic.is-js .np-clinic__card{visibility:hidden}   /* the frame sits on it and takes over; the card only keeps the room */
+/* The fold keeps the kit's own padding (7rem on a desktop, 4rem on a tablet, 2.5rem on a phone) and the headline widget its own bottom margin, as the other
+   sections do. The column that holds the headline, the photos and the button is as tall as the fold (the kit stretches it), and its content used to sit at
+   the top of it, with all the spare height under the button: it is centred in it now. */
+.np-clinic.is-js #sobre-a-clinica{
+  position:sticky;
+  top:0;                                  /* napele-clinic.js sets it: negative when the fold is taller than the screen, so the whole fold is in view when it locks */
+  min-height:100svh;
+  align-items:center;
+  align-content:center;
+}
+.np-clinic.is-js #sobre-a-clinica .e-con-inner > .e-con{justify-content:center}
+/* the fold as it was fades and recedes while the card grows (the text and the button) */
+.np-clinic.is-js #sobre-a-clinica .e-con-inner > .e-con > .elementor-element:not(.np-clinic__card){
+  opacity:max(0,calc(1 - var(--np-g,0) * 1.3));
+  transform:translateY(calc(var(--np-g,0) * 14px)) scale(calc(1 - var(--np-g,0) * .04));
+}
+/* ...except the headline and the text on a desktop (the script sets .is-head on the track when the screen is tall enough): they stay, fully visible, for the
+   whole walk, and slide up to just under the navbar while the frame grows. --np-hy is how far the script says that is, from where they rest. */
+.np-clinic.is-js.is-head #sobre-a-clinica .e-con-inner > .e-con > .elementor-element.elementor-element-189c247{
+  opacity:1;
+  transform:translateY(calc(var(--np-g,0) * var(--np-hy,0px)));
+  will-change:transform;
+  z-index:2;   /* above the photos while they fade out under it: it is before the grid in the page, so they would paint over it */
+}
+/* On a phone or a tablet that is not tall enough for the text as well (.is-head-t), only the headline stays: the text fades as the walk begins */
+.np-clinic.is-js.is-head-t #sobre-a-clinica .elementor-element-189c247 .elementor-image-box-description{
+  opacity:max(0,calc(1 - var(--np-g,0) * 1.3));
+}
+/* the photos of the grid below do the same and drift outwards, each away from the card (--dx / --dy: -1, 0 or 1). One transform, not a transform
+   plus the separate `translate` property it was before (the same movement), and each photo is its own layer: the script writes --np-g on every
+   scroll frame, and a rounded, fading photo drawn into the big sticky fold behind it left trails of itself, stale copies of its edge, on some GPUs */
+.np-clinic.is-js .np-clinic__grid > .elementor-element{
+  opacity:max(0,calc(1 - var(--np-g,0) * 1.3));
+  transform:translate(calc(var(--np-g,0) * var(--dx,0) * 90px),calc(var(--np-g,0) * (var(--dy,0) * 26px + 14px))) scale(calc(1 - var(--np-g,0) * .04));
+  will-change:transform,opacity;
+}
+
+/* the photos of the clinic: a 3 x 3 grid under the text, the tour's card at the centre (desktop; on a tablet or a phone the photos stay hidden and
+   the card is alone, as it was). Every cell is the same 16:9 as the card and the frame it grows into: eight photos fill the eight cells around the card
+   with no hole and none bigger than the rest. In order, reading left to right: letreiro, balcão, recepção / sala de espera, CARD, corredor / sala 1,
+   sala 2, fachada. Gaps and corners are the card's (18). */
+.np-clinic__grid{display:block}
+@media(min-width:1025px){
+  .np-clinic__grid{
+    display:grid;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    gap:calc(18 * var(--np-u));
+    width:100%;
+    margin-bottom:calc(56 * var(--np-u));   /* air above the booking button (was 26: it read as glued to the photos); the headline's air above the grid is about the same */
+  }
+  /* the kit gives each of these photos its own width, max-width and offsets (post-11.css, for the old scattered layout) with a specificity of 3 to 4
+     classes: the selectors here are as heavy, and inset:auto!important cancels the leftover top / left / right / bottom of the old absolute cards (the
+     kit's `body:not(.rtl) …{left:-242px}` is one element heavier, and on a relative cell it would shift it) */
+  .elementor-11 .np-clinic__grid > .elementor-element.elementor-widget,
+  .np-clinic__grid > .np-clinic__card{
+    position:relative;
+    inset:auto!important;
+    width:100%;
+    max-width:none;
+    --container-widget-width:100%;
+    margin:0;
+    aspect-ratio:16/9;
+    border-radius:18px;
+    overflow:hidden;
+  }
+  .elementor-11 .np-clinic__grid > .elementor-element.elementor-widget > .elementor-widget-container{height:100%}
+  .elementor-11 .np-clinic__grid > .elementor-element.elementor-widget img{display:block;width:100%;height:100%;max-width:none;object-fit:cover;border-radius:0}
+  .np-clinic__grid > :nth-child(1){--dx:-1;--dy:-1}   /* letreiro */
+  .np-clinic__grid > :nth-child(2){--dy:-1}           /* balcão */
+  .np-clinic__grid > :nth-child(3){--dx:1;--dy:-1}    /* recepção */
+  .np-clinic__grid > :nth-child(4){--dx:-1}           /* sala de espera */
+  .np-clinic__grid > :nth-child(6){--dx:1}            /* corredor */
+  .np-clinic__grid > :nth-child(7){--dx:-1;--dy:1}    /* sala 1 */
+  .np-clinic__grid > :nth-child(8){--dy:1}            /* sala 2 */
+  .np-clinic__grid > :nth-child(9){--dx:1;--dy:1}     /* fachada */
+}
+
+/* the gallery: the photos of the grid open in a lightbox when clicked (napele-clinic-gallery.js), and the scroll still carries the centre card into the tour. The
+   photos zoom a little under the pointer. The centre card is the tour's frame, which has pointer-events off like the rest of its stage: it takes the pointer only while
+   the tour is not on (not .is-touring), and the script ignores a click once --np-g has left the start. */
+.np-clinic-gal{cursor:zoom-in}
+.np-clinic-gal img{transition:transform .6s var(--np-ease-out)}
+.np-clinic-gal:hover img{transform:scale(1.045)}
+.np-clinic-gal:focus-visible{outline:2px solid var(--np-gold-300);outline-offset:3px}
+@media(min-width:1025px){
+  .np-clinic.is-js:not(.is-touring) .np-clinic__frame{pointer-events:auto;cursor:zoom-in}
+  .np-clinic__video{transition:transform .6s var(--np-ease-out)}
+  .np-clinic.is-js:not(.is-touring) .np-clinic__frame:hover .np-clinic__video{transform:scale(1.045)}
+}
+@media(prefers-reduced-motion:reduce){
+  .np-clinic-gal img,
+  .np-clinic__video{transition:none}
+  .np-clinic-gal:hover img,
+  .np-clinic.is-js:not(.is-touring) .np-clinic__frame:hover .np-clinic__video{transform:none}
+}
+
+/* the gallery on a tablet or a phone (up to 1024px): the grid of the fold is not there, so the photos are a block of their own, right after the tour (.np-gallery in
+   index.html, napele-clinic-gallery.js): the same dark as the fold, a headline (the gold one of the other dark sections), and the eight photos in two columns,
+   16:9 like the grid's. A tap opens the lightbox at that photo. The tour's "Pular passeio" ends at the start of this block, the next fold. The kit hides the grid's
+   photos with elementor-hidden-tablet, and the markup of one of them (the third) has that class glued to the one before it, so on a tablet it stayed on the page,
+   loose in the fold: all eight are hidden here, whatever their classes. From 1025px the block is not there (the grid is). */
+.elementor-11 .np-clinic__grid > .elementor-widget{display:none}
+@media(min-width:1025px){
+  .elementor-11 .np-clinic__grid > .elementor-widget{display:block}
+}
+.np-gallery{
+  display:none;
+  padding:clamp(56px,6vw,96px) 22px;
+  font-family:aeonik,sans-serif;
+  color:var(--np-cream);
+  background-color:var(--np-dark);
+}
+@media(max-width:1024px){
+  /* pulled up over the empty tail of the tour's fold (napele-clinic.js sets --np-tail, from the height of the last stop); the fold is sticky, so this block is
+     positioned and above it, or the fold would paint over the block's first lines */
+  .np-gallery{display:block;position:relative;z-index:1;margin-top:calc(var(--np-tail,0px) * -1)}
+}
+.np-gallery__head{max-width:calc(640 * var(--np-u));margin:0 auto 28px;text-align:center}
+/* ".np-gallery .np-gallery__title" on purpose: the kit's ".elementor-kit-6 h2" (800) is more specific than a lone class */
+.np-gallery .np-gallery__title{
+  margin:0;
+  font-family:inherit;
+  font-weight:500;
+  font-size:clamp(30px,3.4vw,var(--np-fs-h2));
+  line-height:1.17;
+  text-wrap:balance;
+  background:linear-gradient(94deg,var(--np-gold-100) 0%,var(--np-gold-300) 52%,var(--np-gold-500) 100%);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+  -webkit-text-fill-color:transparent;
+}
+.np-gallery__grid{max-width:calc(720 * var(--np-u));margin:0 auto;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.np-gallery__item{
+  margin:0;
+  aspect-ratio:16/9;
+  border-radius:16px;
+  overflow:hidden;
+  background:var(--np-black);
+  cursor:pointer;
+  -webkit-tap-highlight-color:transparent;
+  transition:transform .3s var(--np-ease-out);
+}
+.np-gallery__item img{display:block;width:100%;height:100%;max-width:none;object-fit:cover}
+.np-gallery__item:active{transform:scale(.97)}
+.np-gallery__item:focus-visible{outline:2px solid var(--np-gold-300);outline-offset:3px}
+@media(max-width:767px){
+  .np-gallery{padding:56px 16px 60px}
+  .np-gallery__head{margin-bottom:24px}
+}
+@media(prefers-reduced-motion:reduce){
+  .np-gallery__item{transition:none}
+}
+
+/* the headline and the paragraph side by side on a desktop, over the same width as the photos under them: the headline on the left, the text on the right
+   (centred against each other). It was a centred column of 57%; on a tablet or a phone it still is, stacked. The ids make these heavier than the kit's
+   own rules for the widget (width / max-width 57%, text-align:center, the headline's bottom margin), which are three classes. */
+@media(min-width:1025px){
+  .np-clinic #sobre-a-clinica .elementor-element-189c247{
+    --container-widget-width:100%;
+    width:100%;
+    max-width:100%;
+  }
+  .np-clinic #sobre-a-clinica .elementor-element-189c247 .elementor-image-box-content{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    column-gap:calc(56 * var(--np-u));
+    align-items:center;
+    text-align:left;
+  }
+  .np-clinic #sobre-a-clinica .elementor-element-189c247 .elementor-image-box-title,
+  .np-clinic #sobre-a-clinica .elementor-element-189c247 .elementor-image-box-description{margin:0}
+  /* the space between the text and the photos: 5rem, plus the column's 10px gap (~91px). The kit's 2rem left the photos too close (43px); 4rem matched the ~74px
+     the "Tratamentos" header has to its first card, and the headline was asked to go up a little more */
+  .np-clinic #sobre-a-clinica .elementor-element-189c247 > .elementor-widget-container{margin-bottom:5rem}
+  /* and the whole block sits a little above the middle of the fold (1.5rem): a relative offset, so the fold keeps its height and the tour's geometry is
+     read from where things are */
+  .np-clinic.is-js #sobre-a-clinica .e-con-inner > .e-con{top:-1.5rem}
+}
+
+.np-clinic.is-touring #sobre-a-clinica .e-con-inner{pointer-events:none}
+.np-clinic__stage{position:absolute;inset:0;z-index:4;pointer-events:none;visibility:hidden}
+.np-clinic.is-js .np-clinic__stage{visibility:visible}
+.np-clinic__frame{
+  position:absolute;
+  left:0;
+  top:0;
+  margin:0;
+  overflow:hidden;
+  transform-origin:0 0;
+  background:var(--np-black);
+  box-shadow:0 22px 50px -18px rgba(40,32,18,.6);
+  will-change:transform;
+}
+.np-clinic__video{display:block;width:100%;height:100%;object-fit:cover;background:var(--np-black)}
+.np-clinic__shade{position:absolute;inset:0;background:linear-gradient(rgba(0,0,0,.34),transparent 38%,rgba(0,0,0,.5));opacity:var(--np-ui,0);pointer-events:none}
+.np-clinic__tag,
+.np-clinic__cue{
+  position:absolute;
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:.45em 1.05em;
+  border-radius:100px;
+  border:1px solid rgba(255,255,255,.3);
+  background:rgba(0,0,0,.36);
+  -webkit-backdrop-filter:blur(6px);
+  backdrop-filter:blur(6px);
+  color:#fff;
+  font:500 12px/1 aeonik,sans-serif;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  white-space:nowrap;
+}
+.np-clinic__tag{left:4.5%;top:7%;opacity:var(--np-ui,0)}
+.np-clinic__cue{
+  left:50%;
+  bottom:calc(14px * var(--np-inv,1));
+  transform:translateX(-50%) scale(var(--np-inv,1));
+  transform-origin:50% 100%;
+  opacity:var(--np-cue,1);
+}
+.np-clinic__cue svg{width:12px;height:12px;flex:none}
+/* the bar at the foot of the frame: one segment per stop, as long as the stop lasts; the fill is how far the walk is through it */
+.np-clinic__bar{position:absolute;left:4.5%;right:4.5%;bottom:6%;display:flex;gap:6px;opacity:var(--np-ui,0)}
+.np-clinic__bar span{flex:1 1 0;height:3px;border-radius:3px;overflow:hidden;background:rgba(255,255,255,.32)}
+.np-clinic__bar i{display:block;height:100%;background:#fff;transform:scaleX(0);transform-origin:0 50%}
+/* the caption, centred under the frame (position and width are set by the script) */
+.np-clinic__legend{
+  position:absolute;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  text-align:center;
+  box-sizing:border-box;
+  opacity:var(--np-leg,0);
+  transform:translateY(calc((1 - var(--np-leg,0)) * 22px));
+  font-family:aeonik,sans-serif;
+  color:var(--np-ink);
+  pointer-events:auto;
+}
+.np-clinic:not(.is-touring) .np-clinic__legend{visibility:hidden;pointer-events:none}
+.np-clinic__count{
+  display:inline-flex;
+  align-items:center;
+  margin:0 0 18px;
+  padding:6px 16px;
+  border-radius:100px;
+  border:1px solid rgba(var(--np-gold-700-rgb),.1);
+  background:rgba(var(--np-gold-500-rgb),.05);
+  color:var(--np-gold-700);
+  font:500 14px/19.6px aeonik,sans-serif;
+  text-transform:uppercase;
+}
+.np-clinic__stops{list-style:none;margin:0;padding:0}
+.np-clinic__stops li{display:none}
+.np-clinic__stops li.is-on{display:block;animation:np-clinic-in .6s var(--np-ease-out,cubic-bezier(.16,1,.3,1)) both}
+.np-clinic__stops h3{margin:0 0 14px;font:500 clamp(30px,2.7vw,calc(42 * var(--np-u)))/1.15 aeonik,sans-serif;letter-spacing:-.5px;color:var(--np-ink)}
+.np-clinic__stops p{margin:0;font-size:var(--np-fs-body);line-height:1.7;color:var(--np-ink-muted)}
+.np-clinic__cta{display:none;margin-top:26px}                 /* the booking button only takes room (and shows) on the last stop, where "Pular passeio" goes away */
+.np-clinic.is-last .np-clinic__cta{display:block;animation:np-clinic-in .6s var(--np-ease-out,cubic-bezier(.16,1,.3,1)) both}
+.np-clinic__cta .elementor-button-wrapper{text-align:center}
+.np-clinic__skip{
+  margin:22px 0 0;
+  padding:0;
+  border:0;
+  background:none;
+  font:500 14px/1.4 aeonik,sans-serif;
+  color:var(--np-ink-muted);
+  text-decoration:underline;
+  text-underline-offset:4px;
+  cursor:pointer;
+}
+.np-clinic.is-last .np-clinic__skip{display:none}
+.np-clinic__skip:focus-visible{outline:2px solid var(--np-gold-700);outline-offset:4px;border-radius:4px}
+@keyframes np-clinic-in{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@media(max-width:899px){
+  .np-clinic__stops h3{font-size:30px;margin-bottom:10px}
+  .np-clinic__stops p{font-size:15px;line-height:1.6rem}
+  .np-clinic__count{margin-bottom:14px}
+  .np-clinic__cta{margin-top:20px}
+  .np-clinic__skip{margin-top:16px}
+}
+@media(prefers-reduced-motion:reduce){
+  .np-clinic__stops li.is-on,
+  .np-clinic.is-last .np-clinic__cta{animation:none}
+}
+/* "A clínica" on a dark surface: the footer's near-black (var(--np-dark), the site's grain overlay goes on top as on every section). What sat on the cream takes
+   the colours of the other dark sections ("Para quem é" above): the gold headline without the shine, cream text, the light chip. The tour's captions and
+   "Pular passeio" follow. The kit's lines (bg_about.svg, gold at ~9%) stay as the texture. */
+.np-clinic #sobre-a-clinica{background-color:var(--np-dark)}
+.np-clinic #sobre-a-clinica .elementor-element-189c247 .elementor-image-box-title{
+  background:linear-gradient(94deg,var(--np-gold-100) 0%,var(--np-gold-300) 52%,var(--np-gold-500) 100%);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+  -webkit-text-fill-color:transparent;
+}
+.np-clinic #sobre-a-clinica .elementor-element-189c247 .elementor-image-box-description{color:rgba(var(--np-cream-rgb),.86)}
+.np-clinic #sobre-a-clinica .elementor-element-0f305f6 > .elementor-widget-container{
+  background-color:rgba(var(--np-cream-rgb),.08);
+  border-color:rgba(var(--np-cream-rgb),.24);
+}
+.np-clinic #sobre-a-clinica .elementor-element-0f305f6 .elementor-icon-list-text{color:var(--np-gold-300)}
+.np-clinic #sobre-a-clinica .elementor-element-0f305f6 .elementor-icon-list-icon svg{fill:var(--np-gold-300)}
+.np-clinic .np-clinic__card{box-shadow:0 18px 34px -16px rgba(0,0,0,.7)}
+.np-clinic .np-clinic__legend{color:var(--np-cream)}
+.np-clinic .np-clinic__count{background:rgba(var(--np-cream-rgb),.08);border-color:rgba(var(--np-cream-rgb),.24);color:var(--np-gold-300)}
+.np-clinic .np-clinic__stops h3{color:var(--np-cream)}
+.np-clinic .np-clinic__stops p{color:rgba(var(--np-cream-rgb),.74)}
+.np-clinic .np-clinic__skip{color:rgba(var(--np-cream-rgb),.72)}
+
+/* ---- Overview, results strip (.np-results; it took the place of the video testimonials section): the look of the "Resultados" fold of the Dra. Dani Faccioni
+   page (dra-dani-faccioni-design-system) in Napele colours, and the first half of act 4 ("Prova") of the narrative arc (see "Arco narrativo" at the
+   end of this file): a light section, on the page cream, so the before/after photos read as a clinical record and not as an ad. A headline with a gold
+   emphasis, a one-line hint, a strip of before/after photos that runs from edge to edge, drifts left by itself and pauses on hover / touch, a tap opens
+   the photo big. The movement, the loop and the lightbox are napele-results.js. It was a dark section on the reception photo with a notch at its top
+   edge; the seam (.np-seam) above it took the notch's place. The removed video testimonials section is kept in overview/_arquivo/secao-depoimentos-em-video.html.
+   The photos are assets/results/NN.webp (800px tall, shown at 220px to 260px: 3x on a phone, 3x+ on a desktop, so they stay sharp on high-density
+   screens) and NN-lg.webp (the lightbox), made from ResultadosTratamentos/. */
+.np-results{
+  --np-res-h:calc(400 * var(--np-u));                      /* height of the photos in the strip (was 260); a fixed size, not tied to the screen height, so they never outgrow their source (800px tall: 1.5x at the 1.35 cap of --np-u) */
+  --np-res-gap:14px;
+  position:relative;
+  overflow:hidden;
+  /* as tall as its content (no min-height: it is not a full-screen fold), the same air above and below */
+  display:flex;
+  flex-direction:column;
+  padding:clamp(72px,7vw,112px) 0;
+  text-align:center;
+  color:var(--np-ink);
+  font-family:aeonik,sans-serif;
+  /* no ground of its own: the page's cream and its grid show (body.home) */
+}
+/* section header, as the Overview's own ("Nossos tratamentos"): chip, 45px / 52.8px headline, 16px / 25px description, 15px between them,
+   and 4rem (64px: 48 here + the 16px of air of the rail) between the header and the content */
+.np-results__head{max-width:calc(1080 * var(--np-u));margin:0 auto 48px;padding:0 22px;display:flex;flex-direction:column;align-items:center;gap:15px}
+/* chip on cream: the same pill as the others, with the gold darkened to var(--np-gold-700) (5.4:1; the var(--np-gold-700) of the light chips is 2.6:1 on cream) */
+.np-results__chip{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:6px 16px;
+  border-radius:100px;
+  border:1px solid rgba(var(--np-gold-700-rgb),.22);
+  background:rgba(var(--np-gold-500-rgb),.14);
+  color:var(--np-gold-700);
+  font:500 var(--np-fs-label)/1.4 aeonik,sans-serif;
+  text-transform:uppercase;
+}
+.np-results__chip svg{flex:none;width:17px;height:17px}
+.np-results .np-results__title{   /* with the section class: the kit's h2 (800) beats a lone class, and this title was the only one heavier than the rest */
+  margin:0;
+  max-width:20em;
+  font-family:inherit;
+  font-weight:500;
+  font-size:clamp(30px,3.4vw,var(--np-fs-h2));
+  line-height:1.17;
+  text-wrap:balance;
+  color:var(--np-ink);
+}
+/* the gold emphasis, darkened for the cream (3.1:1 to 3.7:1, large text); the light gradient of the dark sections would be 2:1 here */
+.np-results__title em{
+  font-style:normal;
+  background:linear-gradient(94deg,var(--np-gold-700) 0%,var(--np-gold-700) 50%,var(--np-gold-700) 100%);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+  -webkit-text-fill-color:transparent;
+}
+.np-results__hint{margin:0;font-size:var(--np-fs-body);line-height:1.56;color:rgba(var(--np-ink-rgb),.72)}
+/* the rail has 16px of air above and below so a photo that grows on hover is not clipped by overflow:hidden */
+.np-results__rail{position:relative;width:100%;overflow:hidden;padding:16px 0}
+.np-results__track{display:flex;gap:var(--np-res-gap);width:max-content;will-change:transform}
+.np-results__item{
+  flex:0 0 auto;
+  margin:0;
+  cursor:pointer;
+  transition:transform .45s var(--np-ease-out,cubic-bezier(.16,1,.3,1)),filter .45s var(--np-ease-out,cubic-bezier(.16,1,.3,1));
+}
+.np-results__item img{
+  display:block;
+  height:var(--np-res-h);
+  width:auto;                            /* from the width / height attributes: the box is right before the photo loads */
+  border-radius:16px;
+  box-shadow:0 14px 34px rgba(var(--np-ink-rgb),.22);
+  user-select:none;
+  -webkit-user-drag:none;
+}
+.np-results__item:hover,
+.np-results__item:focus-visible{transform:scale(1.06);filter:brightness(1.04)}
+.np-results__item:focus-visible{outline:2px solid var(--np-gold-700);outline-offset:4px;border-radius:18px}
+.np-results__note{margin:14px auto 0;padding:0 22px;font:400 12px/1.5 aeonik,sans-serif;color:rgba(var(--np-ink-rgb),.6)}
+/* reduced motion: no drift (napele-results.js), the strip is a normal strip you scroll sideways */
+.np-results.is-static .np-results__rail{overflow-x:auto;scrollbar-width:thin;scrollbar-color:rgba(var(--np-gold-700-rgb),.5) transparent}
+.np-results.is-static .np-results__track{padding:0 22px}
+/* no scroll reveal: the strip's own drift is this section's one moment (napele-results.js still marks the pieces .np-reveal / .is-in; they are not hidden) */
+@media(max-width:767px){
+  .np-results{--np-res-h:300px}   /* was 220 */
+  .np-results__head{margin-bottom:32px}
+  .np-results__hint{font-size:15px}
+}
+@media(prefers-reduced-motion:reduce){
+  .np-results__item{transition:none}
+}
+/* lightbox (opened by tapping a photo of the strip) */
+.np-lb{position:fixed;inset:0;z-index:100000;display:none;align-items:center;justify-content:center;background:rgba(var(--np-black-rgb),.95)}
+.np-lb.is-open{display:flex}
+.np-lb img{max-width:92vw;max-height:78vh;border-radius:12px;box-shadow:0 24px 70px rgba(0,0,0,.55);touch-action:pan-y;user-select:none;-webkit-user-drag:none}
+.np-lb button{font-family:aeonik,sans-serif;cursor:pointer;color:var(--np-gold-100)}
+.np-lb__x{position:absolute;top:16px;right:16px;width:44px;height:44px;font-size:36px;line-height:44px;font-weight:300;background:none;border:none}
+.np-lb__nav{
+  position:absolute;top:50%;transform:translateY(-50%);
+  width:56px;height:56px;border-radius:50%;
+  border:1px solid rgba(var(--np-gold-300-rgb),.45);background:rgba(var(--np-black-rgb),.6);
+  font-size:30px;line-height:52px;font-weight:300;
+  transition:background-color .25s,border-color .25s;
+}
+.np-lb__nav:hover{background:rgba(var(--np-gold-300-rgb),.18);border-color:var(--np-gold-300)}
+.np-lb__prev{left:12px}
+.np-lb__next{right:12px}
+.np-lb__x:focus-visible,.np-lb__nav:focus-visible{outline:2px solid var(--np-gold-300);outline-offset:3px}
+.np-lb__count{position:absolute;bottom:22px;left:50%;transform:translateX(-50%);font:500 13px aeonik,sans-serif;color:rgba(var(--np-cream-rgb),.7)}
+@media(max-width:767px){.np-lb__nav{width:46px;height:46px;font-size:26px;line-height:42px}}
+
+/* ---- Navbar (catalog page, .ds-nav): full-width bar like napele.vercel.app. Transparent over the Overview hero,
+   dark glass after 70% of the hero (napele-nav.js adds .np-nav-scrolled); always dark on the other views.
+   Differences from that site: the social icons keep a readable colour when scrolled (there they drop to var(--np-ink-muted),
+   about 2.8:1 on the dark bar), and the logo keeps one size. */
+.ds-nav{
+  box-sizing:border-box;
+  height:var(--np-nav-h);
+  background-color:transparent;
+  border-bottom:1px solid transparent;
+  transition:
+    height .4s var(--np-ease-out),
+    background-color .4s var(--np-ease-out),
+    -webkit-backdrop-filter .4s var(--np-ease-out),
+    backdrop-filter .4s var(--np-ease-out),
+    border-color .4s var(--np-ease-out),
+    box-shadow .4s var(--np-ease-out),
+    opacity 1s var(--np-ease-out),
+    visibility 0s;
+}
+/* Overview preloader (napele-preloader.js, in the iframe): the bar waits for phase 3, then fades in. The body carries np-pre-hold from the
+   start; napele-nav.js lifts it on the iframe's message (or, as a safety net, after 20 s). Only on the Overview: the other views have no preloader. */
+body[data-view="overview"].np-pre-hold .ds-nav{
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+}
+/* ...and the page behind the iframe is dark while it waits: the iframe paints a moment after this page does, and the cream of the page in that
+   gap was a flash before the preloader (which is dark from its first frame) even began. */
+body[data-view="overview"].np-pre-hold{
+  background-color:var(--np-black);
+}
+body[data-view] .ds-nav.np-nav-scrolled{
+  height:var(--np-nav-h-scrolled);
+  background-color:rgba(27,25,23,.94);
+  -webkit-backdrop-filter:blur(14px);
+  backdrop-filter:blur(14px);
+  border-bottom-color:rgba(190,141,59,.2);
+  box-shadow:0 4px 20px rgba(0,0,0,.15);
+  pointer-events:auto;
+}
+/* soft dark scrim under the transparent bar, so the menu stays readable when the portrait's hair passes behind it */
+.ds-nav::before{
+  content:"";
+  position:absolute;
+  left:0;
+  right:0;
+  top:0;
+  height:170px;
+  z-index:-1;
+  background:linear-gradient(180deg,rgba(27,25,23,.55),rgba(27,25,23,0));
+  pointer-events:none;
+  transition:opacity .4s var(--np-ease-out);
+}
+.ds-nav.np-nav-scrolled::before{opacity:0}
+.ds-nav > header,
+.ds-nav .elementor-14 .elementor-element.elementor-element-8ad80d5{height:100%;--min-height:0px}
+.ds-nav .elementor-widget{margin-block-end:0!important}
+
+/* the white card becomes plain layout: logo | menu | social, inside the 1140px container */
+.ds-nav .elementor-14 .elementor-element.elementor-element-ac70087{
+  --padding-top:0px;
+  --padding-bottom:0px;
+  --padding-left:0px;
+  --padding-right:0px;
+  --border-radius:0px;
+  height:100%;
+  background-color:transparent!important;
+  box-shadow:none!important;
+}
+
+.ds-nav .elementor-14 .elementor-element.elementor-element-b3529a7 img{width:auto;height:var(--np-nav-logo);max-width:none}
+
+.ds-nav .elementor-14 .elementor-element.elementor-element-642fb96 .elementor-nav-menu--main .elementor-item{
+  position:relative;
+  font-size:var(--np-nav-font);
+  line-height:22px;
+  color:rgba(245,240,234,.9);
+  fill:rgba(245,240,234,.9);
+  transition:color .2s var(--np-ease-out);
+}
+.ds-nav .elementor-14 .elementor-element.elementor-element-642fb96 .elementor-nav-menu--main .elementor-item::after{
+  content:"";
+  position:absolute;
+  left:0;
+  bottom:-7px;
+  width:0;
+  height:2px;
+  background-color:var(--np-gold-300);
+  transition:width .4s var(--np-ease-out);
+}
+.ds-nav .elementor-14 .elementor-element.elementor-element-642fb96 .elementor-nav-menu--main .elementor-item:hover,
+.ds-nav .elementor-14 .elementor-element.elementor-element-642fb96 .elementor-nav-menu--main .elementor-item:focus,
+.ds-nav .elementor-14 .elementor-element.elementor-element-642fb96 .elementor-nav-menu--main .elementor-item.elementor-item-active{
+  color:var(--np-gold-300);
+  fill:var(--np-gold-300);
+}
+.ds-nav .elementor-14 .elementor-element.elementor-element-642fb96 .elementor-nav-menu--main .elementor-item:hover::after,
+.ds-nav .elementor-14 .elementor-element.elementor-element-642fb96 .elementor-nav-menu--main .elementor-item.elementor-item-active::after{width:100%}
+.ds-nav.np-nav-scrolled .elementor-14 .elementor-element.elementor-element-642fb96 .elementor-nav-menu--main .elementor-item:not(:hover):not(.elementor-item-active){
+  color:var(--np-cream);
+  fill:var(--np-cream);
+}
+
+.ds-nav .elementor-14 .elementor-element.elementor-element-bd1508d .elementor-social-icon{
+  color:rgba(245,240,234,.78);
+  transition:color .2s var(--np-ease-out);
+}
+.ds-nav .elementor-14 .elementor-element.elementor-element-bd1508d .elementor-social-icon:hover{color:var(--np-gold-300)}
+.ds-nav .elementor-social-icon svg rect{stroke:currentColor}
+.ds-nav .elementor-social-icon svg path{fill:currentColor}
+
+/* Line icons (Instagram, WhatsApp, location): outline on a 24 grid, 1.5 stroke, round caps and joins, drawn in currentColor so the colour comes from
+   the surface. The glyphs are <symbol>s in the sprite at the top of the catalog body (#np-i-instagram, #np-i-whatsapp, #np-i-pin); each use is
+   <span class="np-icon"><svg><use href="#np-i-..."/></svg></span>. 26px glyph inside a 48px target. Cream on dark, gold 300 on hover (the pair
+   the nav links use); .np-icon--ink on light surfaces (ink, gold 700 on hover). */
+.np-icon{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:48px;
+  height:48px;
+  border-radius:50%;
+  color:rgba(245,240,234,.9);
+  transition:color .2s var(--np-ease-out);
+}
+.np-icon svg{display:block;width:26px;height:26px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+/* as links they need more weight: the Elementor kit colours every anchor (.elementor-kit-6 a), which beats the bare class */
+body a.np-icon{color:rgba(245,240,234,.9)}
+.np-icon:hover,
+.np-icon:active,
+body a.np-icon:hover,
+body a.np-icon:active{color:var(--np-gold-300)}
+.np-icon:focus-visible{outline:2px solid var(--np-gold-300);outline-offset:2px}
+.np-icon--ink,
+body a.np-icon--ink{color:var(--np-ink)}
+.np-icon--ink:hover,
+.np-icon--ink:active,
+body a.np-icon--ink:hover,
+body a.np-icon--ink:active{color:var(--np-gold-700)}
+.np-icon--ink:focus-visible{outline-color:var(--np-gold-700)}
+
+/* Navbar icons (Instagram, WhatsApp, location): .np-icon links in the container to the right of the menu, coloured like the nav text: cream at rest (full cream
+   once the bar is glass, as the links do), gold 300 on hover. The glyph sits 11px inside its 48px target, so the row is pulled 11px out to put the last glyph on
+   the bar's edge (the burger does the same on mobile). Instagram and WhatsApp have no href (aria-disabled) while napele-contact.js has no address for them:
+   they answer to the mouse like the others, just without the pointer. */
+.ds-nav .np-nav-social{display:flex;align-items:center;gap:0;margin-right:-11px}
+.ds-nav.np-nav-scrolled a.np-icon:not(:hover):not(:active){color:var(--np-cream)}
+.ds-nav a.np-icon[aria-disabled="true"]{cursor:default}
+/* 768-1024px: Elementor sends the menu to the end of the row there (--order:99999, for its own toggle), which would put the icons before it. They go after it
+   instead, as wide as they are (the 29% the container has on desktop would leave a gap between the menu and the icons). */
+@media(min-width:768px) and (max-width:1024px){
+  .ds-nav .elementor-14 .elementor-element.elementor-element-e4f37f1{order:100000;width:auto}
+}
+
+/* while a lightbox is open inside the Overview's iframe (napele-nav.js hears it), the navbar steps away: it floats over the iframe, and over the lightbox's X */
+.ds-nav.np-nav-away{
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+  transition:opacity .25s ease,visibility 0s linear .25s;
+}
+
+/* keyboard focus: gold ring (mouse clicks do not show it) */
+.ds-nav .elementor-14 .elementor-element.elementor-element-642fb96 .elementor-nav-menu--main .elementor-item:focus-visible,
+.ds-nav .np-burger:focus-visible,
+.ds-nav .elementor-14 .elementor-element.elementor-element-b3529a7 a:focus-visible{
+  outline:2px solid var(--np-gold-300);
+  outline-offset:6px;
+  border-radius:6px;
+}
+
+/* Hamburger: hidden on desktop, shown at 767px and below (same switch as napele.vercel.app: three lines that turn into
+   an X, menu opening as a full-screen overlay). */
+.np-burger{display:none}
+
+@media(max-width:767px){
+  /* one row: logo on the left, burger on the right */
+  .ds-nav{--np-nav-logo:46px;--np-nav-h:76px;--np-nav-h-scrolled:68px}
+  .ds-nav .elementor-14 .elementor-element.elementor-element-ac70087{
+    flex-direction:row;
+    flex-wrap:nowrap;
+    align-items:center;
+    justify-content:space-between;
+    gap:0;
+    --gap:0px;
+  }
+  .ds-nav .elementor-14 .elementor-element.elementor-element-b3529a7{position:relative;z-index:2;width:auto}
+  /* the icons leave the bar and join the open menu: pinned to the bottom of the overlay (z-index 2, above its 1), they fade in after the links.
+     position:fixed also takes the container out of the row, so it does not push the burger inward while closed */
+  .ds-nav .elementor-14 .elementor-element.elementor-element-e4f37f1{
+    position:fixed;
+    left:0;
+    right:0;
+    bottom:calc(40px + env(safe-area-inset-bottom,0px));
+    z-index:2;
+    width:100%;
+    justify-content:center;
+    opacity:0;
+    visibility:hidden;
+    pointer-events:none;
+    transform:translateY(16px);
+    transition:opacity .25s ease,transform .4s var(--np-ease-out),visibility 0s linear .25s;
+  }
+  .ds-nav .np-nav-social{margin-right:0;gap:8px}
+  .ds-nav.np-nav-open .elementor-14 .elementor-element.elementor-element-e4f37f1{
+    opacity:1;
+    visibility:visible;
+    pointer-events:auto;
+    transform:none;
+    transition:opacity .35s ease .3s,transform .5s var(--np-ease-out) .3s,visibility 0s;
+  }
+
+  .np-burger{
+    position:relative;
+    z-index:2;
+    display:flex;
+    flex:none;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:6px;
+    width:44px;
+    height:44px;
+    margin:0 -9px 0 auto;
+    padding:0;
+    border:0;
+    border-radius:50%;
+    background:transparent;
+    cursor:pointer;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .np-burger span{
+    display:block;
+    width:26px;
+    height:2px;
+    border-radius:2px;
+    background-color:rgba(245,240,234,.92);
+    transition:transform .4s var(--np-ease-out),opacity .2s ease,background-color .2s ease;
+  }
+  .ds-nav.np-nav-scrolled .np-burger span{background-color:var(--np-cream)}
+  .np-burger:hover span{background-color:var(--np-gold-300)}
+  .ds-nav.np-nav-open .np-burger span{background-color:var(--np-gold-300)}
+  .ds-nav.np-nav-open .np-burger span:nth-child(1){transform:translateY(8px) rotate(45deg)}
+  .ds-nav.np-nav-open .np-burger span:nth-child(2){opacity:0;transform:scaleX(0)}
+  .ds-nav.np-nav-open .np-burger span:nth-child(3){transform:translateY(-8px) rotate(-45deg)}
+
+  /* while open the bar gives way to the overlay: no glass, no scrim, no shadow */
+  body[data-view] .ds-nav.np-nav-open{
+    background-color:transparent;
+    -webkit-backdrop-filter:none;
+    backdrop-filter:none;
+    border-bottom-color:transparent;
+    box-shadow:none;
+    pointer-events:auto;
+  }
+  .ds-nav.np-nav-open::before{opacity:0}
+
+  /* the menu becomes a full-screen overlay below the logo and the burger */
+  .ds-nav .elementor-14 .elementor-element.elementor-element-642fb96{position:static;width:0;flex:none}
+  .ds-nav .elementor-14 .elementor-element.elementor-element-642fb96 > .elementor-widget-container{position:static}
+  .ds-nav .elementor-14 .elementor-element.elementor-element-642fb96 .elementor-nav-menu--main{
+    position:fixed;
+    inset:0;
+    z-index:1;
+    box-sizing:border-box;
+    width:100%;
+    height:100vh;
+    height:100dvh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:96px 24px 56px;
+    background-color:rgba(18,16,14,.975);
+    -webkit-backdrop-filter:blur(10px);
+    backdrop-filter:blur(10px);
+    opacity:0;
+    visibility:hidden;
+    pointer-events:none;
+    transition:opacity .3s ease,visibility 0s linear .3s;
+  }
+  .ds-nav.np-nav-open .elementor-14 .elementor-element.elementor-element-642fb96 .elementor-nav-menu--main{
+    opacity:1;
+    visibility:visible;
+    pointer-events:auto;
+    transition:opacity .3s ease,visibility 0s;
+  }
+  .ds-nav .elementor-14 .elementor-element.elementor-element-642fb96 .elementor-nav-menu{
+    width:100%;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:6px;
+    margin:0;
+  }
+  .ds-nav .elementor-14 .elementor-element.elementor-element-642fb96 .elementor-nav-menu > li{
+    width:100%;
+    margin:0;
+    text-align:center;
+    opacity:0;
+    transform:translateY(16px);
+    transition:opacity .35s ease,transform .5s var(--np-ease-out);
+  }
+  .ds-nav.np-nav-open .elementor-14 .elementor-element.elementor-element-642fb96 .elementor-nav-menu > li{opacity:1;transform:none}
+  .ds-nav.np-nav-open .elementor-nav-menu > li:nth-child(1){transition-delay:.08s}
+  .ds-nav.np-nav-open .elementor-nav-menu > li:nth-child(2){transition-delay:.15s}
+  .ds-nav.np-nav-open .elementor-nav-menu > li:nth-child(3){transition-delay:.22s}
+  .ds-nav .elementor-14 .elementor-element.elementor-element-642fb96 .elementor-nav-menu--main .elementor-item{
+    display:block;
+    margin:0;                       /* Elementor adds 16px side margins to the items of a horizontal menu */
+    padding:12px 0;
+    font-size:clamp(28px,8.5vw,40px);
+    font-weight:400;
+    line-height:1.15;
+    letter-spacing:.02em;
+    text-align:center;
+    color:rgba(245,240,234,.86);
+    fill:rgba(245,240,234,.86);
+  }
+  .ds-nav.np-nav-scrolled .elementor-14 .elementor-element.elementor-element-642fb96 .elementor-nav-menu--main .elementor-item:not(:hover):not(.elementor-item-active){
+    color:rgba(245,240,234,.86);
+    fill:rgba(245,240,234,.86);
+  }
+  /* underline: short gold dash under the current page, centered */
+  .ds-nav .elementor-14 .elementor-element.elementor-element-642fb96 .elementor-nav-menu--main .elementor-item::after{
+    left:50%;
+    bottom:3px;
+    width:0;
+    transform:translateX(-50%);
+    transition:width .4s var(--np-ease-out);
+  }
+  .ds-nav .elementor-14 .elementor-element.elementor-element-642fb96 .elementor-nav-menu--main .elementor-item.elementor-item-active::after{width:36px}
+  .ds-nav .elementor-14 .elementor-element.elementor-element-642fb96 .elementor-nav-menu--main .elementor-item:hover::after{width:36px}
+}
+@media(max-width:767px) and (prefers-reduced-motion:reduce){
+  .ds-nav .elementor-14 .elementor-element.elementor-element-642fb96 .elementor-nav-menu > li{transform:none;transition:none}
+  .ds-nav .elementor-14 .elementor-element.elementor-element-e4f37f1{transform:none;transition:none}
+  .np-burger span{transition:none}
+}
+
+/* Footer logo: the footer column is "auto" wide and used to follow the 250px file; LogoNapele.svg is 2000px wide, so the
+   size is pinned to the old 250px on desktop (tablet and mobile keep the column rules of the footer). */
+@media(min-width:768px){
+  .elementor-28 .elementor-element.elementor-element-2a748c7 img{width:calc(250 * var(--np-u));max-width:100%}
+}
+
+/* ---- Footer social icons: round gold-outline buttons, the same language as the lightbox arrows (.np-lb__nav) and the
+   secondary button. The Phosphor glyphs stay (same family as the rest of the icons); they just take the gold instead of the
+   loose cream. Hover fills with the primary's gold (var(--np-gold-100) -> var(--np-gold-500)) and lifts 3px, like the secondary button. */
+html body .elementor-28 .elementor-element.elementor-element-a4412bd .elementor-social-icons-wrapper{
+  display:flex;flex-wrap:wrap;gap:12px;
+}
+html body .elementor-28 .elementor-element.elementor-element-a4412bd .elementor-grid-item{margin:0;display:block}
+html body .elementor-28 .elementor-element.elementor-element-a4412bd .elementor-social-icon{
+  box-sizing:border-box;
+  display:inline-flex;align-items:center;justify-content:center;
+  width:44px;height:44px;padding:0;
+  border:1px solid rgba(var(--np-gold-300-rgb),.45);border-radius:50%;
+  background:rgba(var(--np-black-rgb),.6);
+  color:var(--np-gold-300);
+  transition:transform .35s cubic-bezier(.22,1,.36,1),background-color .35s,border-color .35s,color .35s,box-shadow .35s;
+}
+html body .elementor-28 .elementor-element.elementor-element-a4412bd .elementor-social-icon svg{width:22px;height:22px}
+html body .elementor-28 .elementor-element.elementor-element-a4412bd .elementor-social-icon svg path{fill:currentColor}
+html body .elementor-28 .elementor-element.elementor-element-a4412bd .elementor-social-icon:hover,
+html body .elementor-28 .elementor-element.elementor-element-a4412bd .elementor-social-icon:focus-visible{
+  background:linear-gradient(180deg,var(--np-btn-a),var(--np-btn-b));
+  border-color:var(--np-btn-b);
+  color:var(--np-black);
+  box-shadow:0 10px 26px rgba(var(--np-gold-500-rgb),.28);
+  transform:translateY(-3px);
+}
+html body .elementor-28 .elementor-element.elementor-element-a4412bd .elementor-social-icon:focus-visible{
+  outline:2px solid var(--np-gold-300);outline-offset:3px;
+}
+@media(prefers-reduced-motion:reduce){
+  html body .elementor-28 .elementor-element.elementor-element-a4412bd .elementor-social-icon:hover,
+  html body .elementor-28 .elementor-element.elementor-element-a4412bd .elementor-social-icon:focus-visible{transform:none}
+}
+
+/* ---- Footer slogan: two files, one per width. The footer's bottom bar is sticky: it stays at the bottom of the screen and the slogan
+   (in the same container, above the bar) is revealed from behind it as the page scrolls to the end, over a scroll distance equal to the
+   slogan's height. The one-line slogan (slogan.svg, 1136x73) is 73px tall on desktop but only ~30px once it is squeezed into a phone's
+   width, so there the reveal lasted a few pixels and read as a static, cut-off line. On phones the slogan breaks in two lines
+   (slogan-mobile.svg, 1136x280: ~105px at 430px wide), which brings the reveal back to desktop proportions and makes it readable.
+   Also on phones the bar is pinned by CSS (position:sticky, bottom:0, inside its container = the slogan's) instead of Elementor's JS
+   sticky (the footer bar's sticky_on no longer lists "mobile"): the plugin left the bar over the slogan until the very last pixel of
+   the scroll, then snapped it into place. Same behaviour as desktop, but without the snap. */
+.elementor-28 .elementor-element-ae6e69c img.np-slogan--m{display:none}
+@media(max-width:767px){
+  .elementor-28 .elementor-element-ae6e69c img.np-slogan--d{display:none}
+  .elementor-28 .elementor-element-ae6e69c img.np-slogan--m{display:block}
+  /* --margin-top: the kit's -0.5rem would still cover 8px of the slogan at the end of the scroll; -1px leaves the letters whole, as on desktop */
+  .elementor-28 .elementor-element.elementor-element-23dc20f{position:sticky;bottom:0;--margin-top:-1px}
+}
+
+/* ---- Heading 1: Nudik type (Aeonik) kept as is; only the Dani shine sweep is added */
+body h1.elementor-image-box-title,
+body .elementor h1.elementor-image-box-title{
+  background:
+    linear-gradient(105deg,rgba(var(--np-h1-shine,var(--np-gold-300-rgb)),0) 44%,rgba(var(--np-h1-shine,var(--np-gold-300-rgb)),.95) 50%,rgba(var(--np-h1-shine,var(--np-gold-300-rgb)),0) 56%) no-repeat -160% 0/200% 100%,
+    linear-gradient(94deg,var(--np-h1-a) 0%,var(--np-h1-b) 52%,var(--np-h1-c) 100%);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent!important;
+  -webkit-text-fill-color:transparent;
+  animation:np-h1shine 5s ease-in-out 1.4s infinite;
+}
+@keyframes np-h1shine{0%{background-position:-160% 0,0 0}45%{background-position:260% 0,0 0}100%{background-position:260% 0,0 0}}
+
+/* ---- Primary button: Dani's gold pill (Aeonik 700, sheen + glow loop) on the Nudik CTAs. Aeonik, like the rest of the page: the arc keeps one family
+   (the only other face is Bodoni Moda, at the opening only; see "Arco narrativo" at the end of this file). */
+html body .elementor .elementor-element .elementor-button.elementor-button-link{
+  display:inline-flex;
+  align-items:center;
+  font-family:'aeonik',sans-serif!important;
+  font-weight:700!important;
+  font-size:var(--np-fs-button)!important;
+  line-height:normal!important;
+  letter-spacing:.04em;
+  color:var(--np-ink)!important;
+  fill:var(--np-ink)!important;
+  padding:calc(19 * var(--np-u)) calc(40 * var(--np-u))!important;
+  border:none;
+  border-radius:99px!important;
+  background:
+    linear-gradient(115deg,rgba(255,255,255,0) 42%,rgba(255,255,255,.55) 50%,rgba(255,255,255,0) 58%) no-repeat -220% 0/220% 100%,
+    linear-gradient(180deg,var(--np-btn-a),var(--np-btn-b));
+  background-color:var(--np-btn-b);
+  box-shadow:0 18px 46px rgba(var(--np-ink-rgb),.28);
+  animation:none!important;               /* still by default: the only button that loops is the closing CTA's (see "Orçamento de movimento" at the end of this file) */
+}
+/* Hover is Napele's own (Dani's .cta has none): lift, sheen restarts at once and runs faster, glow is stronger.
+   It swaps the animation instead of setting box-shadow, because a running @keyframes would ignore a hover box-shadow. */
+html body .elementor .elementor-element .elementor-button.elementor-button-link{
+  cursor:pointer;
+  transition:transform .35s cubic-bezier(.22,1,.36,1),filter .35s cubic-bezier(.22,1,.36,1);
+}
+html body .elementor .elementor-element .elementor-button.elementor-button-link:hover,
+html body .elementor .elementor-element .elementor-button.elementor-button-link:focus{
+  color:var(--np-ink)!important;
+  fill:var(--np-ink)!important;
+  background:
+    linear-gradient(115deg,rgba(255,255,255,0) 42%,rgba(255,255,255,.6) 50%,rgba(255,255,255,0) 58%) no-repeat -220% 0/220% 100%,
+    linear-gradient(180deg,var(--np-btn-a),var(--np-btn-b));
+  background-color:var(--np-btn-b);
+  transform:translateY(-3px);
+  filter:brightness(1.05);
+  animation:np-ctaglow-hover 1.4s ease-in-out infinite,np-ctashine 1.7s ease-in-out infinite!important;
+}
+html body .elementor .elementor-element .elementor-button.elementor-button-link:active{
+  transform:translateY(0) scale(.98);
+  filter:brightness(.98);
+}
+html body .elementor .elementor-element .elementor-button.elementor-button-link:focus-visible{
+  outline:2px solid var(--np-ink);
+  outline-offset:3px;
+}
+html body .elementor .elementor-element .elementor-button.elementor-button-link .elementor-button-icon svg{fill:var(--np-ink)!important}
+html body .elementor .elementor-element .elementor-button.elementor-button-link .elementor-button-content-wrapper{gap:12px!important}
+
+@keyframes np-ctashine{0%{background-position:-220% 0,0 0}55%{background-position:220% 0,0 0}100%{background-position:220% 0,0 0}}
+@keyframes np-ctaglow{
+  0%,100%{box-shadow:0 18px 46px rgba(var(--np-ink-rgb),.28)}
+  50%{box-shadow:0 18px 46px rgba(var(--np-ink-rgb),.28),0 0 30px 3px rgba(var(--np-gold-300-rgb),.55)}
+}
+
+@keyframes np-ctaglow-hover{
+  0%,100%{box-shadow:0 22px 52px rgba(var(--np-ink-rgb),.34),0 0 24px 2px rgba(var(--np-gold-300-rgb),.55)}
+  50%{box-shadow:0 22px 52px rgba(var(--np-ink-rgb),.34),0 0 42px 7px rgba(var(--np-gold-300-rgb),.85)}
+}
+
+@media(max-width:880px){
+  html body .elementor .elementor-element .elementor-button.elementor-button-link{
+    font-size:15px!important;
+    padding:18px 26px!important;
+  }
+}
+
+@media(prefers-reduced-motion:reduce){
+  body h1.elementor-image-box-title,
+  html body .elementor .elementor-element .elementor-button.elementor-button-link,
+  html body .elementor .elementor-element .elementor-button.elementor-button-link:hover,
+  html body .elementor .elementor-element .elementor-button.elementor-button-link:focus{animation:none!important}
+}
+
+/* ---- Secondary button (Button 3): the quiet twin of the gold pill, for the second action next to it, on light surfaces.
+   Same type, same height (the 2px border is taken out of the padding), no continuous sheen or glow; hover fills it with the
+   primary's gold, lifts it 3px and slides the arrow. Written one class deeper than the primary rules, so it wins their !important. */
+html body .elementor .elementor-element.np-btn-secondary .elementor-button.elementor-button-link{
+  padding:17px 38px!important;
+  border:2px solid var(--np-btn-outline);
+  background:transparent;
+  background-color:transparent;
+  box-shadow:none;
+  color:var(--np-ink)!important;
+  animation:none!important;
+  transition:transform .35s cubic-bezier(.22,1,.36,1),background-color .35s,border-color .35s,box-shadow .35s;
+}
+html body .elementor .elementor-element.np-btn-secondary .elementor-button.elementor-button-link:hover,
+html body .elementor .elementor-element.np-btn-secondary .elementor-button.elementor-button-link:focus{
+  border-color:var(--np-btn-b);
+  background:linear-gradient(180deg,var(--np-btn-a),var(--np-btn-b));
+  background-color:var(--np-btn-b);
+  box-shadow:0 14px 34px rgba(var(--np-ink-rgb),.22);
+  filter:none;
+  transform:translateY(-3px);
+  animation:none!important;
+}
+html body .elementor .elementor-element.np-btn-secondary .elementor-button.elementor-button-link:active{
+  transform:translateY(0) scale(.98);
+  box-shadow:none;
+}
+html body .elementor .elementor-element.np-btn-secondary .elementor-button.elementor-button-link .elementor-button-icon svg{
+  transition:transform .35s cubic-bezier(.22,1,.36,1);
+}
+html body .elementor .elementor-element.np-btn-secondary .elementor-button.elementor-button-link:hover .elementor-button-icon svg,
+html body .elementor .elementor-element.np-btn-secondary .elementor-button.elementor-button-link:focus .elementor-button-icon svg{
+  transform:translateX(4px);
+}
+@media(max-width:880px){
+  html body .elementor .elementor-element.np-btn-secondary .elementor-button.elementor-button-link{padding:16px 24px!important}
+}
+@media(prefers-reduced-motion:reduce){
+  html body .elementor .elementor-element.np-btn-secondary .elementor-button.elementor-button-link,
+  html body .elementor .elementor-element.np-btn-secondary .elementor-button.elementor-button-link .elementor-button-icon svg{transition:none}
+}
+
+/* ---- Procedures section (title + card carousel, right below the marquee), content starting at the top so the title sits just under
+   the marquee. On a phone it is one full screen tall (min-height, not height, so content taller than the screen is never clipped);
+   from 768px up it is only as tall as its content (see the media query below): a 100svh floor there put the height the cards do not use
+   under the arrows, and the taller the window, the bigger the empty band. The vertical padding shrinks with the screen height (never
+   below 24px / 16px). */
+.elementor-11 .elementor-element.elementor-element-7c94319{
+  --min-height:100svh;
+  --padding-top:calc(clamp(24px,5svh,56px) + var(--np-top-extra,0px));   /* + what napele-procedures.js adds when the screen is tall */
+  --padding-bottom:calc(clamp(12px,2svh,28px) + var(--np-end-extra,0px));
+  justify-content:flex-start;
+}
+.elementor-11 .elementor-element.elementor-element-7c94319 > .e-con-inner{align-content:flex-start}
+
+/* Bigger cards (tablet and desktop): napele-procedures.js puts .np-fit and --np-card-h (the screen height left under the title)
+   on the section (plus --np-top-extra and --np-card-shift, the extra space above the title and between the title and the cards). Card height = --np-card-h; card width = height x 720/950 (the photo ratio). Swiper sizes its slides from the
+   width of the carousel, so the carousel is made exactly as wide as 3 cards + 2 gaps (2 cards + 1 gap from 768 to 1023px); it is allowed to
+   run past the 1140px container (overflow is visible), which is how the next cards peek in at the sides. */
+@media(min-width:768px){
+  /* no 100svh floor: title, cards and arrows keep the spacing napele-procedures.js sets (64px between the blocks, the arrows 24px under the
+     cards and 112px above the end of the section) whatever the height of the window */
+  .elementor-11 .elementor-element.elementor-element-7c94319{--min-height:0px}
+  .elementor-11 .elementor-element-7c94319.np-fit{--np-card-w:calc(var(--np-card-h) * .7579)}
+  .elementor-11 .elementor-element-7c94319.np-fit .elementor-element-85ab1f2 .swiper-slide > .e-con{
+    --min-height:var(--np-card-h);
+    min-height:var(--np-card-h);
+  }
+  /* the group of 3 cards is centred on the page (the carousel is wider than the 1140px column, so the margin is negative):
+     the cards that peek in at the two sides are equal. Vertically, --np-card-shift adds space between the title and the cards (the script keeps the three gaps of the section equal). */
+  .elementor-11 .elementor-element-7c94319.np-fit{--np-sw:calc(3 * var(--np-card-w) + 2 * 15px)}
+  .elementor-11 .elementor-element-7c94319.np-fit .elementor-element-df7b843 .e-n-carousel.swiper{
+    width:var(--np-sw);
+    max-width:none;
+    margin-left:calc((100% - var(--np-sw)) / 2);
+  }
+  .elementor-11 .elementor-element-7c94319.np-fit .elementor-element-85ab1f2{
+    margin-top:var(--np-card-shift,0px);
+    padding-bottom:61px;      /* room for the arrows: 45px button + 16px gap under the cards (napele-procedures.js counts it) */
+  }
+  /* the kit hangs the arrows 82px above the carousel, at the right of the title; here they sit side by side under the cards,
+     centred on the page like the cards, 24px under them (napele-procedures.js writes that gap into --np-arrow-gap, and the section's own
+     padding leaves 112px under the arrows) */
+  .elementor-11 .elementor-element-7c94319.np-fit .elementor-element-df7b843 .elementor-swiper-button{
+    top:calc(100% + var(--np-arrow-gap,16px));
+    bottom:auto;
+  }
+  .elementor-11 .elementor-element-7c94319.np-fit .elementor-element-df7b843 .elementor-swiper-button-prev{
+    left:calc(50% - 6px);
+    right:auto;
+    transform:translateX(-100%);
+  }
+  .elementor-11 .elementor-element-7c94319.np-fit .elementor-element-df7b843 .elementor-swiper-button-next{
+    left:calc(50% + 6px);
+    right:auto;
+    transform:none;
+  }
+}
+@media(min-width:768px) and (max-width:1023px){
+  .elementor-11 .elementor-element-7c94319.np-fit{--np-sw:calc(2 * var(--np-card-w) + 15px)}
+}
+/* Phone: the kit puts the arrows 20px under the card (top: 100% + 60px, pulled up by its own height) at the left edge. Same idea
+   as above: the vertical offset becomes the measured --np-arrow-gap, so they sit halfway between the card and the end of the
+   section, and they are side by side, centred on the page (10px between them). The room under the card is at least the 40px
+   arrows + 8px above and below (44px here + the section's own 12px at the least), so on a short phone, where the content is what
+   sizes the section, they never hang past it. */
+@media(max-width:767px){
+  .elementor-11 .elementor-element-7c94319 .elementor-element-85ab1f2{padding-bottom:44px}
+  .elementor-11 .elementor-element-7c94319 .elementor-element-df7b843.elementor-widget-n-carousel .elementor-swiper-button{
+    top:calc(100% + var(--np-arrow-gap,20px));
+  }
+  .elementor-11 .elementor-element-7c94319 .elementor-element-df7b843.elementor-widget-n-carousel .elementor-swiper-button-prev{
+    left:calc(50% - 5px);
+    right:auto;
+    transform:translateX(-100%);
+  }
+  .elementor-11 .elementor-element-7c94319 .elementor-element-df7b843.elementor-widget-n-carousel .elementor-swiper-button-next{
+    left:calc(50% + 5px);
+    right:auto;
+    transform:none;
+  }
+  /* Centred card: the kit leaves the card at the left and keeps 50px of padding on the right (class .offset-right) so the next card
+     peeks in on that side only. The same 50px split in two keeps the card's width, centres it on the page (and on the arrows) and
+     lets the previous and the next card peek in equally, one on each side. */
+  .elementor-11 .elementor-element-7c94319 .elementor-element-df7b843.elementor-widget-n-carousel .e-n-carousel.swiper{
+    padding-inline-start:calc(var(--e-n-carousel-swiper-offset-size,50px) / 2);
+    padding-inline-end:calc(var(--e-n-carousel-swiper-offset-size,50px) / 2);
+  }
+  /* Taller card: napele-procedures.js measures what the 100svh floor leaves empty under the card and puts card + that in
+     --np-card-h (never above 1.5 x the card's width). Without the script the kit's own 370px stays. */
+  .elementor-11 .elementor-element-7c94319.np-fit-m .elementor-element-85ab1f2 .swiper-slide > .e-con{
+    --min-height:var(--np-card-h);
+    min-height:var(--np-card-h);
+  }
+}
+
+/* Carousel arrows (prev / next, every n-carousel): the round button is drawn inside the arrow's SVG, as a rect filled with
+   the kit's yellow (var(--np-gold-500)). A CSS fill beats that presentation attribute, so the colour is set here, once. */
+.elementor-widget-n-carousel .elementor-swiper-button svg rect{fill:var(--np-gold-300)}
+
+/* Background: the footer's grain, in white. The section keeps its own background (the page's cream): only the texture is added.
+   The footer is var(--np-dark) under the Nudik grain overlay (.bg: noise-01.webp, 250px tile, repeat, opacity .4); that tile has a
+   constant 7% alpha and only its grey level varies, so it moves any surface by about +-1.3 levels: readable on the dark footer,
+   lost on a light one. texture/noise-white.png is the same 250px noise drawn in white instead (each speck as strong as the
+   original pixel is light: alpha .34 on average, +-.20), which lifts the cream by 4-6 levels, +-2.4-3.8.
+   --np-grain-opacity scales it (1 = as drawn, 0 = off). */
+.np-grain-white,
+.elementor-11 .elementor-element.elementor-element-7c94319{
+  position:relative;
+  isolation:isolate;
+}
+.np-grain-white::after,
+.elementor-11 .elementor-element.elementor-element-7c94319::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:0;
+  pointer-events:none;
+  background:transparent url(texture/noise-white.png) repeat center center;
+  opacity:var(--np-grain-opacity,1);
+}
+.elementor-11 .elementor-element.elementor-element-7c94319 > .e-con-inner{position:relative;z-index:1}
+
+/* the cards carry real service names ("Preenchimento com ácido hialurônico"): the title may wrap onto 2-3 lines, but the arrow
+   stays at its right (the kit lets the row wrap, which dropped the arrow under long names on phones) */
+.elementor-11 .elementor-element-85ab1f2 .swiper-slide .e-con-full{flex-wrap:nowrap}
+.elementor-11 .elementor-element-85ab1f2 .swiper-slide .elementor-widget-heading{flex:1 1 0;min-width:0}
+.elementor-11 .elementor-element-85ab1f2 .swiper-slide .elementor-widget-icon{flex:none;width:auto}
+
+/* ---- Marquee: gold band of treatment names right under the hero, above the treatments.
+   napele-marquee.js repeats the list, doubles it and sets --np-mq-dur (constant speed); the keyframes slide exactly
+   one run to the left, then restart. Pauses on hover. Gold is the primary button's gradient, ink is its text colour. */
+:root{
+  --np-mq-ink:var(--np-black);
+  --np-mq-gap:calc(34 * var(--np-u));           /* space around the separator, on each side */
+  --np-mq-pad:calc(21 * var(--np-u));           /* vertical padding: band height = 14px text + 2 x this */
+}
+.np-marquee{
+  position:relative;
+  z-index:3;
+  box-sizing:border-box;
+  overflow:hidden;
+  color:var(--np-mq-ink);
+  background:linear-gradient(180deg,var(--np-gold-100) 0%,var(--np-gold-100) 55%,var(--np-gold-500) 100%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.45),inset 0 -1px 0 rgba(var(--np-ink-rgb),.18);
+}
+.np-marquee__viewport{
+  overflow:hidden;
+  -webkit-mask-image:linear-gradient(90deg,transparent 0,#000 7%,#000 93%,transparent 100%);
+  mask-image:linear-gradient(90deg,transparent 0,#000 7%,#000 93%,transparent 100%);
+}
+.np-marquee__track{
+  display:flex;
+  width:max-content;
+  will-change:transform;
+  animation:np-marquee var(--np-mq-dur,40s) linear infinite;
+}
+.np-marquee:hover .np-marquee__track{animation-play-state:paused}
+.np-marquee .np-marquee__list{
+  display:flex;
+  flex:none;
+  align-items:center;
+  margin:0;
+  padding:var(--np-mq-pad) 0;
+  list-style:none;
+}
+.np-marquee .np-marquee__list li{
+  display:flex;
+  flex:none;
+  align-items:center;
+  gap:var(--np-mq-gap);
+  margin:0;
+  padding:0 var(--np-mq-gap) 0 0;
+  font-family:"aeonik",sans-serif;
+  font-size:var(--np-fs-label);
+  font-weight:500;
+  line-height:var(--np-fs-label);
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  white-space:nowrap;
+}
+/* separator: four-point sparkle, drawn with a mask so it takes the text colour */
+.np-marquee .np-marquee__list li::after{
+  content:"";
+  flex:none;
+  width:calc(12 * var(--np-u));
+  height:calc(12 * var(--np-u));
+  background:currentColor;
+  opacity:.7;
+  -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 0c.9 6.2 5.8 11.1 12 12-6.2.9-11.1 5.8-12 12-.9-6.2-5.8-11.1-12-12C6.2 11.1 11.1 6.2 12 0z'/%3E%3C/svg%3E") center/contain no-repeat;
+  mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 0c.9 6.2 5.8 11.1 12 12-6.2.9-11.1 5.8-12 12-.9-6.2-5.8-11.1-12-12C6.2 11.1 11.1 6.2 12 0z'/%3E%3C/svg%3E") center/contain no-repeat;
+}
+@keyframes np-marquee{from{transform:translate3d(0,0,0)}to{transform:translate3d(-50%,0,0)}}
+
+@media(max-width:767px){
+  :root{--np-mq-gap:26px;--np-mq-pad:17px}
+  .np-marquee .np-marquee__list li{font-size:12.5px;line-height:12px;letter-spacing:.16em}
+  .np-marquee .np-marquee__list li::after{width:10px;height:10px}
+}
+
+/* reduced motion: no sliding, no sheen; the names are simply centred (clones are never built, see the script) */
+@media(prefers-reduced-motion:reduce){
+  .np-marquee::after{animation:none;display:none}
+  .np-marquee__track{animation:none;width:auto;justify-content:center}
+  .np-marquee__viewport{-webkit-mask-image:none;mask-image:none}
+  .np-marquee .np-marquee__list{flex:0 1 auto;box-sizing:border-box;max-width:100%;padding-left:16px;padding-right:16px;flex-wrap:wrap;justify-content:center;row-gap:14px}
+}
+
+/* ---- Overview, "Novidades" (.np-news): between the gold marquee and "Nossos tratamentos", on the page's cream and its grid (no ground of its own).
+   A centred header (chip + the 45px headline), two pill tabs, and one white card at a time: the photo on the left with a "Novo" tag on it, then the name,
+   a short text and the booking button. The card is the FAQ's white with a gold-tinted outline. This section's one moment is the swap between the two
+   treatments (a short fade), driven by the visitor. Without napele-news.js (no .is-js) the tabs are hidden and both cards show, one under the other.
+   The kit styles every h2 / h3 / button, so the rules below carry the section class on purpose. */
+.np-news{
+  padding:clamp(56px,6vw,96px) 22px clamp(24px,3vw,48px);
+  font-family:aeonik,sans-serif;
+  color:var(--np-ink);
+}
+/* the same white grain as "Nossos tratamentos" (.np-grain-white): the content sits above it, so the two sections read as one ground */
+.np-news > *{position:relative;z-index:1}
+.np-news__head{max-width:calc(760 * var(--np-u));margin:0 auto 32px;display:flex;flex-direction:column;align-items:center;gap:15px;text-align:center}
+/* the same pill as the results' chip: gold darkened to var(--np-gold-700) for the cream */
+.np-news__chip{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:6px 16px;
+  border-radius:100px;
+  border:1px solid rgba(var(--np-gold-700-rgb),.22);
+  background:rgba(var(--np-gold-500-rgb),.14);
+  color:var(--np-gold-700);
+  font:500 var(--np-fs-label)/1.4 aeonik,sans-serif;
+  text-transform:uppercase;
+}
+.np-news__chip svg{flex:none;width:12px;height:12px}
+.np-news .np-news__title{
+  margin:0;
+  max-width:18em;
+  font-family:inherit;
+  font-weight:500;
+  font-size:clamp(30px,3.4vw,var(--np-fs-h2));
+  line-height:1.17;
+  text-wrap:balance;
+  color:var(--np-ink);
+}
+.np-news__tabs{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin:0 auto 28px}
+.np-news:not(.is-js) .np-news__tabs{display:none}
+.np-news .np-news__tab,
+.np-news .np-news__tab:hover,
+.np-news .np-news__tab:focus,
+.np-news .np-news__tab:active{
+  -webkit-appearance:none;
+  appearance:none;
+  box-sizing:border-box;
+  margin:0;
+  padding:calc(12 * var(--np-u)) calc(26 * var(--np-u));
+  border:1px solid rgba(var(--np-gold-700-rgb),.45);
+  border-radius:99px;
+  background:color-mix(in srgb,var(--np-white) 55%,transparent);
+  box-shadow:none;
+  color:var(--np-gold-700);
+  font:500 var(--np-fs-body)/1.2 aeonik,sans-serif;
+  text-transform:none;
+  letter-spacing:normal;
+  cursor:pointer;
+  transition:background-color .3s var(--np-ease-out),border-color .3s var(--np-ease-out),box-shadow .3s var(--np-ease-out);
+}
+.np-news .np-news__tab:hover{border-color:var(--np-gold-500);background:var(--np-white)}
+.np-news .np-news__tab[aria-selected="true"],
+.np-news .np-news__tab[aria-selected="true"]:hover,
+.np-news .np-news__tab[aria-selected="true"]:focus,
+.np-news .np-news__tab[aria-selected="true"]:active{
+  border-color:transparent;
+  background:linear-gradient(180deg,var(--np-btn-a),var(--np-btn-b));
+  background-color:var(--np-btn-b);
+  color:var(--np-ink);
+  font-weight:700;
+  box-shadow:0 8px 20px rgba(var(--np-gold-500-rgb),.28);
+}
+.np-news .np-news__tab:focus-visible{outline:2px solid var(--np-gold-700);outline-offset:3px}
+.np-news__panel{
+  display:grid;
+  grid-template-columns:1.1fr 1fr;
+  box-sizing:border-box;
+  max-width:calc(900 * var(--np-u));
+  margin:0 auto 24px;
+  overflow:hidden;
+  background-color:var(--np-white);
+  border:1px solid rgba(var(--np-gold-500-rgb),.5);
+  border-radius:14px;
+  box-shadow:0 12px 32px rgba(var(--np-gold-500-rgb),.16);
+}
+.np-news__panel:last-child,
+.np-news.is-js .np-news__panel{margin-bottom:0}   /* with tabs only one card shows, so the page below never moves when the tab changes */
+.np-news.is-js .np-news__panel[hidden]{display:none}
+.np-news.is-js .np-news__panel.is-in{animation:np-news-in .45s var(--np-ease-out)}
+@keyframes np-news-in{from{opacity:0;transform:translate3d(0,10px,0)}to{opacity:1;transform:none}}
+.np-news__photo{position:relative;margin:0;min-height:calc(340 * var(--np-u));background:var(--np-cream-deep)}
+.np-news__photo img{position:absolute;inset:0;display:block;width:100%;height:100%;object-fit:cover}
+.np-news__photo::after{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(var(--np-black-rgb),.35),transparent 50%);pointer-events:none}
+/* the "Novo" tag: the primary button's gold, ink on it */
+.np-news__badge{
+  position:absolute;
+  z-index:1;
+  top:14px;
+  left:14px;
+  padding:5px 12px;
+  border-radius:99px;
+  background:linear-gradient(180deg,var(--np-btn-a),var(--np-btn-b));
+  color:var(--np-ink);
+  font:700 12px/1.3 aeonik,sans-serif;
+  letter-spacing:.2em;
+  text-transform:uppercase;
+}
+.np-news__body{display:flex;flex-direction:column;align-items:flex-start;justify-content:center;padding:calc(40 * var(--np-u))}
+.np-news .np-news__name{
+  margin:0;
+  font-family:inherit;
+  font-weight:500;
+  font-size:clamp(26px,2.3vw,32px);
+  line-height:1.17;
+  color:var(--np-ink);
+}
+.np-news__text{margin:14px 0 0;font-size:var(--np-fs-body);line-height:1.6;color:var(--np-ink-muted);text-wrap:pretty}
+.np-news .np-news__body .elementor-widget{margin:26px 0 0;width:auto}
+
+@media(max-width:767px){
+  .np-news{padding:48px 16px 24px}
+  .np-news__tabs{gap:8px}
+  .np-news .np-news__tab,
+  .np-news .np-news__tab:hover,
+  .np-news .np-news__tab:focus,
+  .np-news .np-news__tab:active{flex:1 1 auto;padding:12px 16px;font-size:14px}
+  .np-news__panel{grid-template-columns:1fr}
+  .np-news__photo{min-height:0;aspect-ratio:4 / 3}
+  .np-news__body{padding:24px 22px 28px}
+}
+@media(prefers-reduced-motion:reduce){
+  .np-news.is-js .np-news__panel.is-in{animation:none}
+}
+
+/* ---- Overview, "Protocolo Full Face Fialho" (#protocolo-full-face, .np-doctor.np-protocol): the same block as "Quem sou" below, so it has no CSS of its own. It sits
+   between the gold strip and Tratamentos (act 1, "Promessa") and keeps the dark ground of that act. The two sections share these rules: what the kit paints
+   with an id's weight is written for both ids (:is(#quem-sou,#protocolo-full-face), :is(#np-doctor-title,#np-protocol-title)); the photo ratios, the second
+   half and the reveal (napele-reveal.js walks every .np-doctor) are the ones of the doctor. Its copy is a DRAFT (data-np-draft): only Nayana can describe the method.
+
+   ---- Overview, "Quem sou" (.np-doctor): the doctor's block, between the results and the FAQ, as a section of its own (it was a loose Elementor container
+   after the results). It is dark, the page's --np-dark like the clinic and the route: a breath of the dark in the middle of act 4 ("Prova"), between two creams.
+   A flat ground (no texture, as the route's), the gold gradient of the other dark headlines, cream text, and the two floating chips as dark glass instead of white.
+   Its title is the section H2 (see "Títulos de seção"); the layout inside is the kit's. The ids are on purpose: the kit paints these widgets with 4-class
+   selectors (ink title, muted text, white chips), and an id beats them. */
+.np-doctor{
+  position:relative;
+  color:var(--np-cream);
+  background-color:var(--np-dark);
+}
+.np-doctor :is(#np-doctor-title,#np-protocol-title){
+  background:linear-gradient(94deg,var(--np-gold-100) 0%,var(--np-gold-300) 52%,var(--np-gold-500) 100%);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+  -webkit-text-fill-color:transparent;
+}
+:is(#quem-sou,#protocolo-full-face) .elementor-image-box-description{color:rgba(var(--np-cream-rgb),.86)}
+:is(#quem-sou,#protocolo-full-face) .elementor-element-25971ad5 img{box-shadow:0 24px 60px -20px rgba(0,0,0,.65)}
+:is(#quem-sou,#protocolo-full-face) .elementor-element-3eff8abd > .elementor-widget-container,
+:is(#quem-sou,#protocolo-full-face) .elementor-element-7345111f > .elementor-widget-container{
+  background-color:rgba(var(--np-dark-rgb),.72);
+  border:1px solid rgba(var(--np-cream-rgb),.24);
+  box-shadow:0 8px 24px rgba(0,0,0,.4);
+  -webkit-backdrop-filter:blur(8px);
+  backdrop-filter:blur(8px);
+}
+:is(#quem-sou,#protocolo-full-face) .elementor-icon-list-text{color:var(--np-gold-300)}
+/* The protocol's text is short (a title and two short paragraphs), so centred on the photo's height its title would sit mid-photo (211px below the photo's top,
+   in a 600px photo). From 1025px the protocol's text column is aligned to the top of the photo, so the title starts at the top of it. Stacked below that,
+   the text follows the photo as it does for the doctor. */
+@media(min-width:1025px){
+  #protocolo-full-face .elementor-element-55d886a2{align-self:flex-start}
+}
+
+/* ---- Overview, "Quem sou", second half (.np-doctor__evolve): under the portrait and its text, on the same dark ground: the mentor and the habit of going on
+   studying, as a short text and two photos (Igor Alves, the mentor, with Nayana; Nayana at an industry event). The text is on the left and the pair on the
+   right, so it mirrors the block above (portrait on the left, text on the right). The photos are 3:4, with the portrait's 20px corners and shadow; the second
+   sits 48px lower so the pair does not read as two stamps. Each carries a dark-glass label (the floating chips' glass) with the name and who the person is.
+   It adds no motion: the doctor's one moment stays the two floating chips. Under 1025px it stacks (text, then the pair side by side); under 768px the pair
+   tightens. The kit styles every h3 and p, so the rules below carry .np-doctor on purpose. */
+.np-doctor__evolve{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(0,2fr);
+  align-items:center;
+  gap:calc(48 * var(--np-u));
+  box-sizing:border-box;
+  max-width:calc(1140 * var(--np-u));
+  margin:0 auto;
+  padding:0 22px 5rem;
+}
+.np-doctor__evolve-text::before{content:"";display:block;width:calc(56 * var(--np-u));height:1.5px;margin-bottom:calc(22 * var(--np-u));background-color:var(--np-gold-500)}
+.np-doctor .np-doctor__evolve-title{
+  margin:0 0 calc(20 * var(--np-u));
+  font-family:aeonik,sans-serif;
+  font-weight:500;
+  font-size:clamp(24px,2.5vw,var(--np-fs-h3));
+  line-height:1.17;
+  letter-spacing:normal;
+  background:linear-gradient(94deg,var(--np-gold-100) 0%,var(--np-gold-300) 52%,var(--np-gold-500) 100%);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+  -webkit-text-fill-color:transparent;
+}
+.np-doctor .np-doctor__evolve-text p{
+  margin:0 0 calc(16 * var(--np-u));
+  font-family:aeonik,sans-serif;
+  font-size:var(--np-fs-body);
+  font-weight:400;
+  line-height:1.7;
+  color:rgba(var(--np-cream-rgb),.86);
+  text-wrap:pretty;
+}
+.np-doctor .np-doctor__evolve-text p:last-child{margin-bottom:0}
+.np-doctor__evolve-photos{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:calc(24 * var(--np-u));align-items:start}
+.np-doctor__evolve-photos .np-doctor__photo:nth-child(2){margin-top:calc(48 * var(--np-u))}
+.np-doctor .np-doctor__photo{
+  position:relative;
+  margin:0;
+  border-radius:20px;
+  overflow:hidden;
+  background-color:rgba(var(--np-cream-rgb),.06);
+  box-shadow:0 24px 60px -20px rgba(0,0,0,.65);
+}
+.np-doctor .np-doctor__photo img{display:block;width:100%;height:auto;aspect-ratio:3 / 4;object-fit:cover;border-radius:0;box-shadow:none}
+.np-doctor .np-doctor__photo figcaption{
+  position:absolute;
+  left:calc(14 * var(--np-u));
+  bottom:calc(14 * var(--np-u));
+  box-sizing:border-box;
+  max-width:calc(100% - 28 * var(--np-u));
+  display:flex;
+  flex-direction:column;
+  gap:2px;
+  padding:calc(9 * var(--np-u)) calc(16 * var(--np-u));
+  border:1px solid rgba(var(--np-cream-rgb),.24);
+  border-radius:calc(16 * var(--np-u));
+  background-color:rgba(var(--np-dark-rgb),.72);
+  box-shadow:0 8px 24px rgba(0,0,0,.4);
+  -webkit-backdrop-filter:blur(8px);
+  backdrop-filter:blur(8px);
+  font-family:aeonik,sans-serif;
+  line-height:1.3;
+}
+.np-doctor .np-doctor__who{font-size:var(--np-fs-body);font-weight:500;color:var(--np-cream)}
+.np-doctor .np-doctor__role{font-size:var(--np-fs-label);font-weight:400;color:var(--np-gold-300)}
+@media(max-width:1024px){
+  .np-doctor__evolve{grid-template-columns:minmax(0,1fr);gap:32px;max-width:640px;padding-bottom:4rem}
+}
+@media(max-width:767px){
+  .np-doctor__evolve{gap:28px;padding:0 16px 3rem}
+  .np-doctor .np-doctor__evolve-text p{font-size:15px}
+  .np-doctor__evolve-photos{gap:12px}
+  .np-doctor__evolve-photos .np-doctor__photo:nth-child(2){margin-top:24px}
+  .np-doctor .np-doctor__photo figcaption{left:8px;bottom:8px;max-width:calc(100% - 16px);padding:7px 12px;border-radius:12px}
+  .np-doctor .np-doctor__who{font-size:14px}
+  .np-doctor .np-doctor__role{font-size:12px}
+}
+
+/* ---- Overview, "Dúvidas frequentes" (.np-faq): right under the doctor (dark), before "Como chegar". The same cream as the results, with a gold hairline
+   where it starts. A centred header (the 45px headline of the other section headers), then four white cards in one column
+   (860px): the question is the button, the answer is the panel under it. Closed they are a 1px gold-tinted outline with a "+" in var(--np-gold-700); open
+   (one at a time) the outline is the base gold, the question turns var(--np-gold-700) and the "+" turns a quarter to "×". The panel opens by animating
+   grid-template-rows from 0fr to 1fr, so no height is measured. This section's one moment is the accordion itself, driven by the visitor.
+   Without napele-faq.js (no .is-js) every answer stays open and the "+" is hidden. The kit styles every h2 / h3 / button (800 weight, a red outline
+   button), so the rules below carry the section class on purpose. */
+.np-faq{
+  padding:clamp(72px,7vw,112px) 22px;
+  font-family:aeonik,sans-serif;
+  color:var(--np-ink);
+  /* no ground of its own: the page's cream and its grid show (body.home) */
+  box-shadow:inset 0 1px 0 rgba(var(--np-gold-500-rgb),.2);   /* a hairline where it starts */
+}
+.np-faq__head{max-width:calc(760 * var(--np-u));margin:0 auto 48px;display:flex;flex-direction:column;align-items:center;gap:15px;text-align:center}
+.np-faq .np-faq__title{
+  margin:0;
+  font-family:inherit;
+  font-weight:500;
+  font-size:clamp(30px,3.4vw,var(--np-fs-h2));
+  line-height:1.17;
+  text-wrap:balance;
+  color:var(--np-ink);
+}
+.np-faq__list{max-width:calc(860 * var(--np-u));margin:0 auto;display:flex;flex-direction:column;gap:16px}
+.np-faq__item{
+  background-color:var(--np-white);
+  border:1px solid rgba(var(--np-gold-500-rgb),.22);
+  border-radius:10px;
+  transition:border-color .3s var(--np-ease-out),box-shadow .3s var(--np-ease-out);
+}
+.np-faq__item:hover{border-color:rgba(var(--np-gold-500-rgb),.6)}
+.np-faq__item.is-open{border-color:var(--np-gold-500);box-shadow:0 12px 32px rgba(var(--np-gold-500-rgb),.16)}
+.np-faq .np-faq__q{margin:0;font:inherit;line-height:inherit;color:inherit}
+.np-faq .np-faq__btn,
+.np-faq .np-faq__btn:hover,
+.np-faq .np-faq__btn:focus,
+.np-faq .np-faq__btn:active{
+  -webkit-appearance:none;
+  appearance:none;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:24px;
+  box-sizing:border-box;
+  width:100%;
+  margin:0;
+  padding:calc(24 * var(--np-u)) calc(28 * var(--np-u));
+  border:0;
+  border-radius:inherit;
+  background:transparent;
+  box-shadow:none;
+  color:var(--np-ink);
+  font:500 var(--np-fs-lead)/1.4 aeonik,sans-serif;
+  text-align:left;
+  text-transform:none;
+  letter-spacing:normal;
+  cursor:pointer;
+  transition:color .3s var(--np-ease-out);
+}
+.np-faq .np-faq__item:hover .np-faq__btn,
+.np-faq .np-faq__item.is-open .np-faq__btn{color:var(--np-gold-700)}
+.np-faq .np-faq__btn:focus-visible{outline:2px solid var(--np-gold-700);outline-offset:3px}
+.np-faq__icon{position:relative;flex:none;width:16px;height:16px;color:var(--np-gold-700);transition:transform .4s var(--np-ease-out)}
+.np-faq__icon::before,
+.np-faq__icon::after{content:"";position:absolute;left:50%;top:50%;border-radius:2px;background-color:currentColor}
+.np-faq__icon::before{width:16px;height:1.6px;margin:-.8px 0 0 -8px}
+.np-faq__icon::after{width:1.6px;height:16px;margin:-8px 0 0 -.8px}
+.np-faq__item.is-open .np-faq__icon{transform:rotate(45deg)}
+.np-faq:not(.is-js) .np-faq__icon{display:none}
+.np-faq__a-in{min-height:0;overflow:hidden}
+.np-faq .np-faq__a-in p{margin:0;padding:0 calc(28 * var(--np-u)) calc(26 * var(--np-u));font-size:var(--np-fs-body);line-height:1.7;color:var(--np-ink-muted);text-wrap:pretty}
+.np-faq.is-js .np-faq__a{
+  display:grid;
+  grid-template-rows:0fr;
+  visibility:hidden;
+  transition:grid-template-rows .45s var(--np-ease-out),visibility 0s linear .45s;
+}
+.np-faq.is-js .np-faq__item.is-open .np-faq__a{
+  grid-template-rows:1fr;
+  visibility:visible;
+  transition:grid-template-rows .45s var(--np-ease-out),visibility 0s;
+}
+@media(max-width:767px){
+  .np-faq{padding:56px 16px}
+  .np-faq__head{margin-bottom:32px}
+  .np-faq__list{gap:12px}
+  .np-faq .np-faq__btn,
+  .np-faq .np-faq__btn:hover,
+  .np-faq .np-faq__btn:focus,
+  .np-faq .np-faq__btn:active{padding:18px 18px;font-size:16px;gap:16px}
+  .np-faq .np-faq__a-in p{padding:0 18px 20px;font-size:15px}
+}
+@media(prefers-reduced-motion:reduce){
+  .np-faq__item,
+  .np-faq .np-faq__btn,
+  .np-faq__icon,
+  .np-faq.is-js .np-faq__a,
+  .np-faq.is-js .np-faq__item.is-open .np-faq__a{transition:none}
+}
+
+/* ---- Overview, "Como chegar" (.np-visit): right after the FAQ, in act 5 ("Convite") of the narrative arc: this section, the CTA band (.np-cta, below) and the
+   footer share the page's dark (--np-dark), so the page ends in the world it opened in. A centred header (the chip and 45px headline of the other
+   section headers), then one dark card: the clinic and the route button on the left, the Google Maps embed on
+   the right. The gold panel behind the right third of the card (the map sits half on the card, half on gold, as in the store locator this was
+   modelled on) is ::before; its two colours are the primary button's (--np-btn-a / --np-btn-b). The route button is the page's own gold pill:
+   it needs no CSS here, only the elementor-element / elementor-button-link markup. The iframe keeps the src Google gave; it is sized by the
+   .np-visit__map box, not by its width / height attributes. */
+.np-visit{
+  --np-visit-r:20px;
+  padding:clamp(56px,6vw,96px) 22px;
+  font-family:aeonik,sans-serif;
+  color:var(--np-cream);
+  background-color:var(--np-dark);
+  box-shadow:inset 0 1px 0 rgba(var(--np-gold-300-rgb),.14);   /* a hairline under the CTA band, which is the same dark */
+}
+.np-visit__head{max-width:calc(640 * var(--np-u));margin:0 auto 40px;display:flex;flex-direction:column;align-items:center;gap:15px;text-align:center}
+/* chip: the one of the dark sections (light veil on the dark, gold var(--np-gold-300)) */
+.np-visit__chip{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:6px 16px;
+  border-radius:100px;
+  border:1px solid rgba(var(--np-cream-rgb),.24);
+  background:rgba(var(--np-cream-rgb),.08);
+  color:var(--np-gold-300);
+  font:500 var(--np-fs-label)/1.4 aeonik,sans-serif;
+  text-transform:uppercase;
+}
+.np-visit__chip svg{flex:none;width:17px;height:17px}
+/* The headline of the other dark section ("A clínica", above): medium weight, the gold gradient without the shine. It is ".np-visit .np-visit__title" on
+   purpose: the kit's ".elementor-kit-6 h2{font-weight:800}" is more specific than a lone class, so the 500 written here alone never applied (bold, plain cream). */
+.np-visit .np-visit__title{
+  margin:0;
+  font-family:inherit;
+  font-weight:500;
+  font-size:clamp(30px,3.4vw,var(--np-fs-h2));
+  line-height:1.17;
+  text-wrap:balance;
+  background:linear-gradient(94deg,var(--np-gold-100) 0%,var(--np-gold-300) 52%,var(--np-gold-500) 100%);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+  -webkit-text-fill-color:transparent;
+}
+.np-visit__lead{margin:0;font-size:var(--np-fs-body);line-height:1.56;color:rgba(var(--np-cream-rgb),.72);text-wrap:pretty}
+.np-visit__card{
+  position:relative;
+  isolation:isolate;
+  display:grid;
+  grid-template-columns:minmax(0,5fr) minmax(0,7fr);
+  max-width:calc(1120 * var(--np-u));
+  margin:0 auto;
+  padding:18px;
+  overflow:hidden;
+  border-radius:var(--np-visit-r);
+  background:rgba(var(--np-cream-rgb),.06);   /* one step above the page's dark, so the card lifts off it */
+  border:1px solid rgba(var(--np-gold-300-rgb),.16);
+  box-shadow:0 24px 60px rgba(0,0,0,.4);
+}
+.np-visit__card::before{
+  content:"";
+  position:absolute;
+  z-index:-1;
+  top:0;right:0;bottom:0;
+  width:32%;
+  background:linear-gradient(180deg,var(--np-btn-a),var(--np-btn-b));
+}
+.np-visit__info{display:flex;flex-direction:column;justify-content:center;align-items:flex-start;gap:14px;padding:clamp(18px,3vw,40px)}
+.np-visit__name{margin:0;font-family:inherit;font-weight:500;font-size:var(--np-fs-title);line-height:1.33;color:var(--np-cream)}
+.np-visit__addr{margin:0 0 10px;display:flex;align-items:flex-start;gap:8px;font-size:var(--np-fs-body);line-height:1.7;color:rgba(var(--np-cream-rgb),.74)}
+.np-visit__addr svg{flex:none;width:20px;height:20px;margin-top:4px;color:var(--np-gold-300)}
+.np-visit__map{
+  position:relative;
+  min-height:clamp(320px,38vw,calc(440 * var(--np-u)));
+  border-radius:14px;
+  overflow:hidden;
+  background:var(--np-cream);                    /* what shows for a moment before the map loads */
+  box-shadow:0 14px 34px rgba(0,0,0,.35);
+}
+.np-visit__map iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+@media(max-width:880px){
+  .np-visit{padding:56px 16px}
+  .np-visit__head{margin-bottom:28px}
+  .np-visit__lead{font-size:15px}
+  .np-visit__card{grid-template-columns:minmax(0,1fr)}
+  /* stacked: the map first, the texts centred under it. The gold panel runs behind the map instead of the right third: it starts at the
+     card's top and its height is the card's top padding (18) + the map's (320) + 12px of gold under the map, so its edge always falls
+     between the map and the name (the info's 30px top padding keeps the name clear of it) */
+  .np-visit__map{order:-1;height:320px;min-height:0}
+  .np-visit__card::before{top:0;bottom:auto;left:0;width:auto;height:calc(18px + 320px + 12px)}
+  .np-visit__info{align-items:center;text-align:center;padding:30px 10px 14px}
+  .np-visit__addr{flex-direction:column;align-items:center;gap:6px}
+  .np-visit__addr svg{margin-top:0}
+}
+
+/* ---- Overview, closing CTA (.np-cta): the last section, between "Como chegar" and the footer, in act 5 ("Convite"). The reception photo (the one behind
+   "Para quem é" on the treatment page, assets/backound-sessions/recepcao-clinica-napele-panoramica.webp) under a flat veil of the page's dark
+   (--np-veil, the hero's colour), and one card of that dark in the middle: the headline as an H2 in Aeonik (in
+   the same gold gradient as the headlines of the other dark sections), a line, and the gold pill, which is the page's one button that loops (the rule for
+   element 400055b5, below). Change --np-cta-veil to lighten or darken the photo. To swap the photo, change the url() here. */
+.np-cta{
+  --np-veil:36,35,33;
+  --np-cta-veil:.62;
+  position:relative;
+  box-sizing:border-box;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  min-height:clamp(500px,45vw,760px);
+  padding:clamp(72px,8.5vw,132px) 22px;
+  font-family:aeonik,sans-serif;
+  color:var(--np-cream);
+  background-color:var(--np-black);
+  background-image:
+    linear-gradient(rgba(var(--np-veil),var(--np-cta-veil)),rgba(var(--np-veil),var(--np-cta-veil))),
+    url(backound-sessions/recepcao-clinica-napele-panoramica.webp);
+  background-size:cover;
+  background-position:center;
+  background-repeat:no-repeat;
+  box-shadow:inset 0 1px 0 rgba(var(--np-gold-300-rgb),.14);   /* the hairline of the section above, which is dark too */
+}
+.np-cta__card{
+  box-sizing:border-box;
+  width:min(100%,calc(620 * var(--np-u)));
+  padding:clamp(28px,3.4vw,52px) clamp(22px,3.4vw,52px);
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:18px;
+  text-align:center;
+  border-radius:20px;
+  border:1px solid rgba(var(--np-gold-300-rgb),.16);
+  background-color:rgba(var(--np-dark-rgb),.93);
+  box-shadow:0 24px 60px rgba(0,0,0,.45);
+}
+/* ".np-cta .np-cta__title" on purpose: the kit's ".elementor-kit-6 h2" (800, its own size) is more specific than a lone class */
+.np-cta .np-cta__title{
+  margin:0;
+  font-family:inherit;
+  font-weight:500;
+  font-size:clamp(30px,3.4vw,var(--np-fs-h2));
+  line-height:1.17;
+  text-wrap:balance;
+  background:linear-gradient(94deg,var(--np-gold-100) 0%,var(--np-gold-300) 52%,var(--np-gold-500) 100%);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+  -webkit-text-fill-color:transparent;
+}
+.np-cta__lead{margin:0;max-width:30em;font-size:var(--np-fs-body);line-height:1.6;color:rgba(var(--np-cream-rgb),.78);text-wrap:pretty}
+.np-cta .elementor-widget{margin:0}
+.np-cta .elementor-button-wrapper{text-align:center}
+.np-cta__card > .elementor-widget{margin-top:6px}
+@media(max-width:767px){
+  .np-cta{padding:64px 16px;min-height:0}
+  .np-cta__card{padding:30px 20px;gap:16px;border-radius:16px}
+}
+
+/* ---- Bodoni Moda Bold (700). SIL Open Font License 1.1, see fonts/OFL-LICENSE.txt. Static 700 instance (Fontsource), two subsets with the usual
+   unicode-ranges: the latin one covers Portuguese. Used through var(--np-font-display), at weight 700 (the pre-loader only). */
+@font-face{
+  font-family:"Bodoni Moda";
+  font-style:normal;
+  font-weight:700;
+  font-display:swap;
+  src:url("fonts/bodoni-moda-latin-ext-700-normal.woff2") format("woff2");
+  unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+}
+@font-face{
+  font-family:"Bodoni Moda";
+  font-style:normal;
+  font-weight:700;
+  font-display:swap;
+  src:url("fonts/bodoni-moda-latin-700-normal.woff2") format("woff2");
+  unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+
+/* ---- Arco narrativo: the order in which the Overview answers a visitor's questions, each section handing over to the next.
+   Five acts on two surfaces, the page's dark (--np-dark, var(--np-dark)) and its cream (--np-cream, var(--np-cream)); gold is only an accent (a button, a line, an emphasis).
+     1 Promessa  dark   pre-loader + hero + marquee                           "Quem é a doutora e posso confiar? Por que ela?"
+     2 Oferta    cream  treatments                   "O que vocês fazem por mim?"
+     3 Imersão   dark   the clinic tour              "Como é o lugar onde vou me tratar?"
+     4 Prova     cream  results + doctor (dark) + FAQ  "Funciona de verdade? Quem vai cuidar de mim? E se eu ainda tiver dúvidas?"
+     5 Convite   dark   route + CTA band + footer    "Como marco e como chego lá?"
+   The page opens and closes in the same dark, with the cream breathing in between. The gold marquee is a band right under the hero, and act 1 hands over to act 2 at the edge of the dark section above the treatments; every other
+   hand-over is a seam (.np-seam, below), a short band of the two surfaces with the gold thread crossing it and one line that points to the next act.
+   Face: Aeonik everywhere; Bodoni Moda only at the opening (the pre-loader's "FULL FACE").
+   The page cream is set here as well, so the Overview looks the same opened on its own as inside the catalog's iframe (which shows the catalog's cream). */
+/* the grid of the cream: 1px lines every 48px, in the ink at 6%, over the page cream. It is drawn once, on the page itself (body.home, which the canvas takes), so it runs
+   unbroken behind every light section (treatments show the page; results and FAQ are transparent for that; the doctor has its own dark ground), and the dark acts, which have their own
+   ground, cover it. A fixed 48px (not --np-u) so the lines stay on whole pixels: a fractional pitch smears a 1px line. */
+body.home{
+  --np-grid-line:rgba(var(--np-ink-rgb),.06);
+  --np-grid-size:48px;
+  background-color:var(--e-global-color-d900869,var(--np-cream));
+  background-image:linear-gradient(var(--np-grid-line) 1px,transparent 1px),linear-gradient(90deg,var(--np-grid-line) 1px,transparent 1px);
+  background-size:var(--np-grid-size) var(--np-grid-size);
+}
+
+/* seam: a band of height H whose top half is the surface it leaves and whose bottom half is the one it enters (--np-seam-top / --np-seam-bot); the gold
+   thread (the same line that traces the face in the pre-loader) crosses it from one half to the other, and the line of text sits beside it in the top half.
+   .np-seam--to-dark leaves cream for the dark, .np-seam--to-light the other way. Decorative but for the text: pointer-events off, the SVG hidden from readers. */
+.np-seam{
+  --np-seam-top:var(--np-cream);
+  --np-seam-bot:var(--np-dark);
+  position:relative;
+  z-index:3;
+  height:clamp(120px,11vw,calc(160 * var(--np-u)));
+  background:linear-gradient(var(--np-seam-top) 50%,var(--np-seam-bot) 50%);
+  pointer-events:none;
+}
+.np-seam--to-light{--np-seam-top:var(--np-dark);--np-seam-bot:var(--np-cream)}
+/* the treatments section above carries the white grain on its cream (.np-grain-white, below); this puts the same grain on the seam's cream half so the two
+   match edge to edge. Only for a seam that leaves that section; the others leave plain cream. */
+.np-seam--grain::before{
+  content:"";
+  position:absolute;
+  inset:0 0 50% 0;
+  pointer-events:none;
+  background:transparent url(texture/noise-white.png) repeat center center;
+  opacity:var(--np-grain-opacity,1);
+}
+.np-seam__thread{position:absolute;top:0;left:50%;height:100%;width:auto;aspect-ratio:3/4;transform:translateX(-50%);overflow:visible}
+.np-seam__thread path{fill:none;stroke:var(--np-gold-500);stroke-width:1.5;stroke-linecap:round}
+.np-seam__thread circle{fill:var(--np-gold-500)}
+.np-seam__text{
+  position:absolute;
+  left:calc(50% + 34px);
+  top:25%;
+  transform:translateY(-50%);
+  margin:0;
+  max-width:min(40vw,22em);
+  font:400 calc(15 * var(--np-u))/1.35 aeonik,sans-serif;
+  letter-spacing:.01em;
+  color:rgba(var(--np-ink-rgb),.78);
+}
+.np-seam--to-light .np-seam__text{color:rgba(var(--np-cream-rgb),.78)}
+@media(max-width:767px){
+  .np-seam{height:112px}
+  .np-seam__text{left:calc(50% + 26px);max-width:44vw;font-size:14px}
+}
+
+/* act 5: the CTA band on the dark (it was Nudik's yellow, a third colour that belonged to no other part of the brand). Its headline is an H2 (Aeonik 500) in
+   the same gold gradient as the headlines of the other dark sections. The button is the page's gold pill, as everywhere. */
+.elementor-11 .elementor-element.elementor-element-40913abd:not(.elementor-motion-effects-element-type-background),
+.elementor-11 .elementor-element.elementor-element-40913abd > .elementor-motion-effects-container > .elementor-motion-effects-layer{background-color:var(--np-dark)}
+.elementor-11 .elementor-element.elementor-element-6de3c990 .elementor-heading-title{
+  font-family:inherit;
+  font-weight:500;
+  font-size:clamp(30px,3.4vw,var(--np-fs-h2));
+  line-height:1.17;
+  background:linear-gradient(94deg,var(--np-gold-100) 0%,var(--np-gold-300) 52%,var(--np-gold-500) 100%);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+  -webkit-text-fill-color:transparent;
+}
+.elementor-11 .elementor-element.elementor-element-3514d554{color:rgba(var(--np-cream-rgb),.78)}
+
+/* ---- Cor: the icons of the Nudik kit were drawn in its own yellow, mustard and brown, as fill / stroke attributes inside the SVG markup of every page.
+   These rules put those attributes on the tokens, so the yellow is gone without editing the markup: yellow and gold-brown to the base gold, the
+   mustard and the dark gold of the treatment pages to the deep gold, the footer icon grey to cream-deep, the brown stroke to the muted ink. */
+svg [fill="#F8BA00"],svg [fill="#FDBB02"],svg [fill="#AD9052"]{fill:var(--np-gold-500)}
+svg [fill="#C79300"],svg [fill="#8B6B0A"]{fill:var(--np-gold-700)}
+svg [fill="#E2DBCB"]{fill:var(--np-cream-deep)}
+svg [fill="#665226"]{fill:var(--np-ink-muted)}
+svg [stroke="#665226"]{stroke:var(--np-ink-muted)}
+/* on the dark chips (hero, clinic, "Para quem é") the icon follows the chip's gold, not the attribute */
+[data-np-veil="dark"] .elementor-icon-list-icon svg *,
+.np-clinic #sobre-a-clinica .elementor-icon-list-icon svg *,
+.elementor-825 .elementor-element.elementor-element-2faac8f .elementor-icon-list-icon svg *{fill:var(--np-gold-300)}
+
+/* ---- Escala: the desktop type and the container follow the screen, from a 1440px laptop (unchanged: --np-u is 1px there and below) up to a large
+   monitor (--np-u 1.35px, from about 1940px). Only the desktop sizes of the Elementor kit are replaced (the tablet and phone sizes stay as the kit has them);
+   the sections written in this file already use the tokens. Roles: Display, H1, H2, H3, Title, Lead, Body, Label, Button (see Fundamentos in the catalog).
+   The three H2s of the kit (50, 45 and 45px) are one size now. Line heights are ratios, so they follow the size. */
+@media(min-width:1025px){
+  .e-con{--container-max-width:var(--np-container)}
+  /* H1 and its lead (hero) */
+  .elementor-11 .elementor-element.elementor-element-9c6552f .elementor-image-box-title{font-size:var(--np-fs-h1)}
+  .elementor-11 .elementor-element.elementor-element-9c6552f .elementor-image-box-description{font-size:var(--np-fs-lead);line-height:1.78}
+  /* H2: the sibling heading of the treatments (the headers of the clinic, treatments and doctor are set at every width in "Títulos de seção", below) */
+  .elementor-11 .elementor-element.elementor-element-1fd7c864 .elementor-heading-title{font-size:var(--np-fs-h2);line-height:1.17}
+  /* the card title */
+  .elementor-11 .elementor-element.elementor-element-9d5fc73 .elementor-heading-title{font-size:var(--np-fs-title)}
+  /* body text */
+  .elementor-11 .elementor-element.elementor-element-189c247 .elementor-image-box-description,
+  .elementor-11 .elementor-element.elementor-element-6776c9b6 .elementor-image-box-description{font-size:var(--np-fs-body);line-height:1.7}
+  .elementor-11 .elementor-element.elementor-element-587e870,
+  .elementor-11 .elementor-element.elementor-element-3514d554{font-size:var(--np-fs-body);line-height:1.56}
+  /* labels: the chips and the floating chips */
+  .elementor-11 .elementor-element.elementor-element-0f305f6 .elementor-icon-list-item > .elementor-icon-list-text,
+  .elementor-11 .elementor-element.elementor-element-5d30987 .elementor-icon-list-item > .elementor-icon-list-text,
+  .elementor-11 .elementor-element.elementor-element-08dd981 .elementor-icon-list-item > .elementor-icon-list-text,
+  .elementor-11 .elementor-element.elementor-element-71956806 .elementor-icon-list-item > .elementor-icon-list-text{font-size:var(--np-fs-label)}
+  .elementor-11 .elementor-element.elementor-element-3eff8abd .elementor-icon-list-item > .elementor-icon-list-text,
+  .elementor-11 .elementor-element.elementor-element-7345111f .elementor-icon-list-item > .elementor-icon-list-text{font-size:var(--np-fs-body)}
+  /* footer */
+  .elementor-28 .elementor-element.elementor-element-348d583 .elementor-image-box-title{font-size:var(--np-fs-lead)}
+  .elementor-28 .elementor-element.elementor-element-348d583 .elementor-image-box-description,
+  .elementor-28 .elementor-element.elementor-element-9fc4f54 .elementor-item,
+  .elementor-28 .elementor-element.elementor-element-2d10232 .elementor-item{font-size:var(--np-fs-body)}
+}
+
+/* ---- Títulos de seção: one H2 for every section header of the Overview. The headings written in this file (.np-news, .np-results, .np-faq, ...) already share it:
+   clamp(30px, 3.4vw, 45px at 1440px up to 60.75px on a large monitor), weight 500, a 1.17 line, no tracking. The clinic, treatments and doctor headings are Elementor
+   widgets, and the kit sized them apart, differently at each width (clinic 50 / 45 / 32px with -0.5px tracking and a 1.2 line; treatments 45 / 32 / 26px; the doctor
+   36 / 24px, as an h3), so they follow the same rule here, at every width. The kit's weights (800 for an h2, 600 for an h3) are set again for the same reason. */
+.elementor-11 .elementor-element.elementor-element-9646726 .elementor-heading-title,
+.elementor-11 .elementor-element.elementor-element-189c247 .elementor-image-box-title,
+.elementor-11 .elementor-element.elementor-element-6776c9b6 .elementor-image-box-title{
+  font-size:clamp(30px,3.4vw,var(--np-fs-h2));
+  font-weight:500;
+  line-height:1.17;
+  letter-spacing:normal;
+}
+
+/* ---- Orçamento de movimento: one signature moment per section. Everything else on the page is still until the visitor acts (hover, tap, scroll).
+     Pre-loader + hero   the pre-loader's reveal, then the headline's shine; the tilted wall drifting behind is ambient (a background, not counted)
+     Why Napele          the entrance as it scrolls into view: the copy, then the four photos, rising in one after the other
+     Marquee             the band's own scroll (nothing else on it)
+     Treatments          the carousel, driven by the visitor
+     Clinic              the scroll tour
+     Results             the strip's slow drift (pauses on hover and touch)
+     Doctor              the two floating chips
+     FAQ                 the accordion, driven by the visitor
+     Closing CTA         the gold button's glow and sheen, the only button that loops (below)
+     Route, footer       none; the footer slogan is revealed by scrolling
+   The seams, the gold thread, the grain and every other button are static. The pre-loader and the tour are skipped / replaced under prefers-reduced-motion. */
+html body .elementor .elementor-element.elementor-element-400055b5 .elementor-button.elementor-button-link{
+  animation:np-ctaglow 2.8s ease-in-out infinite,np-ctashine 3.4s ease-in-out .6s infinite!important;
+}
+@media(prefers-reduced-motion:reduce){
+  html body .elementor .elementor-element.elementor-element-400055b5 .elementor-button.elementor-button-link{animation:none!important}
+}
+
+/* napele-contact.js hides the contact pieces that have no data yet; the kit's display rules would otherwise win over the hidden attribute */
+[data-np-contact][hidden]{display:none!important}
+
+/* ---- Entrada ao rolar (napele-reveal.js). A quiet layer over the motion budget above: headlines, text, photos and cards of Treatments, the gallery, Results
+   (one gold line), the doctor, the FAQ, Route and the closing card come in once, as they reach the screen, and a gold light grows behind the closing card as it
+   arrives. Sections with a signature moment (hero entrance and exit, marquee, the tour, the results strip, the closing button, the footer) get nothing else. Three effects everywhere: rise (fade + a short drift), mask (headline words and photos open out of a clip) and a gold hairline.
+   The hidden states hang off classes the script puts on (.np-rv + a kind) and takes off when the piece has played: without the script, with
+   prefers-reduced-motion, or once played, the stylesheet above is all there is. Ease: --np-ease-out for movement, plain ease-out for opacity. */
+:root{--np-rv-y:24px}
+@media(max-width:767px){:root{--np-rv-y:16px}}
+html.np-rv-init .np-rv,html.np-rv-init .np-rv *,html.np-rv-init .np-rv::before,html.np-rv-init .np-rv::after{transition:none!important}
+
+/* rise */
+.np-rv--up,.np-rv--card,.np-rv--pop{opacity:0}
+.np-rv--up{transform:translate3d(0,var(--np-rv-y),0)}
+.np-rv--card{transform:translate3d(40px,0,0) scale(.96)}
+.np-rv--pop{transform:scale(.86)}
+.np-rv--up,.np-rv--card,.np-rv--pop{
+  transition:opacity .8s ease-out var(--np-rv-d,0s),transform .9s var(--np-ease-out) var(--np-rv-d,0s);
+}
+.np-rv--up.is-rv,.np-rv--card.is-rv,.np-rv--pop.is-rv{opacity:1;transform:none}
+/* the FAQ cards keep their hover / open transitions while they come in */
+.np-faq__item.np-rv--up{
+  transition:opacity .8s ease-out var(--np-rv-d,0s),transform .9s var(--np-ease-out) var(--np-rv-d,0s),
+    border-color .3s var(--np-ease-out),box-shadow .3s var(--np-ease-out);
+}
+/* ... and a gold line sweeps along the top edge of each, once */
+.np-faq__item.np-rv{position:relative}
+.np-faq__item.np-rv::after{
+  content:"";position:absolute;left:10px;right:10px;top:-1px;height:1px;pointer-events:none;opacity:0;
+  background:linear-gradient(90deg,transparent,var(--np-gold-500) 35%,var(--np-gold-300) 65%,transparent);
+  transform:scaleX(0);transform-origin:left;
+}
+.np-faq__item.np-rv.is-rv::after{animation:np-rv-sweep 1.2s var(--np-ease-out) var(--np-rv-d,0s) both}
+@keyframes np-rv-sweep{0%{opacity:1;transform:scaleX(0)}60%{opacity:1;transform:scaleX(1)}100%{opacity:0;transform:scaleX(1)}}
+
+/* mask: headline words. Each word sits in a mask (.np-rv-w, the room for the descenders is taken back with the negative margin, so the line is as tall as it was)
+   and rises out of it; the gold gradient of a headline stays on the headline itself and runs across the words as before */
+.np-rv-w{display:inline-block;overflow:hidden;vertical-align:top;padding:.06em 0 .2em;margin:-.06em 0 -.2em}
+.np-rv-wi{display:inline-block;position:relative;top:0}
+/* the word moves with "top", not with a transform: a transformed word is a layer of its own, and the gold gradient of a headline (background-clip:text on the
+   headline) does not reach into it, so the words would be invisible until they stopped */
+.np-rv--words .np-rv-wi{transition:top 1.1s var(--np-ease-out) var(--np-rv-wd,0s)}
+.np-rv--words:not(.is-rv) .np-rv-wi{top:1.5em}
+
+/* mask: photos. The window opens (clip-path) while the picture inside settles from a zoom; the window ends a little larger than the photo so its shadow is not cut */
+.np-rv--photo{opacity:0;clip-path:inset(9% 9% 9% 9% round 36px)}
+.np-rv--photo.is-rv{opacity:1;animation:np-rv-open 1.5s linear var(--np-rv-d,0s) both;transition:opacity .9s ease-out var(--np-rv-d,0s)}
+.np-rv--photo:not(.is-rv){transition:none}
+.np-rv--photo img{transform:scale(1.14);transition:transform 1.3s var(--np-ease-out) var(--np-rv-d,0s)}
+.np-rv--photo.is-rv img{transform:none}
+@keyframes np-rv-open{
+  0%{clip-path:inset(9% 9% 9% 9% round 36px);animation-timing-function:cubic-bezier(.16,1,.3,1)}
+  62%{clip-path:inset(0 0 0 0 round 0)}
+  100%{clip-path:inset(-80px -80px -80px -80px round 0)}
+}
+/* the gallery photos open from the bottom edge, upward, with the zoom settling. It is the picture (the img) that carries this, inside the photo's frame, which is
+   what the script watches: a frame that was itself clipped to nothing would count as not on screen for the observer and would never open. */
+.np-rv--shot{opacity:0;clip-path:inset(100% 0 0 0);transform:scale(1.14)}
+.np-rv--shot.is-rv{opacity:1;clip-path:inset(0);transform:none}
+.np-rv--shot{
+  transition:opacity .8s ease-out var(--np-rv-d,0s),clip-path 1.3s var(--np-ease-out) var(--np-rv-d,0s),transform 1.6s var(--np-ease-out) var(--np-rv-d,0s);
+}
+
+/* the clinic fold (the tour): its photos and its frame open from the bottom edge, and the picture settles from a zoom; its text is uncovered from the top down.
+   Both use only opacity, clip-path and the separate `translate` property: the tour drives the transform and the opacity of the fold, its columns and its photos
+   on every scroll frame (--np-g), and the frame's own transform is written by the script, so these are never touched here. The window ends a little larger than the
+   piece so the shadow of the frame is not cut. */
+.np-rv--open{opacity:0;clip-path:inset(100% 0 0 0)}
+.np-rv--open.is-rv{opacity:1;clip-path:inset(-60px)}
+.np-rv--open{transition:opacity .8s ease-out var(--np-rv-d,0s),clip-path 1.3s var(--np-ease-out) var(--np-rv-d,0s)}
+.np-rv--open img{transform:scale(1.14);transition:transform 1.6s var(--np-ease-out) var(--np-rv-d,0s)}
+.np-rv--open.is-rv img{transform:none}
+.np-rv--wipe{clip-path:inset(0 0 100% 0);translate:0 var(--np-rv-y)}
+.np-rv--wipe.is-rv{clip-path:inset(0 0 -20px 0);translate:0 0}
+.np-rv--wipe{transition:clip-path 1.1s var(--np-ease-out) var(--np-rv-d,0s),translate .9s var(--np-ease-out) var(--np-rv-d,0s)}
+/* Elementor gives every widget container a transition of its own (background, border, shadow, transform: ".elementor-element .elementor-widget-container", two
+   classes), which beats the one of the kinds above and would make the piece snap in (the clinic photos, the doctor's chips, the clinic button). Same transitions,
+   one class heavier, on the containers only. */
+.elementor-widget-container.np-rv.np-rv--up,
+.elementor-widget-container.np-rv.np-rv--pop{
+  transition:opacity .8s ease-out var(--np-rv-d,0s),transform .9s var(--np-ease-out) var(--np-rv-d,0s);
+}
+.elementor-widget-container.np-rv.np-rv--open{
+  transition:opacity .8s ease-out var(--np-rv-d,0s),clip-path 1.3s var(--np-ease-out) var(--np-rv-d,0s);
+}
+
+/* gold hairline: the line under the emphasis of the results headline stays (it is drawn in when the headline arrives); the short one above "Sempre em evolução" is
+   drawn in with its block */
+.np-results__title em{position:relative;display:inline-block}
+.np-results__title em::after{
+  content:"";position:absolute;left:0;right:0;bottom:-.06em;height:1.5px;
+  background:linear-gradient(90deg,var(--np-gold-700),var(--np-gold-500));
+  transform-origin:left;
+}
+.np-results__title em.np-rv--line::after,
+.np-doctor__evolve-text.np-rv--hl::before{transform:scaleX(0);transform-origin:left;transition:transform 1.3s var(--np-ease-out) var(--np-rv-d,0s)}
+.np-results__title em.np-rv--line.is-rv::after,
+.np-doctor__evolve-text.np-rv--hl.is-rv::before{transform:none}
+
+/* Route: one gold ring leaves the button, once, when the card is in */
+.np-visit__cta .elementor-button.np-rv-pulse{position:relative}
+.np-visit__cta .elementor-button.np-rv-pulse::after{
+  content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+  border:1.5px solid rgba(var(--np-gold-300-rgb),.95);
+  animation:np-rv-ring 1.7s var(--np-ease-out) both;
+}
+@keyframes np-rv-ring{from{opacity:.95;transform:scale(1)}to{opacity:0;transform:scale(1.22,1.7)}}
+
+/* scroll-linked: the script sets --np-cta-p on the closing section, 0 to 1 as it arrives */
+html.np-rv-on .np-cta::before{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  /* the light grows by its radius, not by a scale: a scaled full-size layer would run past the section and give the page a sideways scrollbar */
+  background:radial-gradient(ellipse calc(32% + var(--np-cta-p,0) * 23%) calc(36% + var(--np-cta-p,0) * 24%) at 50% 52%,rgba(var(--np-gold-300-rgb),.34),rgba(var(--np-gold-500-rgb),.12) 45%,transparent 100%);
+  opacity:var(--np-cta-p,0);
+}
+html.np-rv-on .np-cta__card{position:relative;z-index:1}
+

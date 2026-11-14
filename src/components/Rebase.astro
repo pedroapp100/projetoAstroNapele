@@ -1,0 +1,7 @@
+---
+// Renderiza o conteúdo e leva as âncoras `#x` para a home (`/#x`). Usado nas páginas que não são a home.
+import { rebaseAnchors } from '../lib/rebase.mjs';
+const { base = '/' } = Astro.props;
+const html = await Astro.slots.render('default');
+---
+<Fragment set:html={rebaseAnchors(html, base)} />

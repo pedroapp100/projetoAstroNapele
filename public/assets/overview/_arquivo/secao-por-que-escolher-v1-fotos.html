@@ -1,0 +1,206 @@
+<!-- Secao removida do Overview (assets/overview/index.html): "Por que escolher a Napele?" (.np-why), versao original (titulo, texto, quatro itens e colagem de quatro fotos da clinica), substituida e depois removida a pedido. Ficava entre a faixa dourada e Tratamentos. Fragmento, nao e uma pagina. Para voltar: cole o markup abaixo entre o </section> do np-marquee e a <section ... id="tratamentos"> em index.html; cole o CSS (comentario no fim) em assets/napele.css, logo antes de "/* ---- Marquee: gold band of treatment names"; salve o JS (comentario no fim) como assets/napele-why.js e inclua <script src="../napele-why.js"></script> depois de napele-nav.js em index.html. -->
+		<section class="np-why" id="por-que-napele" aria-labelledby="np-why-title">
+			<div class="np-why__inner">
+				<div class="np-why__copy">
+					<h2 class="np-why__title np-reveal" id="np-why-title">Por que escolher <span>a Napele?</span></h2>
+					<span class="np-why__rule np-reveal" aria-hidden="true"></span>
+					<p class="np-why__lead np-reveal">Na Napele, cada detalhe é pensado para proporcionar uma experiência segura, acolhedora e personalizada. Unimos profissionais qualificados, protocolos avançados e tecnologia para valorizar sua beleza com naturalidade.</p>
+					<ul class="np-why__list np-reveal">
+						<li>Atendimento acolhedor e humanizado</li>
+						<li>Avaliação e plano personalizados</li>
+						<li>Tecnologia e protocolos seguros</li>
+						<li>Resultados naturais e duradouros</li>
+					</ul>
+				</div>
+				<div class="np-why__media">
+					<figure class="np-why__photo np-why__photo--main np-reveal"><img src="../clinica/galeria/letreiro-lg.webp" width="1664" height="936" alt="Recepção da Napele com o letreiro dourado na parede, balcão em mármore e poltronas claras." loading="lazy" decoding="async"></figure>
+					<figure class="np-why__photo np-why__photo--a np-reveal"><img src="../clinica/galeria/corredor.webp" width="960" height="540" alt="Corredor da Napele com frisos dourados, luz indireta e o logo na parede." loading="lazy" decoding="async"></figure>
+					<figure class="np-why__photo np-why__photo--b np-reveal"><img src="../clinica/galeria/sala-1.webp" width="960" height="540" alt="Sala de atendimento da Napele, com maca, bancada em mármore e janela com vista para a cidade." loading="lazy" decoding="async"></figure>
+					<figure class="np-why__photo np-why__photo--c np-reveal"><img src="../clinica/galeria/chegada.webp" width="960" height="540" alt="Entrada do edifício da Napele, o Business Tower, em Anápolis." loading="lazy" decoding="async"></figure>
+				</div>
+			</div>
+		</section>
+
+<!-- CSS removido de assets/napele.css junto com a secao (cole de volta la):
+
+/* ---- Overview, "Por que escolher a Napele?" (.np-why): right under the gold marquee and above the treatments, in act 1 ("Promessa"): it answers "why her?"
+   before the page turns to the cream and the offer. The same dark as the hero and the footer (--np-dark); the marquee above is its edge. Two columns on a desktop: the copy on the left
+   (the headline in the gold gradient of the other dark sections, a short gold rule, the paragraph, four ringed items), and on the right a grid of four photos of the clinic,
+   one tall (2 of 3 columns, the sign in frame) and three stacked beside it. Stacked on a tablet and a phone: the copy first, then the photos (the tall one
+   across the top, the other three in a row under it). Two faint gold rings in the corners, behind everything, are the only decoration. This section's one
+   moment is the entrance: the pieces rise and fade in one after the other as it scrolls into view (napele-why.js; without the script, or under
+   prefers-reduced-motion, they are simply there). The kit styles every h2 / ul / img, so the rules below carry the section class on purpose. */
+.np-why{
+  position:relative;
+  isolation:isolate;
+  overflow:hidden;
+  box-sizing:border-box;
+  padding:clamp(72px,9vw,calc(136 * var(--np-u))) 22px;
+  font-family:aeonik,sans-serif;
+  color:var(--np-cream);
+  background-color:var(--np-dark);
+}
+/* the rings: a thick circle outline in the base gold at 4.5%, mostly out of the frame, one at the top right and one at the bottom left */
+.np-why::before,
+.np-why::after{
+  content:"";
+  position:absolute;
+  z-index:-1;
+  box-sizing:border-box;
+  aspect-ratio:1;
+  border-radius:50%;
+  border:calc(64 * var(--np-u)) solid rgba(var(--np-gold-500-rgb),.045);
+  pointer-events:none;
+}
+.np-why::before{width:clamp(320px,46vw,calc(760 * var(--np-u)));top:-22%;right:-14%}
+.np-why::after{width:clamp(260px,34vw,calc(560 * var(--np-u)));left:-12%;bottom:-34%}
+.np-why__inner{
+  max-width:var(--np-container);
+  margin:0 auto;
+  display:grid;
+  grid-template-columns:minmax(0,.62fr) minmax(0,1fr);
+  align-items:center;
+  gap:clamp(40px,8vw,calc(124 * var(--np-u)));
+}
+.np-why__copy{display:flex;flex-direction:column;align-items:flex-start;min-width:0}
+/* ".np-why .np-why__title" on purpose: the kit's ".elementor-kit-6 h2" (800, its own size) is more specific than a lone class */
+.np-why .np-why__title{
+  margin:0;
+  font-family:inherit;
+  font-weight:500;
+  font-size:clamp(32px,3.4vw,var(--np-fs-h2));
+  line-height:1.2;
+  letter-spacing:-.5px;
+  background:linear-gradient(94deg,var(--np-gold-100) 0%,var(--np-gold-300) 52%,var(--np-gold-500) 100%);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+  -webkit-text-fill-color:transparent;
+}
+.np-why .np-why__title span{display:block}
+.np-why__rule{display:block;width:44px;height:1px;margin:26px 0 24px;background:var(--np-gold-500)}
+.np-why .np-why__lead{margin:0 0 28px;max-width:27em;font-size:var(--np-fs-body);line-height:1.75;color:rgba(var(--np-cream-rgb),.72);text-wrap:pretty}
+.np-why .np-why__list{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:14px}
+.np-why .np-why__list li{
+  position:relative;
+  margin:0;
+  padding:0 0 0 21px;
+  font-size:var(--np-fs-body);
+  font-weight:500;
+  line-height:1.4;
+  color:var(--np-cream);
+}
+.np-why .np-why__list li::before{
+  content:"";
+  position:absolute;
+  left:0;
+  top:.45em;
+  box-sizing:border-box;
+  width:7px;
+  height:7px;
+  border-radius:50%;
+  border:1.5px solid var(--np-gold-500);
+}
+/* the photos: one tall (left, all three rows) and three stacked (right); rows 192 : 192 : 130 of the 538px column of the design */
+.np-why__media{
+  display:grid;
+  grid-template-columns:2fr 1fr;
+  grid-template-rows:192fr 192fr 130fr;
+  column-gap:clamp(14px,2.2vw,calc(30 * var(--np-u)));
+  row-gap:12px;
+  aspect-ratio:667/538;
+  min-width:0;
+}
+.np-why .np-why__photo{
+  position:relative;
+  margin:0;
+  min-width:0;
+  min-height:0;
+  overflow:hidden;
+  border-radius:8px;
+  border:1px solid rgba(var(--np-cream-rgb),.14);
+  background-color:var(--np-black);
+  box-shadow:0 22px 44px -22px rgba(0,0,0,.65);
+}
+.np-why .np-why__photo img{display:block;width:100%;height:100%;max-width:none;object-fit:cover}
+.np-why__photo--main{grid-column:1;grid-row:1 / 4}
+.np-why__photo--a{grid-column:2;grid-row:1}
+.np-why__photo--b{grid-column:2;grid-row:2}
+.np-why__photo--c{grid-column:2;grid-row:3}
+/* the crops: the sign whole in the tall frame (it sits at the right of the photo), the corridor's gold strips, the bed under the window, the doorway */
+.np-why__photo--main img{object-position:96% 50%}
+.np-why__photo--a img{object-position:40% 50%}
+.np-why__photo--b img{object-position:58% 60%}
+.np-why__photo--c img{object-position:50% 62%}
+/* the entrance: with the script on, each piece waits invisible a few px low, then comes in on its own delay (--np-d, set by the script) */
+.np-why.is-js .np-reveal{
+  opacity:0;
+  transform:translate3d(0,22px,0);
+  transition:opacity .8s var(--np-ease-out) var(--np-d,0s),transform .9s var(--np-ease-out) var(--np-d,0s);
+}
+.np-why.is-js .np-reveal.is-in{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){
+  .np-why.is-js .np-reveal{opacity:1;transform:none;transition:none}
+}
+/* tablet and phone: the copy, then the photos */
+@media(max-width:1024px){
+  .np-why__inner{grid-template-columns:minmax(0,1fr);gap:44px}
+  .np-why .np-why__lead{max-width:34em}
+  .np-why__media{max-width:760px}
+}
+@media(max-width:767px){
+  .np-why{padding:64px 16px}
+  .np-why__inner{gap:36px}
+  .np-why__rule{margin:22px 0 20px}
+  .np-why__media{
+    aspect-ratio:auto;
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    grid-template-rows:auto auto;
+    gap:10px;
+  }
+  .np-why__photo--main{grid-column:1 / -1;grid-row:1;aspect-ratio:4 / 3.1}
+  .np-why__photo--a{grid-column:1;grid-row:2;aspect-ratio:1}
+  .np-why__photo--b{grid-column:2;grid-row:2;aspect-ratio:1}
+  .np-why__photo--c{grid-column:3;grid-row:2;aspect-ratio:1}
+  .np-why__photo--main img{object-position:90% 50%}
+}
+-->
+
+<!-- JS removido de assets/napele-why.js (salve de volta la):
+
+/* Napele "Por que escolher a Napele?" (.np-why on the Overview, right under the hero). The markup is static (overview/index.html) and complete: without this
+   script every piece is simply there. With it:
+   - .is-js on the section hides the pieces marked .np-reveal a few px low (napele.css);
+   - as the section scrolls into view they come in one after the other: the copy first, top to bottom, then the four photos (--np-d is each one's delay);
+   - under prefers-reduced-motion, or without IntersectionObserver, nothing is hidden. */
+(function () {
+  var section = document.querySelector('.np-why');
+  if (!section) return;
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduce || !('IntersectionObserver' in window)) return;
+
+  var STEP = 0.11;    // seconds between one piece and the next
+  var copy = [].slice.call(section.querySelectorAll('.np-why__copy .np-reveal'));
+  var photos = [].slice.call(section.querySelectorAll('.np-why__media .np-reveal'));
+  var reveals = copy.concat(photos);
+  if (!reveals.length) return;
+
+  // the photos start with the middle of the copy, not after the last line of it
+  var photoStart = Math.min(copy.length, 3);
+  reveals.forEach(function (el, i) {
+    var n = i < copy.length ? i : photoStart + (i - copy.length);
+    el.style.setProperty('--np-d', (n * STEP).toFixed(2) + 's');
+  });
+  section.classList.add('is-js');
+
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (!e.isIntersecting) return;
+      // the whole group comes in together as soon as any piece shows, so the delays are the order of the entrance, not of what the screen caught first
+      reveals.forEach(function (el) { el.classList.add('is-in'); });
+      io.disconnect();
+    });
+  }, { threshold: 0.18 });
+  io.observe(section);
+})();
+-->

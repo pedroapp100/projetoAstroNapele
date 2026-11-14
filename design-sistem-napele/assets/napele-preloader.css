@@ -1,0 +1,240 @@
+/* Napele preloader (Overview page only). Behaviour, photo and timings live in napele-preloader.js; look lives here.
+   The "Preloader de Cortinas" prototype's 000-100 counter on a dark photo backdrop, a line sliding along, and then the blinds ("persiana") of the
+   SCS site: the backdrop's photo, cut into slats, slides off and uncovers the page's own hero (which does not move).
+   Everything below hangs off html.np-pre-on, which the script adds before the first paint and removes when it is done (or gives up). */
+
+/* ---- Lock: the page stays at the top while it plays. scrollbar-gutter keeps the width of the hero the same with and without the
+   scrollbar, so nothing shifts when the lock is lifted. The gutter is painted with the ground colour, black like everything the curtains
+   run over: in cream it was a light bar down the right edge for the whole 12 s. */
+html.np-pre-on{
+  overflow:hidden;
+  scrollbar-gutter:stable;
+  background:var(--np-black);
+}
+
+/* ---- First paint: a cover until the script has built #np-pre AND its backdrop photo is decoded (np-pre-ready), so the hero never flashes and
+   the photo never shows half-painted. Dark, like the counter backdrop photo. Above #np-pre on purpose: #np-pre is already there, being painted,
+   underneath. */
+html.np-pre-on:not(.np-pre-ready)::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  z-index:10005;
+  background:var(--np-black);
+}
+
+/* ---- The hero stays where it is, under #np-pre (z 10000): the blinds slide off it and uncover it. Only its content waits for phase 3 (the script
+   fades it in); the portrait and the tile wall are there from the first slat. */
+html.np-pre-on .elementor-11 .elementor-element.elementor-element-d4f0def > .e-con-inner > *{
+  opacity:0;
+  visibility:hidden;
+}
+
+/* The tile wall under the hero keeps scrolling on the compositor, and every new row it exposes has to be rastered: a steady load, for 10 s, on
+   the same raster thread the photo canvases need (nobody sees it until the blinds open). Frozen while this plays, it starts moving the moment the
+   preloader is released. */
+html.np-pre-on .np-tiles__track{animation-play-state:paused}
+
+/* ---- The overlay. Units are cqw/cqh of the window (container-type:size), like the stage of the prototype. */
+#np-pre{
+  --np-pre-bg:var(--np-black);      /* the ground until the blinds open (the script then makes #np-pre transparent, so the hero shows between the slats). Black on purpose: the backdrop and the hero are dark, and a light ground here is a full-screen flash if the backdrop photo is late */
+  --np-pre-ink:var(--np-gold-100);     /* counter and line: light gold, on the dark photo behind the counter */
+  --np-pre-grain:0;      /* grain over the photos, 0 = none (set to 0 at the owner's request: the photo shows exactly as it is). noise-white.png is ~34% alpha: .10 lifts a dark photo by about 6 levels, +-4 */
+  position:fixed;
+  inset:0;
+  z-index:10000;
+  overflow:hidden;
+  container-type:size;
+  isolation:isolate;
+  background:var(--np-pre-bg);
+  color:var(--np-pre-ink);
+  font-family:"aeonik",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+
+/* counter backdrop: a photo (bgpreloader-fundo.webp, in assets/hero/curtains/: WebP of assets/Fundo Preloader  (2).png, 2560 px), as it is, no veil over it; the script zooms it 1.12 > 1 while the number counts and hides it, handing over to the slats, when the blinds open */
+.np-pre__bg{
+  position:absolute;
+  inset:0;
+  z-index:1;
+  background:var(--np-black) 50% 12%/cover no-repeat;   /* the photo itself is painted into a canvas by the script (.np-pre__cv); only if that fails does the script set it here as a plain background. The head sits near the top edge of this photo: anchor high so a wide window crops the foot, not the hair */
+  /* The script scales this layer (1.12 > 1) every frame. Without its own layer Chrome re-rasters the whole photo at each step, and
+     when the GPU cannot keep up the tiles that are not ready show as black blocks and bands ("listras"). will-change: transform makes it
+     one layer, rastered once, then only moved by the compositor. Same for the slats below. */
+  will-change:transform;
+}
+/* the photo of the backdrop and of every slat, drawn once by napele-preloader.js: under the host's grain (z -1 in the host's stacking context) */
+.np-pre__cv{position:absolute;inset:0;width:100%;height:100%;z-index:-1;display:block;pointer-events:none}
+.np-pre__bg::before,.np-pre__slat::after{content:"";position:absolute;inset:0;background:url("texture/noise-white.png") repeat;opacity:var(--np-pre-grain);pointer-events:none}   /* one grain over everything, same as the photos */
+
+/* the blinds (persiana of the SCS site): the backdrop's photo cut into slats, each in a mask (the cell), laid out by the script (--n slats, --i this one).
+   They wait under the backdrop (z 0 < 1), painted from the same photo and the same crop; when the blinds open the script hides the backdrop and the
+   slats slide off one after the other: columns to the left, rows (tall window) down. Only the slat moves; its cell stays and clips it. Each cell is 1/n
+   of the window plus 1 px that goes under the next cell, so no seam shows where two meet on a fractional pixel. */
+.np-pre__blinds{position:absolute;inset:0;z-index:0}
+.np-pre__cell{position:absolute;overflow:hidden}
+.np-pre__blinds--cols .np-pre__cell{top:0;bottom:0;left:calc(100% * var(--i) / var(--n));width:calc(100% / var(--n) + 1px)}
+.np-pre__blinds--rows .np-pre__cell{left:0;right:0;top:calc(100% * var(--i) / var(--n));height:calc(100% / var(--n) + 1px)}
+.np-pre__slat{
+  position:absolute;
+  inset:0;
+  isolation:isolate;
+  background:var(--np-black);   /* what a slat is if its photo is not there */
+  will-change:transform;
+}
+/* counter + label + %, bottom right; the block slides left and out, the line follows */
+.np-pre__count{
+  position:absolute;
+  inset:0;
+  z-index:3;
+  display:flex;
+  justify-content:flex-end;
+  align-items:flex-end;
+  column-gap:.5cqw;
+  padding:0 5.55cqw 1.95cqw 0;
+  font-weight:700;
+  font-size:clamp(22px,5.2cqw,190px);
+  line-height:.9;
+  letter-spacing:-.02em;
+  font-variant-numeric:tabular-nums;
+  will-change:transform;
+  pointer-events:none;
+}
+.np-pre__label{
+  font-weight:500;
+  font-size:clamp(11px,1.9cqw,70px);
+  letter-spacing:.04em;
+  text-transform:uppercase;
+  padding-right:1cqw;
+  padding-bottom:.55cqw;
+}
+.np-pre__pct{line-height:.8em}
+.np-pre__line{
+  position:absolute;
+  right:5.55cqw;
+  bottom:2.2cqw;
+  z-index:3;
+  width:0;
+  height:max(2px,.21cqw);
+  background:var(--np-pre-ink);
+}
+
+/* tall window (phone): the cqw sizes above would make the counter tiny */
+@container (max-aspect-ratio:1/1){
+  .np-pre__count{padding:0 6cqw 4cqw 0;font-size:clamp(56px,19cqw,190px)}
+  .np-pre__label{font-size:clamp(11px,3.4cqw,30px)}
+  .np-pre__line{right:6cqw;bottom:5.4cqw;height:max(2px,.5cqw)}
+}
+
+/* ---- Over the photo while the number counts: "Conheça" (top left, small) and the method name, which rises from behind a mask near her knees.
+   Bodoni Moda 700 is declared here too: the Overview runs in an iframe that only loads this file, not napele.css (same files, fonts/). */
+@font-face{
+  font-family:"Bodoni Moda";
+  font-style:normal;
+  font-weight:700;
+  font-display:swap;
+  src:url("fonts/bodoni-moda-latin-ext-700-normal.woff2") format("woff2");
+  unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+}
+@font-face{
+  font-family:"Bodoni Moda";
+  font-style:normal;
+  font-weight:700;
+  font-display:swap;
+  src:url("fonts/bodoni-moda-latin-700-normal.woff2") format("woff2");
+  unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+
+.np-pre__kick{
+  position:absolute;
+  top:max(22px,3cqw);
+  left:5.55cqw;
+  z-index:3;
+  pointer-events:none;
+}
+.np-pre__kick-t{
+  display:block;
+  font-weight:500;
+  font-size:clamp(10px,.95cqw,18px);
+  letter-spacing:.42em;
+  text-transform:uppercase;
+}
+.np-pre__kick-rule{
+  display:block;
+  width:3.4cqw;
+  height:1px;
+  margin-top:1.1cqw;
+  background:var(--np-pre-ink);
+  transform-origin:0 50%;
+}
+
+/* the title: centred, at lap height (about two thirds down the photo); each line sits in a mask and rises out of it. In this photo the hands end
+   at 70% (16:9 window) to 78% (2:1 window) and the counter starts at ~87%, so there is no room for a two-line title between them: it is sized and
+   placed to clear the counter and sit on the lower hands, not on the face of the photo */
+.np-pre__title{
+  position:absolute;
+  left:0;
+  right:0;
+  top:66cqh;
+  z-index:3;
+  text-align:center;
+  font-family:"Bodoni Moda","Bodoni 72","Didot",Georgia,"Times New Roman",serif;
+  font-weight:700;
+  text-transform:uppercase;
+  pointer-events:none;
+  filter:drop-shadow(0 .3cqw 1cqw rgba(0,0,0,.5));
+}
+.np-pre__mask{display:block;overflow:hidden;padding:.04em 0}
+.np-pre__rise{display:block;will-change:transform}
+.np-pre__name{
+  font-size:clamp(34px,6.2cqw,240px);
+  line-height:1;
+  letter-spacing:.005em;
+  background:linear-gradient(180deg,var(--np-gold-100) 0%,var(--np-gold-100) 45%,var(--np-gold-500) 100%);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+}
+.np-pre__sub{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  column-gap:1.4cqw;
+  margin-top:.4cqw;
+  color:var(--np-pre-ink);
+  font-size:clamp(14px,1.9cqw,72px);
+  line-height:1.15;
+}
+.np-pre__sub-t{letter-spacing:.55em;margin-right:-.55em}   /* the trailing letter-space would pull the word off centre */
+.np-pre__rule{display:block;width:4.5cqw;height:max(1px,.1cqw);background:var(--np-pre-ink)}
+
+/* tall window (phone): same idea as above, after the rules it overrides */
+@container (max-aspect-ratio:1/1){
+  .np-pre__kick{top:7cqw;left:6cqw}
+  .np-pre__kick-t{font-size:clamp(10px,2.7cqw,16px)}
+  .np-pre__kick-rule{width:9cqw;margin-top:2.6cqw}
+  .np-pre__title{top:72cqh}
+  .np-pre__name{font-size:clamp(34px,15cqw,150px)}
+  .np-pre__sub{font-size:clamp(12px,4cqw,40px);column-gap:3cqw;margin-top:1.2cqw}
+  .np-pre__rule{width:9cqw}
+}
+
+/* "Pular": outside #np-pre on purpose, so it stays above the hero (the last curtain) */
+#np-pre-skip{
+  position:fixed;
+  top:max(16px,2.2vw);
+  right:max(16px,3vw);
+  z-index:10002;
+  font:500 clamp(11px,1.45vw,15px)/1 "aeonik",system-ui,sans-serif;
+  letter-spacing:.04em;
+  text-transform:uppercase;
+  color:var(--np-black);
+  background:rgba(255,255,255,.72);
+  border:0;
+  border-radius:100px;
+  padding:.9em 1.8em;
+  cursor:pointer;
+  transition:background-color .2s;
+}
+#np-pre-skip:hover{background:rgba(255,255,255,.95)}
+#np-pre-skip:focus-visible{outline:2px solid var(--np-black);outline-offset:3px}
+#np-pre-skip[hidden]{display:none}

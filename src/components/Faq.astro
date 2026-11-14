@@ -1,0 +1,62 @@
+---
+// Faq.astro
+// Seção "Dúvidas Frequentes" (Ato 4 · Dúvidas)
+// Acordeão expansível com esclarecimentos essenciais sobre avaliações, dor, prazos e agendamento
+const faqs = [
+  {
+    id: "np-faq-q1",
+    aid: "np-faq-a1",
+    question: "Como funciona a primeira avaliação na Napele?",
+    answer: "A avaliação é uma consulta presencial detalhada onde analisamos a qualidade da pele, anatomia, histórico de saúde e objetivos. Ao final, apresentamos o plano personalizado."
+  },
+  {
+    id: "np-faq-q2",
+    aid: "np-faq-a2",
+    question: "Posso realizar o tratamento no mesmo dia da avaliação?",
+    answer: "Caso o protocolo indicado não exija preparo prévio e haja disponibilidade de agenda médica, sim. Contudo, priorizamos sempre o planejamento tranquilo."
+  },
+  {
+    id: "np-faq-q3",
+    aid: "np-faq-a3",
+    question: "Os tratamentos causam dor ou exigem tempo de afastamento?",
+    answer: "Utilizamos anestésicos tópicos potentes e técnicas minimamente invasivas para máximo conforto. A maioria dos procedimentos permite retorno imediato às atividades."
+  },
+  {
+    id: "np-faq-q4",
+    aid: "np-faq-a4",
+    question: "Como é feito o agendamento e pagamento?",
+    answer: "O agendamento pode ser solicitado via formulário ou diretamente pelo WhatsApp. Oferecemos opções facilitadas de parcelamento nas principais bandeiras."
+  }
+];
+---
+
+<section class="np-faq" id="duvidas" aria-labelledby="np-faq-title">
+  <header class="np-faq__head">
+    <h2 class="np-faq__title" id="np-faq-title">Esclarecimentos importantes</h2>
+  </header>
+  <div class="np-faq__list">
+    {faqs.map((faq) => (
+      <div class="np-faq__item">
+        <h3 class="np-faq__q">
+          <button
+            type="button"
+            class="np-faq__btn"
+            id={faq.id}
+            aria-expanded="false"
+            aria-controls={faq.aid}
+          >
+            <span>{faq.question}</span>
+            <span class="np-faq__icon" aria-hidden="true"></span>
+          </button>
+        </h3>
+        <div class="np-faq__a" id={faq.aid} role="region" aria-labelledby={faq.id}>
+          <div class="np-faq__a-in">
+            <p>{faq.answer}</p>
+          </div>
+        </div>
+      </div>
+    ))}
+  </div>
+</section>
+
+

@@ -1,0 +1,448 @@
+---
+// Clinic.astro
+// Seção "A Clínica" (Ato 3 · Imersão)
+// Grid de fotos da clínica, tour em vídeo imersivo com paradas cronometradas por scroll e galeria
+---
+<div class="np-clinic" id="np-clinic">
+  <div
+    class="elementor-element elementor-element-5c51949 e-flex e-con-boxed e-con e-parent"
+    data-id="5c51949"
+    data-element_type="container"
+    data-e-type="container"
+    id="sobre-a-clinica"
+    data-settings='{"background_background":"classic"}'
+  >
+    <div class="e-con-inner">
+      <div
+        class="elementor-element elementor-element-c06d467 e-con-full e-flex e-con e-child"
+        data-id="c06d467"
+        data-element_type="container"
+        data-e-type="container"
+      >
+        <!-- Título e Texto de Boas-vindas -->
+        <div
+          class="elementor-element elementor-element-189c247 elementor-widget__width-initial elementor-widget elementor-widget-image-box"
+          data-id="189c247"
+          data-element_type="widget"
+          data-e-type="widget"
+          data-widget_type="image-box.default"
+        >
+          <div class="elementor-widget-container">
+            <div class="elementor-image-box-wrapper">
+              <div class="elementor-image-box-content">
+                <h2 class="elementor-image-box-title">
+                  Cada detalhe pensado para o seu conforto!
+                </h2>
+                <p class="elementor-image-box-description">
+                  A Napele fica em Anápolis, em um espaço acolhedor, planejado para que você se sinta bem desde a chegada. Mármore claro, frisos dourados, luz indireta e janelas amplas com vista para a cidade criam um ambiente tranquilo, onde cuidar de si faz parte da experiência.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Grade de Fotos Desktop (8 fotos) -->
+        <div class="np-clinic__grid">
+          <div
+            class="elementor-element elementor-element-b2491c2 elementor-widget__width-initial elementor-hidden-tablet elementor-hidden-mobile elementor-widget elementor-widget-image"
+            data-id="b2491c2"
+            data-element_type="widget"
+            data-e-type="widget"
+            data-widget_type="image.default"
+          >
+            <div class="elementor-widget-container">
+              <img
+                decoding="async"
+                width="960"
+                height="540"
+                src="/assets/clinica/galeria/letreiro.webp"
+                alt="Letreiro dourado da Napele Clínica na parede ripada da recepção, com o balcão em mármore e poltronas claras."
+                data-full="/assets/clinica/galeria/letreiro-lg.webp"
+                data-name="Letreiro"
+                loading="lazy"
+              />
+            </div>
+          </div>
+
+          <div
+            class="elementor-element elementor-element-3e7a91c4 elementor-widget__width-initial elementor-hidden-tablet elementor-hidden-mobile elementor-widget elementor-widget-image"
+            data-id="3e7a91c4"
+            data-element_type="widget"
+            data-e-type="widget"
+            data-widget_type="image.default"
+          >
+            <div class="elementor-widget-container">
+              <img
+                decoding="async"
+                width="960"
+                height="540"
+                src="/assets/clinica/galeria/balcao.webp"
+                alt="Balcão da recepção da Napele em mármore, com o letreiro dourado ao fundo e a vista da cidade pela janela."
+                data-full="/assets/clinica/galeria/balcao-lg.webp"
+                data-name="Balcão"
+                loading="lazy"
+              />
+            </div>
+          </div>
+
+          <div
+            class="elementor-element elementor-element-dac6c1d elementor-widget__width-initial elementor-hidden-tablet elementor-hidden-mobile elementor-widget elementor-widget-image"
+            data-id="dac6c1d"
+            data-element_type="widget"
+            data-e-type="widget"
+            data-widget_type="image.default"
+          >
+            <div class="elementor-widget-container">
+              <img
+                decoding="async"
+                width="960"
+                height="540"
+                src="/assets/clinica/galeria/recepcao.webp"
+                alt="Recepção da Napele em mármore claro, com balcão, poltronas e a parede de vidro escuro com o logo."
+                data-full="/assets/clinica/galeria/recepcao-lg.webp"
+                data-name="Recepção"
+                loading="lazy"
+              />
+            </div>
+          </div>
+
+          <div
+            class="elementor-element elementor-element-b8d02f6 np-clinic-photo elementor-widget__width-initial elementor-hidden-tablet elementor-hidden-mobile elementor-widget elementor-widget-image"
+            data-id="b8d02f6"
+            data-element_type="widget"
+            data-e-type="widget"
+            data-widget_type="image.default"
+          >
+            <div class="elementor-widget-container">
+              <img
+                decoding="async"
+                width="960"
+                height="540"
+                src="/assets/clinica/galeria/espera.webp"
+                alt="Sala de espera da Napele, com poltronas, mármore claro e janela com vista para a cidade."
+                data-full="/assets/clinica/galeria/espera-lg.webp"
+                data-name="Sala de espera"
+                loading="lazy"
+              />
+            </div>
+          </div>
+
+          <div class="np-clinic__card">
+            <img
+              src="/assets/clinica/passeio-poster.webp"
+              width="1280"
+              height="720"
+              alt="Fachada do edifício onde fica a Napele"
+              data-full="/assets/clinica/galeria/chegada-lg.webp"
+              data-name="Chegada"
+              loading="lazy"
+              decoding="async"
+            />
+          </div>
+
+          <div
+            class="elementor-element elementor-element-a7c01e5 np-clinic-photo elementor-widget__width-initial elementor-hidden-tablet elementor-hidden-mobile elementor-widget elementor-widget-image"
+            data-id="a7c01e5"
+            data-element_type="widget"
+            data-e-type="widget"
+            data-widget_type="image.default"
+          >
+            <div class="elementor-widget-container">
+              <img
+                decoding="async"
+                width="960"
+                height="540"
+                src="/assets/clinica/galeria/corredor.webp"
+                alt="Corredor da Napele com frisos dourados, luz indireta e o logo na parede."
+                data-full="/assets/clinica/galeria/corredor-lg.webp"
+                data-name="Corredor"
+                loading="lazy"
+              />
+            </div>
+          </div>
+
+          <div
+            class="elementor-element elementor-element-85e8455 elementor-widget__width-initial elementor-hidden-tablet elementor-hidden-mobile elementor-widget elementor-widget-image"
+            data-id="85e8455"
+            data-element_type="widget"
+            data-e-type="widget"
+            data-widget_type="image.default"
+          >
+            <div class="elementor-widget-container">
+              <img
+                decoding="async"
+                width="960"
+                height="540"
+                src="/assets/clinica/galeria/sala-1.webp"
+                alt="Sala de atendimento da Napele, com maca, bancada em mármore e janela com vista para a cidade."
+                data-full="/assets/clinica/galeria/sala-1-lg.webp"
+                data-name="Sala 1"
+                loading="lazy"
+              />
+            </div>
+          </div>
+
+          <div
+            class="elementor-element elementor-element-47c920b elementor-widget__width-initial elementor-hidden-tablet elementor-hidden-mobile elementor-widget elementor-widget-image"
+            data-id="47c920b"
+            data-element_type="widget"
+            data-e-type="widget"
+            data-widget_type="image.default"
+          >
+            <div class="elementor-widget-container">
+              <img
+                decoding="async"
+                width="960"
+                height="540"
+                src="/assets/clinica/galeria/sala-2.webp"
+                alt="Sala de atendimento da Napele, com poltrona de procedimento, equipamento e janela panorâmica."
+                data-full="/assets/clinica/galeria/sala-2-lg.webp"
+                data-name="Sala 2"
+                loading="lazy"
+              />
+            </div>
+          </div>
+
+          <div
+            class="elementor-element elementor-hidden-tablet elementor-hidden-mobile elementor-element-99f0408 elementor-widget elementor-widget-image"
+            data-id="99f0408"
+            data-element_type="widget"
+            data-e-type="widget"
+            data-widget_type="image.default"
+          >
+            <div class="elementor-widget-container">
+              <img
+                decoding="async"
+                width="960"
+                height="540"
+                src="/assets/clinica/galeria/poltronas.webp"
+                alt="Balcão e poltronas claras da recepção da Napele, com o letreiro dourado na parede."
+                data-full="/assets/clinica/galeria/poltronas-lg.webp"
+                data-name="Poltronas"
+                loading="lazy"
+              />
+            </div>
+          </div>
+        </div>
+
+        <!-- Botão de Ação Primário -->
+        <div
+          class="elementor-element elementor-element-9ddcb1a botao-pulse elementor-widget elementor-widget-button"
+          data-id="9ddcb1a"
+          data-element_type="widget"
+          data-e-type="widget"
+          data-widget_type="button.default"
+        >
+          <div class="elementor-widget-container">
+            <div class="elementor-button-wrapper">
+              <a
+                class="elementor-button elementor-button-link elementor-size-sm"
+                href="#como-chegar"
+                data-np-contact="whatsapp"
+              >
+                <span class="elementor-button-content-wrapper">
+                  <span class="elementor-button-icon">
+                    <svg
+                      aria-hidden="true"
+                      class="e-font-icon-svg e-fab-whatsapp"
+                      viewBox="0 0 448 512"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"
+                      ></path>
+                    </svg>
+                  </span>
+                  <span class="elementor-button-text">Agendar Avaliação</span>
+                </span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Palco do Tour Virtual (Vídeo Guiado por Scroll) -->
+    <div
+      class="np-clinic__stage"
+      data-duration="42.54"
+      data-pace="0:9.5,24:8,28.67:26,31.17:30,32.17:12,32.97:3,34.67:26,37.58:30,38.58:12,39.38:4,41.2:9"
+    >
+      <figure class="np-clinic__frame">
+        <video
+          class="np-clinic__video"
+          muted
+          playsinline
+          disablepictureinpicture
+          disableremoteplayback
+          preload="none"
+          tabindex="-1"
+          aria-hidden="true"
+          poster="/assets/clinica/passeio-poster.webp"
+          data-src="/assets/clinica/passeio.mp4"
+          data-src-m="/assets/clinica/passeio-m.mp4"
+        ></video>
+        <span class="np-clinic__shade" aria-hidden="true"></span>
+        <span class="np-clinic__tag" aria-hidden="true"></span>
+        <span class="np-clinic__cue" aria-hidden="true">
+          Role para entrar
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 12 12"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M2.5 4.5 6 8l3.5-3.5"></path>
+          </svg>
+        </span>
+        <div class="np-clinic__bar" aria-hidden="true"></div>
+      </figure>
+
+      <!-- Legenda e Paradas do Tour -->
+      <aside class="np-clinic__legend" aria-label="Passeio pela clínica">
+        <p class="np-clinic__count">
+          <span class="np-clinic__n">01</span>&nbsp;/&nbsp;<span class="np-clinic__total">08</span>
+        </p>
+        <ol class="np-clinic__stops" aria-live="polite">
+          <li class="is-on" data-at="0">
+            <h3>Chegada</h3>
+            <p>A fachada do edifício e a entrada, onde começa a visita.</p>
+          </li>
+          <li data-at="3.83">
+            <h3>Letreiro</h3>
+            <p>O logo dourado em destaque, com luz indireta e a vista da cidade ao fundo.</p>
+          </li>
+          <li data-at="11.25">
+            <h3>Recepção</h3>
+            <p>Balcão em mármore, estante ripada com detalhes dourados e poltronas para a espera.</p>
+          </li>
+          <li data-at="18.67">
+            <h3>Sala de espera</h3>
+            <p>Mármore claro, janelas amplas e a vista da cidade.</p>
+          </li>
+          <li data-at="24">
+            <h3>Corredor</h3>
+            <p>Frisos dourados e luz indireta levam o olhar até as salas de atendimento.</p>
+          </li>
+          <li data-at="28.67">
+            <h3>Sala 1</h3>
+            <p>Sala de procedimento com maca e a luz natural da janela.</p>
+          </li>
+          <li data-at="34.67">
+            <h3>Sala 2</h3>
+            <p>Outra sala de atendimento, com cadeira e aparelho.</p>
+          </li>
+          <li data-at="41.2">
+            <h3>Venha conhecer</h3>
+            <p>Agende o seu horário e conheça a Napele de perto.</p>
+          </li>
+        </ol>
+        <div class="np-clinic__cta"></div>
+        <button type="button" class="np-clinic__skip">Pular passeio</button>
+      </aside>
+    </div>
+  </div>
+</div>
+
+<!-- Galeria de Ambientes da Clínica (Mobile e Tablet) -->
+<section class="np-gallery" id="galeria" aria-labelledby="np-gallery-title">
+  <header class="np-gallery__head">
+    <h2 class="np-gallery__title" id="np-gallery-title">Conheça cada ambiente</h2>
+  </header>
+  <div class="np-gallery__grid" role="group" aria-label="Fotos da clínica">
+    <figure class="np-gallery__item" data-i="0">
+      <img
+        src="/assets/clinica/galeria/letreiro.webp"
+        width="960"
+        height="540"
+        alt="Letreiro dourado da Napele Clínica na parede ripada da recepção, com o balcão em mármore e poltronas claras."
+        data-name="Letreiro"
+        loading="lazy"
+        decoding="async"
+      />
+    </figure>
+    <figure class="np-gallery__item" data-i="1">
+      <img
+        src="/assets/clinica/galeria/balcao.webp"
+        width="960"
+        height="540"
+        alt="Balcão da recepção da Napele em mármore, com o letreiro dourado ao fundo e a vista da cidade pela janela."
+        data-name="Balcão"
+        loading="lazy"
+        decoding="async"
+      />
+    </figure>
+    <figure class="np-gallery__item" data-i="2">
+      <img
+        src="/assets/clinica/galeria/recepcao.webp"
+        width="960"
+        height="540"
+        alt="Recepção da Napele em mármore claro, com balcão, poltronas e a parede de vidro escuro com o logo."
+        data-name="Recepção"
+        loading="lazy"
+        decoding="async"
+      />
+    </figure>
+    <figure class="np-gallery__item" data-i="3">
+      <img
+        src="/assets/clinica/galeria/espera.webp"
+        width="960"
+        height="540"
+        alt="Sala de espera da Napele, com poltronas, mármore claro e janela com vista para a cidade."
+        data-name="Sala de espera"
+        loading="lazy"
+        decoding="async"
+      />
+    </figure>
+    <figure class="np-gallery__item" data-i="5">
+      <img
+        src="/assets/clinica/galeria/corredor.webp"
+        width="960"
+        height="540"
+        alt="Corredor da Napele com frisos dourados, luz indireta e o logo na parede."
+        data-name="Corredor"
+        loading="lazy"
+        decoding="async"
+      />
+    </figure>
+    <figure class="np-gallery__item" data-i="6">
+      <img
+        src="/assets/clinica/galeria/sala-1.webp"
+        width="960"
+        height="540"
+        alt="Sala de atendimento da Napele, com maca, bancada em mármore e janela com vista para a cidade."
+        data-name="Sala 1"
+        loading="lazy"
+        decoding="async"
+      />
+    </figure>
+    <figure class="np-gallery__item" data-i="7">
+      <img
+        src="/assets/clinica/galeria/sala-2.webp"
+        width="960"
+        height="540"
+        alt="Sala de atendimento da Napele, com poltrona de procedimento, equipamento e janela panorâmica."
+        data-name="Sala 2"
+        loading="lazy"
+        decoding="async"
+      />
+    </figure>
+    <figure class="np-gallery__item" data-i="8">
+      <img
+        src="/assets/clinica/galeria/poltronas.webp"
+        width="960"
+        height="540"
+        alt="Balcão e poltronas claras da recepção da Napele, com o letreiro dourado na parede."
+        data-name="Poltronas"
+        loading="lazy"
+        decoding="async"
+      />
+    </figure>
+  </div>
+</section>
+
+<!-- Scripts do Tour Virtual e Galeria -->
+

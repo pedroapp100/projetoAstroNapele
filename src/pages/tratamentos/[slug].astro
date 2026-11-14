@@ -1,0 +1,28 @@
+---
+// Uma página por tratamento: o modelo do design system (assets/overview/tratamento.html) com o texto do tratamento.
+// O texto vem de public/assets/treatments.js (src/lib/treatments.mjs) e entra no build, não no navegador.
+import Layout from '../../layouts/Layout.astro';
+import Rebase from '../../components/Rebase.astro';
+import Header from '../../components/Header.astro';
+import TreatmentHero from '../../components/TreatmentHero.astro';
+import TreatmentSections from '../../components/TreatmentSections.astro';
+import TreatmentFooter from '../../components/TreatmentFooter.astro';
+import { loadTreatments } from '../../lib/treatments.mjs';
+
+export function getStaticPaths() {
+  return loadTreatments().list.map((t) => ({ params: { slug: t.slug }, props: { t } }));
+}
+
+const { t } = Astro.props;
+---
+
+<Layout variant="treatment" treatment={t.slug} title={`${t.name} · Napele Clínica`} description={t.intro}>
+  <Rebase>
+    <Header current="tratamentos" />
+    <main>
+      <TreatmentHero t={t} />
+      <TreatmentSections t={t} />
+    </main>
+    <TreatmentFooter />
+  </Rebase>
+</Layout>

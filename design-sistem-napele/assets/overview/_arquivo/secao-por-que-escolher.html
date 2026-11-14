@@ -1,0 +1,461 @@
+<!-- Secao removida do Overview (assets/overview/index.html) a pedido: "Por que escolher a Napele?" (.np-why), versao "rosto em tres passos" (um rosto em fio dourado que a rolagem percorre: Quem cuida de voce, Sua pele, Seu plano). Ficava entre a faixa dourada e Tratamentos. Fragmento, nao e uma pagina. Para voltar: cole o markup abaixo entre o </section> do np-marquee e a <section ... id="tratamentos"> em index.html; cole o CSS (comentario no fim) em assets/napele.css, logo antes de "/* ---- Marquee: gold band of treatment names"; salve o JS (comentario no fim) como assets/napele-why.js e inclua <script src="../napele-why.js"></script> depois de napele-nav.js em index.html. A versao original (titulo, texto, quatro itens e quatro fotos da clinica) esta em secao-por-que-escolher-v1-fotos.html. -->
+		<section class="np-why" id="por-que-napele" aria-labelledby="np-why-title" data-step="1">
+			<div class="np-why__stage">
+				<div class="np-why__inner">
+					<div class="np-why__copy">
+						<h2 class="np-why__chip" id="np-why-title">Por que escolher a Napele?</h2>
+						<div class="np-why__slides">
+							<article class="np-why__slide" data-n="1" aria-labelledby="np-why-t1">
+								<p class="np-why__kick">01 · Quem cuida de você</p>
+								<h3 class="np-why__title" id="np-why-t1">Quem cuida de você acompanha cada etapa.</h3>
+								<p class="np-why__lead">Nayana Fialho está à frente da Napele Clínica, em Anápolis, e acompanha de perto o atendimento de cada paciente. O ambiente foi pensado para o seu conforto, e a equipe explica cada etapa antes de começar.</p>
+								<ul class="np-why__tags"><li>Atendimento acolhedor e humanizado</li></ul>
+							</article>
+							<article class="np-why__slide" data-n="2" aria-labelledby="np-why-t2">
+								<p class="np-why__kick">02 · Sua pele</p>
+								<h3 class="np-why__title" id="np-why-t2">Cada pele responde de um jeito.</h3>
+								<p class="np-why__lead">Antes de indicar qualquer procedimento, a avaliação olha para a qualidade da sua pele, a sua anatomia e o seu histórico de saúde, com atenção às particularidades de cada tom de pele, incluindo a pele negra.</p>
+								<ul class="np-why__tags"><li>Tecnologia e protocolos seguros</li></ul>
+							</article>
+							<article class="np-why__slide" data-n="3" aria-labelledby="np-why-t3">
+								<p class="np-why__kick">03 · Seu plano</p>
+								<h3 class="np-why__title" id="np-why-t3">Você sai da avaliação com um plano.</h3>
+								<p class="np-why__lead">Você conta o que quer mudar, e a equipe indica quais tratamentos fazem sentido para o seu caso, etapa por etapa. Sem pressa: priorizamos sempre o planejamento tranquilo.</p>
+								<ul class="np-why__tags"><li>Avaliação e plano personalizados</li><li>Resultados naturais e duradouros</li></ul>
+								<div class="np-why__cta"><div class="elementor-element elementor-element-npwhycta elementor-widget elementor-widget-button" data-id="npwhycta" data-element_type="widget" data-e-type="widget" data-widget_type="button.default"><div class="elementor-widget-container"><div class="elementor-button-wrapper"><a class="elementor-button elementor-button-link elementor-size-sm" href="#como-chegar" data-np-contact="whatsapp"><span class="elementor-button-content-wrapper"><span class="elementor-button-icon"><svg aria-hidden="true" class="e-font-icon-svg e-fab-whatsapp" viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"></path></svg>			</span><span class="elementor-button-text">Agendar Avaliação</span></span></a></div></div></div></div>
+								<a class="np-why__next" href="#tratamentos">É desse plano que nascem os tratamentos<svg aria-hidden="true" viewBox="0 0 16 16" width="14" height="14"><path d="M8 2v11M3.5 8.5 8 13l4.5-4.5" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+							</article>
+						</div>
+						<ol class="np-why__bar" aria-hidden="true"><li><i></i></li><li><i></i></li><li><i></i></li></ol>
+					</div>
+					<div class="np-why__face" aria-hidden="true">
+						<svg class="np-why__svg" viewBox="-30 0 460 540" focusable="false">
+							<path class="f-fill" d="M200 44C128 44 94 104 96 192C97 262 116 330 150 380C166 402 182 416 200 416C218 416 234 402 250 380C284 330 303 262 304 192C306 104 272 44 200 44Z"/>
+							<g class="f-g">
+								<path class="f-l f-d" pathLength="1" d="M200 44C128 44 94 104 96 192C97 262 116 330 150 380C166 402 182 416 200 416C218 416 234 402 250 380C284 330 303 262 304 192C306 104 272 44 200 44Z"/>
+								<path class="f-l f-d" pathLength="1" d="M96 202C80 198 78 238 98 252"/>
+								<path class="f-l f-d" pathLength="1" d="M304 202C320 198 322 238 302 252"/>
+								<path class="f-l f-d" pathLength="1" d="M164 398C164 440 152 466 128 488"/>
+								<path class="f-l f-d" pathLength="1" d="M236 398C236 440 248 466 272 488"/>
+								<path class="f-l f-d" pathLength="1" d="M128 488C92 502 62 518 40 540"/>
+								<path class="f-l f-d" pathLength="1" d="M272 488C308 502 338 518 360 540"/>
+								<path class="f-l f-d" pathLength="1" d="M130 170C148 156 178 153 193 164"/>
+								<path class="f-l f-d" pathLength="1" d="M207 164C222 153 252 156 270 170"/>
+								<path class="f-l f-d" pathLength="1" d="M139 198C153 185 177 185 191 199C177 208 153 208 139 198Z"/>
+								<path class="f-l f-d" pathLength="1" d="M209 199C223 185 247 185 261 198C247 208 223 208 209 199Z"/>
+								<path class="f-l f-d" pathLength="1" d="M193 204C192 238 190 262 183 277"/>
+								<path class="f-l f-d" pathLength="1" d="M207 204C208 238 210 262 217 277"/>
+								<path class="f-l f-d" pathLength="1" d="M183 277C192 288 208 288 217 277"/>
+								<path class="f-l f-d" pathLength="1" d="M162 326C178 316 192 315 200 322C208 315 222 316 238 326C224 331 212 333 200 333C188 333 176 331 162 326Z"/>
+								<path class="f-l f-d" pathLength="1" d="M162 326C178 346 222 346 238 326"/>
+								<path class="f-l f-d f-soft" pathLength="1" d="M116 270C128 306 150 330 166 342"/>
+								<path class="f-l f-d f-soft" pathLength="1" d="M284 270C272 306 250 330 234 342"/>
+								<circle class="f-eye" cx="165" cy="196.5" r="5"/>
+								<circle class="f-eye" cx="235" cy="196.5" r="5"/>
+							</g>
+							<g class="f-thirds">
+								<line class="f-third" x1="46" y1="92" x2="354" y2="92"/>
+								<line class="f-third" x1="46" y1="166" x2="354" y2="166"/>
+								<line class="f-third" x1="46" y1="282" x2="354" y2="282"/>
+								<line class="f-third" x1="46" y1="416" x2="354" y2="416"/>
+							</g>
+							<g class="np-why__zone" data-z="1"><line x1="278" y1="181" x2="326" y2="181"/><circle class="ping" cx="270" cy="181" r="9"/><circle class="dot" cx="270" cy="181" r="9"/><text class="num" x="270" y="184.4" text-anchor="middle">1</text><text class="lab" x="334" y="186">Olhar</text></g>
+							<g class="np-why__zone" data-z="2"><line x1="284" y1="262" x2="326" y2="262"/><circle class="ping" cx="276" cy="262" r="9"/><circle class="dot" cx="276" cy="262" r="9"/><text class="num" x="276" y="265.4" text-anchor="middle">2</text><text class="lab" x="334" y="267">Pele</text></g>
+							<g class="np-why__zone" data-z="3"><line x1="247" y1="334" x2="326" y2="334"/><circle class="ping" cx="239" cy="334" r="9"/><circle class="dot" cx="239" cy="334" r="9"/><text class="num" x="239" y="337.4" text-anchor="middle">3</text><text class="lab" x="334" y="339">Lábios</text></g>
+							<g class="np-why__zone" data-z="4"><line x1="118" y1="352" x2="74" y2="352"/><circle class="ping" cx="126" cy="352" r="9"/><circle class="dot" cx="126" cy="352" r="9"/><text class="num" x="126" y="355.4" text-anchor="middle">4</text><text class="lab end" x="66" y="357">Contorno</text></g>
+						</svg>
+						<div class="np-why__tones">
+							<ul class="np-why__swatches"><li style="--c:#F1D5B8"></li><li style="--c:#D9A877"></li><li style="--c:#B07A4E"></li><li style="--c:#8A5A38"></li><li style="--c:#5E3B24"></li><li style="--c:#3C2418"></li></ul>
+							<span class="np-why__mark"></span>
+							<p class="np-why__cap">Todos os tons de pele</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+<!-- CSS removido de assets/napele.css junto com a secao (cole de volta la):
+
+/* ---- Overview, "Por que escolher a Napele?" (.np-why): right under the gold marquee and above the treatments, in act 1 ("Promessa"): it answers "why her?"
+   before the page turns to the cream and the offer. The same dark as the hero and the footer (--np-dark). One face drawn in the gold thread of the pre-loader and
+   three steps that the scroll walks through (napele-why.js): 1 "Quem cuida de você" (the face is drawn, with its thirds), 2 "Sua pele" (the face takes the six skin
+   tones one after the other), 3 "Seu plano" (four numbered zones light up, then the way down to the treatments). The copy is on the left, the face on the right; on a
+   tablet and a phone the face goes on top. While the steps play, the stage (.np-why__stage) is pinned to the top of the screen inside the tall .np-why track, whose
+   height is set below. Without the script, under prefers-reduced-motion or on a very short screen, nothing is pinned: the face is complete (zones and thirds on) and the
+   three steps are stacked. The kit styles every h2 / h3 / ul / p, so the rules below carry the section class on purpose. */
+.np-why{
+  position:relative;
+  box-sizing:border-box;
+  font-family:aeonik,sans-serif;
+  color:var(--np-cream);
+  background-color:var(--np-dark);
+}
+.np-why__stage{
+  position:relative;
+  isolation:isolate;
+  overflow:clip;
+  box-sizing:border-box;
+  display:flex;
+  align-items:center;
+  padding:clamp(72px,9vw,calc(136 * var(--np-u))) 22px;
+  background-color:var(--np-dark);
+}
+/* the rings: a thick circle outline in the base gold at 4.5%, mostly out of the frame, one at the top right and one at the bottom left */
+.np-why__stage::before,
+.np-why__stage::after{
+  content:"";
+  position:absolute;
+  z-index:-1;
+  box-sizing:border-box;
+  aspect-ratio:1;
+  border-radius:50%;
+  border:calc(64 * var(--np-u)) solid rgba(var(--np-gold-500-rgb),.045);
+  pointer-events:none;
+}
+.np-why__stage::before{width:clamp(320px,46vw,calc(760 * var(--np-u)));top:-22%;right:-14%}
+.np-why__stage::after{width:clamp(260px,34vw,calc(560 * var(--np-u)));left:-12%;bottom:-34%}
+/* pinned: the track is the stage plus the scroll the three steps take (260 screens of scroll in total) */
+.np-why.is-js{height:calc(100vh + 260vh);height:calc(100svh + 260svh)}
+.np-why.is-js .np-why__stage{
+  position:sticky;
+  top:0;
+  height:100vh;
+  height:100svh;
+  padding-top:calc(var(--np-nav-h-scrolled) + 8px);
+  padding-bottom:36px;
+}
+.np-why__inner{
+  width:100%;
+  max-width:var(--np-container);
+  margin:0 auto;
+  display:grid;
+  grid-template-columns:minmax(0,.92fr) minmax(0,1fr);
+  align-items:center;
+  gap:clamp(32px,6vw,calc(96 * var(--np-u)));
+}
+.np-why__copy{display:flex;flex-direction:column;align-items:flex-start;gap:clamp(22px,3.6vh,38px);min-width:0}
+/* chip: the one of the dark sections (light veil on the dark, gold var(--np-gold-300)); it is the section's h2 */
+.np-why .np-why__chip{
+  display:inline-flex;
+  align-items:center;
+  margin:0;
+  padding:6px 16px;
+  border-radius:100px;
+  border:1px solid rgba(var(--np-cream-rgb),.24);
+  background:rgba(var(--np-cream-rgb),.08);
+  color:var(--np-gold-300);
+  font:500 var(--np-fs-label)/1.4 aeonik,sans-serif;
+  letter-spacing:normal;
+  text-transform:uppercase;
+}
+/* the three steps share one grid cell, so the block is as tall as the tallest one and nothing jumps when they change */
+.np-why__slides{display:grid;width:100%}
+.np-why__slide{grid-area:1 / 1;min-width:0}
+.np-why .np-why__kick{
+  margin:0 0 14px;
+  color:var(--np-gold-500);
+  font:500 var(--np-fs-label)/1.4 aeonik,sans-serif;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+}
+/* ".np-why .np-why__title" on purpose: the kit's ".elementor-kit-6 h3" is more specific than a lone class */
+.np-why .np-why__title{
+  margin:0 0 18px;
+  font-family:inherit;
+  font-weight:500;
+  font-size:clamp(30px,3.4vw,var(--np-fs-h2));
+  line-height:1.17;
+  letter-spacing:-.5px;
+  text-wrap:balance;
+  background:linear-gradient(94deg,var(--np-gold-100) 0%,var(--np-gold-300) 52%,var(--np-gold-500) 100%);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+  -webkit-text-fill-color:transparent;
+}
+.np-why .np-why__lead{margin:0 0 22px;max-width:27em;font-size:var(--np-fs-body);line-height:1.75;color:rgba(var(--np-cream-rgb),.72);text-wrap:pretty}
+.np-why .np-why__tags{margin:0;padding:0;list-style:none;display:flex;flex-wrap:wrap;gap:10px}
+.np-why .np-why__tags li{
+  margin:0;
+  padding:7px 14px;
+  border-radius:100px;
+  border:1px solid rgba(var(--np-gold-500-rgb),.45);
+  background:rgba(var(--np-gold-500-rgb),.1);
+  color:var(--np-gold-100);
+  font:500 var(--np-fs-label)/1.3 aeonik,sans-serif;
+}
+.np-why .np-why__cta{margin-top:26px}
+.np-why .np-why__cta .elementor-widget{margin:0}
+.np-why .np-why__next{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  margin-top:18px;
+  color:var(--np-gold-300);
+  font:500 var(--np-fs-label)/1.4 aeonik,sans-serif;
+  text-decoration:none;
+}
+.np-why .np-why__next svg{flex:none;transition:transform .3s var(--np-ease-out)}
+.np-why .np-why__next:hover{color:var(--np-gold-100)}
+.np-why .np-why__next:hover svg{transform:translateY(3px)}
+.np-why .np-why__next:focus-visible{outline:2px solid var(--np-gold-300);outline-offset:4px;border-radius:4px}
+/* the progress: one segment per step, filled by the scroll (--f, 0 to 1, set by the script) */
+.np-why .np-why__bar{margin:0;padding:0;list-style:none;display:flex;gap:8px;width:min(100%,calc(360 * var(--np-u)))}
+.np-why .np-why__bar li{flex:1 1 0;height:3px;margin:0;border-radius:3px;overflow:hidden;background:rgba(var(--np-cream-rgb),.18)}
+.np-why .np-why__bar i{display:block;height:100%;background:var(--np-gold-500);transform:scaleX(var(--f,0));transform-origin:0 50%}
+.np-why:not(.is-js) .np-why__bar{display:none}
+
+/* the face */
+.np-why__face{
+  position:relative;
+  justify-self:center;
+  width:100%;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:18px;
+}
+.np-why__face::before{
+  content:"";
+  position:absolute;
+  z-index:-1;
+  inset:2% -4% 14%;
+  background:radial-gradient(closest-side,rgba(var(--np-gold-500-rgb),.17),transparent 74%);
+  pointer-events:none;
+}
+.np-why__svg{display:block;width:auto;max-width:100%;height:min(70vh,calc(100svh - var(--np-nav-h-scrolled) - 150px));aspect-ratio:460 / 540;overflow:visible}
+.np-why__svg .f-l{fill:none;stroke:var(--np-gold-500);stroke-width:1.4;stroke-linecap:butt;stroke-linejoin:round}
+.np-why__svg .f-soft{stroke-opacity:.5}
+.np-why__svg .f-eye{fill:var(--np-gold-300)}
+.np-why__svg .f-g{transition:opacity .6s var(--np-ease-out)}
+.np-why__svg .f-fill{fill:var(--np-tone,#D9A877);fill-opacity:0;transition:fill .6s var(--np-ease-out),fill-opacity .6s var(--np-ease-out)}
+.np-why[data-step="2"] .np-why__svg .f-fill{fill-opacity:.24}
+.np-why[data-step="3"] .np-why__svg .f-g{opacity:.66}
+/* the thirds of the face: four dashed hairlines (hairline, brow, base of the nose, chin) */
+.np-why__svg .f-third{stroke:var(--np-gold-300);stroke-width:1;stroke-dasharray:2 7;transform-box:fill-box;transform-origin:50% 50%;transition:opacity .6s var(--np-ease-out)}
+.np-why__svg .f-thirds{opacity:.6}
+/* the four zones of step 3 */
+.np-why__zone{opacity:0;transition:opacity .5s var(--np-ease-out)}
+.np-why__zone.is-on{opacity:1}
+.np-why__zone line{stroke:var(--np-gold-300);stroke-width:1}
+.np-why__zone .dot{fill:var(--np-black);stroke:var(--np-gold-300);stroke-width:1.4}
+.np-why__zone .ping{fill:none;stroke:var(--np-gold-300);stroke-width:1;opacity:0;transform-box:fill-box;transform-origin:50% 50%}
+.np-why__zone .num{fill:var(--np-gold-100);font:600 11px aeonik,sans-serif}
+.np-why__zone .lab{fill:var(--np-cream);font:500 15px aeonik,sans-serif;letter-spacing:.02em}
+.np-why__zone .lab.end{text-anchor:end}
+@media(prefers-reduced-motion:no-preference){
+  .np-why__zone.is-on .ping{animation:np-why-ping 2.4s ease-out infinite}
+}
+@keyframes np-why-ping{0%{transform:scale(1);opacity:.7}100%{transform:scale(2.3);opacity:0}}
+/* the six skin tones of step 2: a strip under the face and a marker the scroll moves along it (--np-ti, 0 to 5) */
+.np-why__tones{position:relative;width:min(100%,calc(340 * var(--np-u)));transition:opacity .5s var(--np-ease-out),transform .6s var(--np-ease-out)}
+.np-why .np-why__swatches{display:flex;gap:4px;margin:0;padding:0;list-style:none}
+.np-why .np-why__swatches li{flex:1 1 0;height:calc(28 * var(--np-u));margin:0;border-radius:6px;background:var(--c)}
+.np-why__mark{
+  position:absolute;
+  top:-6px;
+  left:calc((var(--np-ti,0) + .5) / 6 * 100%);
+  width:2px;
+  height:calc(28 * var(--np-u) + 12px);
+  margin-left:-1px;
+  border-radius:2px;
+  background:var(--np-gold-100);
+  box-shadow:0 0 0 3px rgba(var(--np-gold-500-rgb),.25);
+  transition:left .5s var(--np-ease-out);
+}
+.np-why .np-why__cap{margin:12px 0 0;text-align:center;color:var(--np-gold-300);font:500 var(--np-fs-label)/1.4 aeonik,sans-serif;letter-spacing:.14em;text-transform:uppercase}
+
+/* ---- the script is on: the steps take turns, the face is drawn by the scroll (--np-d1, 0 to 1) ---- */
+.np-why.is-js .np-why__slide{
+  opacity:0;
+  visibility:hidden;
+  transform:translate3d(0,16px,0);
+  transition:opacity .5s var(--np-ease-out),transform .7s var(--np-ease-out),visibility 0s linear .5s;
+}
+.np-why.is-js[data-step="2"] .np-why__slide[data-n="1"],
+.np-why.is-js[data-step="3"] .np-why__slide[data-n="1"],
+.np-why.is-js[data-step="3"] .np-why__slide[data-n="2"]{transform:translate3d(0,-16px,0)}
+.np-why.is-js[data-step="1"] .np-why__slide[data-n="1"],
+.np-why.is-js[data-step="2"] .np-why__slide[data-n="2"],
+.np-why.is-js[data-step="3"] .np-why__slide[data-n="3"]{
+  opacity:1;
+  visibility:visible;
+  transform:none;
+  transition-delay:.12s,.12s,0s;
+}
+.np-why.is-js .np-why__svg .f-d{
+  stroke-dasharray:1 1;
+  stroke-dashoffset:calc(1 - var(--np-d1,0));
+  opacity:min(calc(var(--np-d1,0) * 30),1);
+}
+.np-why.is-js .np-why__svg .f-eye{opacity:min(calc((var(--np-d1,0) - .75) * 6),1)}
+.np-why.is-js .np-why__svg .f-third{transform:scaleX(var(--np-d1,0))}
+.np-why.is-js:not([data-step="1"]) .np-why__svg .f-thirds{opacity:0;transition:opacity .6s var(--np-ease-out)}
+.np-why.is-js:not([data-step="2"]) .np-why__tones{opacity:0;transform:translate3d(0,10px,0)}
+/* no script: the steps stacked, the face complete */
+.np-why:not(.is-js) .np-why__slides{display:flex;flex-direction:column;gap:clamp(40px,6vw,72px)}
+.np-why:not(.is-js) .np-why__zone{opacity:1}
+.np-why:not(.is-js) .np-why__mark{display:none}
+
+/* tablet and phone: the face on top, the copy under it. Pinned, the stage is a column the height of the screen: the copy takes what it needs and the face
+   takes what is left (the SVG fills its box and scales to fit; the skin tones sit over its foot). If what is left is under 120px the script lets go of the pin. */
+@media(max-width:1024px){
+  .np-why__inner{grid-template-columns:minmax(0,1fr);gap:20px}
+  .np-why__face{order:-1;gap:12px}
+  .np-why .np-why__lead{max-width:34em}
+  .np-why:not(.is-js) .np-why__svg{height:min(60vw,420px)}
+  .np-why.is-js .np-why__stage{align-items:stretch}
+  .np-why.is-js .np-why__inner{height:100%;display:flex;flex-direction:column;align-items:stretch;gap:14px}
+  .np-why.is-js .np-why__face{flex:1 1 0;min-height:0;gap:0}
+  .np-why.is-js .np-why__svg{position:absolute;inset:0;width:100%;height:100%;max-width:none;aspect-ratio:auto}
+  .np-why.is-js .np-why__tones{position:absolute;left:0;right:0;bottom:0;margin:0 auto;width:min(86%,calc(300 * var(--np-u)))}
+  .np-why.is-js .np-why__cap{display:none}
+}
+@media(max-width:767px){
+  .np-why__stage{padding:64px 16px}
+  .np-why.is-js .np-why__stage{padding-top:calc(var(--np-nav-h-scrolled) + 4px);padding-bottom:20px}
+  .np-why__copy{gap:14px}
+  .np-why .np-why__title{margin-bottom:12px;font-size:clamp(26px,7.4vw,32px)}
+  .np-why .np-why__lead{margin-bottom:16px;font-size:calc(15 * var(--np-u));line-height:1.6}
+  .np-why .np-why__kick{margin-bottom:10px}
+  .np-why .np-why__cta{margin-top:18px}
+  .np-why .np-why__next{margin-top:14px}
+}
+@media(max-height:700px) and (max-width:1024px){
+  .np-why .np-why__lead{font-size:14px;line-height:1.5;margin-bottom:12px}
+  .np-why .np-why__tags li{padding:5px 12px}
+}
+/* a short laptop screen: the same section, a little tighter, so the whole step fits under the navbar */
+@media(min-width:1025px) and (max-height:760px){
+  .np-why.is-js .np-why__stage{padding-top:calc(var(--np-nav-h-scrolled) - 4px);padding-bottom:20px}
+  .np-why__copy{gap:16px}
+  .np-why .np-why__title{margin-bottom:12px;font-size:clamp(28px,3vw,38px)}
+  .np-why .np-why__lead{margin-bottom:16px;font-size:15px;line-height:1.6}
+  .np-why .np-why__cta{margin-top:18px}
+  .np-why .np-why__next{margin-top:12px}
+}
+-->
+
+<!-- JS removido de assets/napele-why.js (salve de volta la):
+
+/* Napele "Por que escolher a Napele?" (.np-why on the Overview, right under the hero). The markup is static (overview/index.html) and complete: without this
+   script the face is drawn, its four zones are on and the three steps are stacked. With it, the scroll walks through the steps:
+   - .is-js on the section makes it a tall track (napele.css) and pins the stage (.np-why__stage) to the top of the screen for the length of the walk;
+   - the walk is split in three: STEPS gives the share of it each step gets (the last one holds the longest, with the way down to the treatments).
+     data-step on the section is the step on stage (1, 2 or 3); the copy of each step shows and hides on its own, with a transition, from that;
+   - step 1: the face is drawn by the scroll (--np-d1, 0 to 1; it starts to come in as the section enters the screen, before it is pinned);
+   - step 2: the face takes the six skin tones of .np-why__swatches one after the other, the tone in turn is --np-tone and the marker is --np-ti;
+   - step 3: the four zones of the face (.np-why__zone) light up one after the other;
+   - the bar under the copy (.np-why__bar) has one segment per step, filled by the scroll (--f).
+   Under prefers-reduced-motion, on a screen shorter than SHORT px (landscape phone), or when a whole step does not fit in the pinned stage, nothing is pinned
+   and the stacked version stays. */
+(function () {
+  var section = document.querySelector('.np-why');
+  if (!section) return;
+  var stage = section.querySelector('.np-why__stage');
+  if (!stage) return;
+  if (!window.matchMedia) return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  var SHORT = 520;                  // px: a screen shorter than this keeps the stacked version
+  var STEPS = [0.30, 0.32, 0.38];   // the share of the walk each step gets (sums to 1)
+  var ZONES_AT = [0.10, 0.34, 0.58, 0.82];   // where, in step 3 (0 to 1), each zone lights up
+  var DRAW_ENTER = 0.5;             // how much of the face is drawn by the time the section reaches the top of the screen (the rest comes in step 1)
+
+  var copy = section.querySelector('.np-why__copy');
+  var face = section.querySelector('.np-why__face');
+  var narrow = window.matchMedia('(max-width: 1024px)');   // the face on top, in a column (napele.css)
+  var MIN_FACE = 120;               // px: the least the face may have on a narrow screen, else nothing is pinned
+  var bars = [].slice.call(section.querySelectorAll('.np-why__bar i'));
+  var zones = [].slice.call(section.querySelectorAll('.np-why__zone'));
+  var swatches = [].slice.call(section.querySelectorAll('.np-why__swatches li'));
+  var tones = swatches.map(function (li) { return li.style.getPropertyValue('--c').trim(); });
+  var ends = [STEPS[0], STEPS[0] + STEPS[1], 1];
+
+  var on = false, step = 0, tone = -1, lit = -1, frame = 0;
+
+  function clamp(v) { return v < 0 ? 0 : v > 1 ? 1 : v; }
+
+  // with .is-js on: does the whole step fit in the pinned stage? (wide: the copy under the navbar; narrow: the face keeps at least MIN_FACE)
+  function fitsPinned() {
+    var cs = window.getComputedStyle(stage);
+    var avail = stage.clientHeight - parseFloat(cs.paddingTop) - parseFloat(cs.paddingBottom);
+    return narrow.matches ? face.clientHeight >= MIN_FACE : copy.offsetHeight <= avail;
+  }
+  function enable() {
+    if (on) return;
+    section.classList.add('is-js');
+    if (window.innerHeight < SHORT || !fitsPinned()) { section.classList.remove('is-js'); return; }
+    on = true;
+    update();
+  }
+  function disable() {
+    if (!on) return;
+    on = false;
+    section.classList.remove('is-js');
+    section.removeAttribute('style');
+    section.setAttribute('data-step', '1');
+    zones.forEach(function (z) { z.classList.remove('is-on'); });
+    step = 0; tone = -1; lit = -1;
+  }
+  function update() {
+    frame = 0;
+    if (!on) return;
+    var vh = window.innerHeight;
+    var r = section.getBoundingClientRect();
+    var run = section.offsetHeight - stage.offsetHeight;
+    if (run <= 0) return;
+    var t = clamp(-r.top / run);                          // 0 at the moment the stage locks, 1 when it lets go
+    var enter = clamp((vh - r.top) / vh);                 // 0 while the section is below the screen, 1 when its top is at the top of it
+
+    var s = t < ends[0] ? 1 : t < ends[1] ? 2 : 3;
+    var p1 = clamp(t / STEPS[0]);
+    var p2 = clamp((t - ends[0]) / STEPS[1]);
+    var p3 = clamp((t - ends[1]) / STEPS[2]);
+    var local = [p1, p2, p3];
+
+    section.style.setProperty('--np-d1', (s > 1 ? 1 : clamp(enter * DRAW_ENTER + p1 * (1 - DRAW_ENTER))).toFixed(3));
+
+    if (s !== step) {
+      step = s;
+      section.setAttribute('data-step', String(s));
+    }
+
+    bars.forEach(function (bar, i) {
+      var f = i + 1 < s ? 1 : i + 1 > s ? 0 : local[i];
+      bar.style.setProperty('--f', f.toFixed(3));
+    });
+
+    // step 2: the tone in turn
+    if (swatches.length) {
+      var i2 = s === 2 ? Math.min(swatches.length - 1, Math.floor(p2 * swatches.length)) : s > 2 ? swatches.length - 1 : 0;
+      if (i2 !== tone) {
+        tone = i2;
+        section.style.setProperty('--np-ti', String(i2));
+        if (tones[i2]) section.style.setProperty('--np-tone', tones[i2]);
+      }
+    }
+
+    // step 3: the zones that are lit by now (all of them stay on once lit; none before the step)
+    var n = s < 3 ? 0 : ZONES_AT.filter(function (at) { return p3 >= at; }).length;
+    if (n !== lit) {
+      lit = n;
+      zones.forEach(function (z, i) { z.classList.toggle('is-on', i < n); });
+    }
+  }
+
+  function queue() {
+    if (!frame) frame = requestAnimationFrame(update);
+  }
+  function onResize() {
+    if (on && (window.innerHeight < SHORT || !fitsPinned())) disable();
+    else if (!on) enable();
+    queue();
+  }
+
+  window.addEventListener('scroll', queue, { passive: true });
+  window.addEventListener('resize', onResize);
+  window.addEventListener('load', onResize);   // the fonts and the images change the height of the copy
+  enable();
+})();
+-->

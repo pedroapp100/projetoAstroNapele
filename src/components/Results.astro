@@ -1,0 +1,64 @@
+---
+// Results.astro
+// Seção "Resultados" / Antes e Depois (Ato 4 · Prova)
+// Faixa contínua com 20 fotos de resultados reais da Napele Clínica
+// Drift contínuo a 44px/s, pausa ao hover/touch, e lightbox escuro em alta resolução com navegação e gestos
+const results = [
+  { id: "01", w: 1085, h: 800 },
+  { id: "02", w: 934, h: 800 },
+  { id: "03", w: 822, h: 800 },
+  { id: "04", w: 1066, h: 800 },
+  { id: "05", w: 952, h: 800 },
+  { id: "06", w: 800, h: 800 },
+  { id: "07", w: 800, h: 800 },
+  { id: "08", w: 1054, h: 800 },
+  { id: "09", w: 990, h: 800 },
+  { id: "10", w: 951, h: 800 },
+  { id: "11", w: 1171, h: 800 },
+  { id: "12", w: 800, h: 800 },
+  { id: "13", w: 1153, h: 800 },
+  { id: "14", w: 941, h: 800 },
+  { id: "15", w: 913, h: 800 },
+  { id: "16", w: 976, h: 800 },
+  { id: "17", w: 1001, h: 800 },
+  { id: "18", w: 800, h: 800 },
+  { id: "19", w: 947, h: 800 },
+  { id: "20", w: 946, h: 800 }
+];
+---
+
+<section class="np-results" aria-labelledby="np-results-title">
+  <div class="np-results__head">
+    <h2 class="np-results__title np-reveal" id="np-results-title">
+      Resultados de quem <em>escolheu a Napele</em>
+    </h2>
+    <p class="np-results__hint np-reveal">Toque ou clique em uma foto para ver de perto</p>
+  </div>
+
+  <div class="np-results__rail np-reveal">
+    <div class="np-results__track" id="np-results-track">
+      {results.map((item, index) => (
+        <figure
+          class="np-results__item"
+          role="button"
+          tabindex="0"
+          aria-label={`Ampliar resultado ${index + 1} de 20`}
+        >
+          <img
+            src={`/assets/results/${item.id}.webp`}
+            data-full={`/assets/results/${item.id}-lg.webp`}
+            width={item.w}
+            height={item.h}
+            alt="Antes e depois de tratamento na Napele"
+            loading="lazy"
+            decoding="async"
+          />
+        </figure>
+      ))}
+    </div>
+  </div>
+
+  <p class="np-results__note np-reveal">Resultados individuais variam.</p>
+</section>
+
+
