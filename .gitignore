@@ -7,6 +7,9 @@ dist/
 # dependencies
 node_modules/
 
+# vínculo local com o projeto da Vercel (gerado por `vercel link`)
+.vercel
+
 # logs
 npm-debug.log*
 yarn-debug.log*

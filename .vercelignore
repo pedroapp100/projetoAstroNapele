@@ -1,0 +1,21 @@
+# Só vale para deploy pelo CLI (`vercel deploy`), que envia a pasta inteira.
+# O build do site lê apenas src/, public/ e os arquivos de config: o resto não precisa subir.
+
+# design system (fonte; o site usa a cópia em public/assets) e materiais de trabalho
+design-sistem-napele/
+docs/
+tests/
+playwright.config.mjs
+test-results/
+playwright-report/
+
+# ferramentas locais
+.claude/
+.vscode/
+.superpowers/
+skills-lock.json
+
+# gerados
+node_modules/
+dist/
+.astro/
