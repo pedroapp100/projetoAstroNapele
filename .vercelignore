@@ -15,7 +15,7 @@ playwright-report/
 .superpowers/
 skills-lock.json
 
-# gerados
+# gerados (/dist/ só na raiz: sem a barra, ignoraria também public/assets/overview/wp-includes/js/dist/)
 node_modules/
-dist/
+/dist/
 .astro/

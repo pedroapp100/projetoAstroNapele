@@ -1,5 +1,5 @@
-# build output
-dist/
+# build output (só o da raiz: `dist/` sem a barra inicial também engolia public/assets/overview/wp-includes/js/dist/)
+/dist/
 
 # generated types
 .astro/
