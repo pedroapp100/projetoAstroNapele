@@ -14,7 +14,7 @@
    The picture catches up with the scroll a little late on purpose (CATCH), so a mouse wheel that moves in steps still looks like a glide.
    The fold is as tall as the screen, and the last stop ends well above its foot (more of it the taller the screen). When the gallery block of a tablet or a phone follows
    (.np-gallery), it is pulled up over that empty tail, so the last stop is followed by a gap of a few dozen pixels, not by the rest of a screen (--np-tail, below).
-   The video is only fetched when the track is two screens away. With prefers-reduced-motion, or without a video, nothing is pinned and the card stays a still of the facade. */
+   The video is only fetched when the track is three screens away, and is kept in memory so every seek is local (see "the video", below). With prefers-reduced-motion, or without a video, nothing is pinned and the card stays a still of the facade. */
 (function () {
   var track = document.getElementById('np-clinic');
   if (!track) return;
@@ -102,15 +102,29 @@
     return h;
   }
 
-  /* ---- the video: fetched late, seeked by the scroll (one seek at a time, the newest target waits its turn) ---- */
+  /* ---- the video: fetched late, kept in memory, seeked by the scroll (one seek at a time, the newest target waits its turn) ----
+     In memory (a blob), not streamed: a seek outside what is buffered is a byte-range request, one network round trip each, and on a phone's network that
+     is ~0.5 s a seek (measured at 170 ms / 9 Mbps: a fast flick got 3-4 picture updates a second); from memory every seek is local. It also needs no
+     server that answers byte ranges. The whole file comes down (5.5 MB on a phone, 12 MB on a desktop), so it starts three screens ahead, not two.
+     iOS paints a muted video only once it has been played (the seeks land and "seeked" fires, but the picture stays on one frame), so the video is primed
+     with a play() and a pause(): as soon as it has its metadata (a muted inline play() needs no gesture, except in Low Power Mode or with data saver on,
+     where it is refused), and again on every touch, click and scroll until one is accepted ("touchend" counts as a gesture, "touchstart" does not, so
+     a phone in Low Power Mode gets its chance when the finger lifts). A play() promise may stay pending for ever on iOS: the "priming" flag is let go
+     after 2 s so a later touch can try again. */
   var loaded = false, dur = 0, seeking = false, seekAt = 0, pending = -1;
+  var primed = false, priming = false, primeAt = 0;
+  var GESTURES = ['touchstart', 'touchend', 'pointerdown', 'click', 'scroll'];
   function load() {
     if (loaded) return;
     loaded = true;
-    var small = stacked.matches || (navigator.connection && navigator.connection.saveData);
-    video.src = video.getAttribute(small ? 'data-src-m' : 'data-src');
+    var light = stacked.matches || (navigator.connection && navigator.connection.saveData);
+    var url = video.getAttribute(light ? 'data-src-m' : 'data-src');
+    video.muted = true;                       // as properties, not only as attributes: that is what iOS reads
+    video.playsInline = true;
     video.preload = 'auto';
-    video.load();
+    fetch(url).then(function (r) { if (!r.ok) throw new Error(r.status); return r.blob(); }).then(function (b) {
+      video.src = URL.createObjectURL(b);     // the listeners below are on already: assigning src is what starts the load
+    }).catch(function () { video.src = url; });   // could not take it whole: stream it
   }
   function seek(t) {
     t = Math.max(0, Math.min(dur - .05, t));
@@ -120,24 +134,32 @@
     seekAt = performance.now();
     video.currentTime = t;
   }
-  // A server that does not answer byte ranges (python -m http.server, some old hosts) leaves the video unseekable: the browser can only play it from
-  // the start. Then take the whole file (12 MB) and play it from memory, where every point is reachable.
-  var inMemory = false;
-  function ensureSeekable() {
-    if (inMemory || (video.seekable.length && video.seekable.end(0) > 1)) return;
-    inMemory = true;
-    fetch(video.currentSrc || video.src).then(function (r) { return r.blob(); }).then(function (b) {
-      video.src = URL.createObjectURL(b);
-    }).catch(function () {});
+  function prime() {
+    if (primed || priming || !video.src) return;
+    priming = true;
+    primeAt = performance.now();
+    var letGo = function () { priming = false; };
+    setTimeout(letGo, 2000);
+    var ok = function () {
+      priming = false;
+      primed = true;
+      try { video.pause(); } catch (e) { /* nothing to pause */ }
+      // a primed decoder keeps the stale frame until it is asked for another time, and seek() will not ask when the scroll is already there: nudge it
+      if (dur) seek(video.currentTime + .05);
+      kick();
+    };
+    var started;
+    try { started = video.play(); } catch (e) { letGo(); return; }
+    if (started && started.then) started.then(ok, letGo); else ok();
   }
-  video.addEventListener('loadedmetadata', function () { dur = video.duration; });
-  video.addEventListener('loadeddata', function () {
-    ensureSeekable();
-    // iOS only paints the frames of a paused video it has played once (muted, so allowed)
-    var started = video.play();
-    if (started && started.then) started.then(function () { video.pause(); kick(); }, function () { kick(); });
-    else kick();
-  });
+  function onGesture(e) {
+    if (e.type === 'scroll' && performance.now() - primeAt < 500) return;   // a scroll fires all the time: do not hammer a phone that keeps refusing
+    prime();
+    if (primed) GESTURES.forEach(function (ev) { window.removeEventListener(ev, onGesture); });
+  }
+  GESTURES.forEach(function (ev) { window.addEventListener(ev, onGesture, { passive: true }); });
+  video.addEventListener('loadedmetadata', function () { dur = video.duration; prime(); });
+  video.addEventListener('loadeddata', function () { prime(); kick(); });
   video.addEventListener('seeked', function () {
     seeking = false;
     if (pending >= 0) { var t = pending; pending = -1; seek(t); }
@@ -145,7 +167,7 @@
   if ('IntersectionObserver' in window) {
     new IntersectionObserver(function (entries, io) {
       if (entries[0].isIntersecting) { load(); io.disconnect(); }
-    }, { rootMargin: '200% 0px' }).observe(track);
+    }, { rootMargin: '300% 0px' }).observe(track);
   } else load();
 
   /* ---- geometry: where the card is, where the frame and the caption end up (all in the fold's own coordinates) ---- */
