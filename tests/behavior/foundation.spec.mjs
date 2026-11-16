@@ -58,7 +58,7 @@ test('nenhum ancestral do passeio corta o position: sticky', async ({ page }) =>
 
 test('cada script do design system carrega uma única vez', async ({ page }) => {
   await page.goto('/');
-  const counts = await page.evaluate((names) => Object.fromEntries(names.map((n) => [n, document.querySelectorAll(`script[src$="/assets/${n}"]`).length])), NAPELE_SCRIPTS);
+  const counts = await page.evaluate((names) => Object.fromEntries(names.map((n) => [n, document.querySelectorAll(`script[src*="/assets/${n}"]`).length])), NAPELE_SCRIPTS);
   expect(counts).toEqual(Object.fromEntries(NAPELE_SCRIPTS.map((n) => [n, 1])));
 });
 

@@ -1,6 +1,7 @@
 ---
 // Layout fiel ao Overview do design system: o <head> e a cadeia de scripts seguem a ordem exata de
 // design-sistem-napele/assets/overview/index.html (linhas 51–134 e 926–981). Nada aqui sobrescreve o napele.css.
+import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import WhatsappFloat from '../components/WhatsappFloat.astro';
@@ -23,6 +24,15 @@ const {
 const isTreatment = variant === 'treatment';
 
 const O = '/assets/overview/';
+
+// A Vercel entrega tudo em /assets/ com `max-age=31536000, immutable` (um ano) e sem versão na URL: quem já visitou o site continuava com o CSS e o JS antigos.
+// `?v=<hash do conteúdo>` muda o endereço quando o arquivo muda, então qualquer visitante baixa a versão nova na visita seguinte (o HTML é sempre revalidado).
+// Sem cache em memória: no `dev` o arquivo pode mudar entre uma página e outra; são poucos arquivos pequenos.
+// Quem lê `script.src` (preloader, tiles, contact) não se afeta: `new URL(relativo, src)` ignora a query, e o contact a descarta com `.*$`.
+function ver(file: string): string {
+  const hash = createHash('sha1').update(readFileSync(join(process.cwd(), 'public/assets', file))).digest('hex');
+  return `?v=${hash.slice(0, 8)}`;
+}
 
 // As duas configs inline do Elementor vêm do próprio index.html (fonte única, sem cópia que se desatualize);
 // só as URLs relativas ganham o prefixo /assets/overview/, porque aqui a página fica em "/".
@@ -139,11 +149,11 @@ const fontsCss = `
     <style is:inline set:html={fontsCss}></style>
 
     <!-- Fundamentos Napele: tokens, cores, textura e seções. Carregado por último para vencer o kit do Elementor -->
-    <link rel="stylesheet" href="/assets/napele.css" />
-    {!isTreatment && <link rel="stylesheet" href="/assets/napele-preloader.css" />}
-    <script is:inline src="/assets/napele-site.js"></script>
+    <link rel="stylesheet" href={`/assets/napele.css${ver('napele.css')}`} />
+    {!isTreatment && <link rel="stylesheet" href={`/assets/napele-preloader.css${ver('napele-preloader.css')}`} />}
+    <script is:inline src={`/assets/napele-site.js${ver('napele-site.js')}`}></script>
     {!isTreatment && <script is:inline src="/assets/vendor/gsap.min.js"></script>}
-    {!isTreatment && <script is:inline src="/assets/napele-preloader.js"></script>}
+    {!isTreatment && <script is:inline src={`/assets/napele-preloader.js${ver('napele-preloader.js')}`}></script>}
   </head>
   <body
     class={isTreatment
@@ -170,6 +180,6 @@ const fontsCss = `
     <script is:inline>window.addEventListener('DOMContentLoaded', function () { jQuery.uiBackCompat = true; });</script>
     {elementorChain.map((src) => <script is:inline src={O + src}></script>)}
     <script is:inline>window.addEventListener('DOMContentLoaded', function () { wp.i18n.setLocaleData({ 'text direction\u0004ltr': ['ltr'] }); });</script>
-    {(isTreatment ? treatmentScripts : napeleScripts).map((src) => <script is:inline src={`/assets/${src}`}></script>)}
+    {(isTreatment ? treatmentScripts : napeleScripts).map((src) => <script is:inline src={`/assets/${src}${ver(src)}`}></script>)}
   </body>
 </html>
