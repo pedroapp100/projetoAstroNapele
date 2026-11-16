@@ -1,11 +1,13 @@
 /* Napele preloader (Overview page only): the counter of the "Preloader de Cortinas" prototype, then the blinds ("persiana") of the SCS site as its curtain.
    Loaded in <head> after vendor/gsap.min.js. Order of things:
      1. here, at once: html.np-pre-on (napele-preloader.css) locks the page, covers it and hides the hero's content, so nothing flashes;
-     2. at DOMContentLoaded: builds #np-pre (counter, line, title, blinds) and the timeline;
+     2. at DOMContentLoaded: builds #np-pre (ground, logo, counter, line, title, blinds) and the timeline;
      3. at the end: unlocks, removes everything it made, and tells the catalog page (postMessage) that its menu may come in.
    Photo, timings and the hero selector live here; the look lives in napele-preloader.css.
    Phases, in seconds (each phase can be stretched, its inner times scale together):
-     1  counter 000 > 100, line slides, block leaves        F.p1   (counter 2 / slide 2.5 / exit 1 / gap 0.5, at 5 s)
+     0  the logo alone on the site's ground (the dark veil     LOGO_T (T0 = 3 s: logo in 0.9, out from 2.2 while the photo fades in over 0.8;
+        under the site's grain), then the photo comes up        if the logo is not ready in time the timeline starts at outAt: no logo phase)
+     1  counter 000 > 100, line slides, block leaves        F.p1   (counter 2 / slide 2.5 / exit 1 / gap 0.5, at 5 s; starts at T0)
      2  the blinds open: the counter's photo, cut into 6      F.p2   (slat 1.35 + 0.08 per extra slat, at the original pace)
         slats, slides off to the left one slat after the other (4 rows sliding down on a tall window), and the hero,
         which has not moved, is uncovered
@@ -15,6 +17,7 @@
 
   var script = document.currentScript;
   var base = new URL('hero/curtains/', script.src).href;
+  var logoUrl = new URL('../logo/LogoNapele.svg', script.src).href;   // the logo of phase 0 (assets/ and logo/ sit side by side, in the design system and in the site)
   var root = document.documentElement;
 
   // the photo behind the counter (BACKDROP, assets/hero/curtains/; napele-preloader.css points at the same file), a straight copy (no re-encode) of
@@ -23,7 +26,10 @@
   // The blinds are this same photo, same crop, cut into slats: SLATS_WIDE vertical ones, or SLATS_TALL horizontal ones on a tall window (a phone).
   var BACKDROP = 'bgpreloader-fundo.webp?v=1';   // ?v= : raise it when the photo is replaced under the same name, or a browser keeps showing the old one. 2560x1444 WebP of public/assets/Fundo Preloader  (2).png (the backdrop is drawn 1.12x the window to start with, so it is sharp up to a ~2285 px window at 1x, or a ~1140 px one at 2x)
   var SLATS_WIDE = 6, SLATS_TALL = 4;
-  var F = { p1: 6.5, p2: 1.75, p3: 2 };        // 10.25 s in total (the prototype's counter and menu, the blinds of the SCS site at their own pace)
+  var F = { p1: 4.5, p2: 1.75, p3: 2 };        // 11.25 s in total: LOGO_T.T0 (3) + p1 + p2 + p3 (the prototype's counter and menu, the blinds of the SCS site at their own pace)
+  // phase 0, the logo alone. The logo fades in (fadeIn s), leaves from outAt (fadeOut s) while the photo comes up out of the ground (photoFade s from
+  // outAt: a cross-fade), and the counter phase (counter, title) starts at T0. The photo's zoom starts at outAt and still ends at 1 when the blinds open
+  var LOGO_T = { T0: 3.0, outAt: 2.2, fadeIn: 0.9, fadeOut: 0.5, photoFade: 0.8 };
   var HERO = '.elementor-11 .elementor-element.elementor-element-d4f0def';   // the Overview hero (same host as napele-tiles.js)
 
   var reduced = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -131,6 +137,13 @@
     }).catch(function () { return false; });
   }
 
+  // The logo (an SVG of ~470 KB) has to be decoded before the black cover comes off, or it pops in half drawn: it gets the same short wait as the photo
+  // (at most 1.2 s). Resolves true when it is decoded, false if it failed or took too long (the timeline then starts at LOGO_T.outAt, with no logo phase)
+  function logoReady(img) {
+    var decoded = img.decode ? img.decode().then(function () { return true; }) : Promise.reject(new Error('no decode()'));
+    return Promise.race([decoded, new Promise(function (r) { setTimeout(function () { r(false); }, 1200); })]).catch(function () { return false; });
+  }
+
   function init() {
     var hero = document.querySelector(HERO);
     if (!window.gsap || !hero) { finish(); return; }   // no GSAP or no hero: never leave the page covered
@@ -149,7 +162,9 @@
     var el = document.createElement('div');
     el.id = 'np-pre';
     el.setAttribute('aria-hidden', 'true');
-    el.innerHTML = '<div class="np-pre__bg"></div>'
+    el.innerHTML = '<div class="np-pre__ground"></div>'
+      + '<div class="np-pre__bg"></div>'
+      + '<div class="np-pre__logo"><img alt="" decoding="async" src="' + logoUrl + '"></div>'
       + '<div class="np-pre__blinds np-pre__blinds--' + (rows ? 'rows' : 'cols') + '" style="--n:' + n + '">' + cells + '</div>'
       + '<div class="np-pre__kick"><span class="np-pre__kick-t">Conheça</span><i class="np-pre__kick-rule"></i></div>'
       + '<div class="np-pre__title" translate="no">'
@@ -169,18 +184,23 @@
     document.body.appendChild(skip);
     document.addEventListener('keydown', onKey);
 
-    // np-pre-ready (the black cover over #np-pre comes off) is added below, once the backdrop photo is decoded
+    // np-pre-ready (the cover over #np-pre comes off) is added below, once the backdrop photo and the logo are decoded
     state.el = el; state.skip = skip;
     state.kids = hero.querySelectorAll(':scope > .e-con-inner > *');
 
     // timings: the prototype's numbers for the counter and the menu, the SCS site's for the blinds (slat 1.35 s, 0.08 s between slats), scaled per phase
+    var T0 = LOGO_T.T0;                        // the counter phase starts here, after the logo; every time derived from t1 (tExit, t2, tEnd) shifts with it
     var f1 = F.p1 / 5, f2 = F.p2 / (1.35 + 0.08 * (SLATS_WIDE - 1)), f3 = F.p3 / 1.5;
-    var T = { count: 2 * f1, t1: 2 * f1, slide: 2.5 * f1, exitD: 1 * f1, gap: 0.5 * f1,
+    var T = { count: 2 * f1, t1: T0 + 2 * f1, slide: 2.5 * f1, exitD: 1 * f1, gap: 0.5 * f1,
               dur: 1.35 * f2, stag: 0.08 * f2, fade: 1 * f3, off: 0.5 * f3 };
     var tExit = T.t1 + T.slide, t2 = tExit + T.gap, span = T.dur + T.stag * (n - 1), tEnd = t2 + span;
 
     var num = el.querySelector('.np-pre__num'), count = el.querySelector('.np-pre__count'), line = el.querySelector('.np-pre__line');
     var bg = el.querySelector('.np-pre__bg'), blinds = el.querySelector('.np-pre__blinds'), slats = el.querySelectorAll('.np-pre__slat');
+    var ground = el.querySelector('.np-pre__ground'), logoEl = el.querySelector('.np-pre__logo'), logoImg = logoEl.firstChild;
+    // The slats are opaque (a dark of their own, for the day their photo is missing) and cover the whole window: until the photo is up over them they would hide the
+    // ground and its grain, which is what the logo sits on. So they wait invisible and come in once the photo is opaque (below), unseen behind it
+    gsap.set(blinds, { autoAlpha: 0 });
     var c = { v: 0 };
     var slatsOk = false;                       // set by paintSlats(), long before t2
     var slatTo = { duration: T.dur, ease: 'power4.inOut', stagger: T.stag };
@@ -190,21 +210,30 @@
     // menu has to be told to wait again
     var tl = gsap.timeline({ paused: true, onStart: function () { post('on'); }, onComplete: finish });
     state.tl = tl;
-    tl.to(c, { v: 100, duration: T.count, ease: 'power2.inOut', onUpdate: function () { num.textContent = String(Math.round(c.v)).padStart(3, '0'); } }, 0)
+    // phase 0: the logo alone, over the ground (the veil and the grain, napele-preloader.css). It fades in and settles (0.96 > 1) and leaves at outAt; the photo
+    // comes up out of the ground as it leaves. The photo and the counter are born invisible (fromTo renders its start at once), so nothing shows before its turn
+    tl.fromTo(logoEl, { autoAlpha: 0 }, { autoAlpha: 1, duration: LOGO_T.fadeIn, ease: 'power2.out' }, 0)
+      .fromTo(logoImg, { scale: 0.96 }, { scale: 1, duration: LOGO_T.outAt + LOGO_T.fadeOut, ease: 'power1.out' }, 0)
+      .to(logoEl, { autoAlpha: 0, duration: LOGO_T.fadeOut, ease: 'power2.in' }, LOGO_T.outAt)
+      .fromTo(bg, { autoAlpha: 0 }, { autoAlpha: 1, duration: LOGO_T.photoFade, ease: 'power1.inOut' }, LOGO_T.outAt)
+      .set(blinds, { autoAlpha: 1 }, LOGO_T.outAt + LOGO_T.photoFade)      // the photo is opaque now: the slats take their place under it, unseen
+      .fromTo(count, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.6, ease: 'power1.out' }, T0);
+    tl.to(c, { v: 100, duration: T.count, ease: 'power2.inOut', onUpdate: function () { num.textContent = String(Math.round(c.v)).padStart(3, '0'); } }, T0)
       .to(count, { xPercent: -65, duration: T.slide, ease: 'expo.out' }, T.t1)
       .to(line, { width: '65%', duration: T.slide, ease: 'expo.out' }, T.t1)
       .to(count, { xPercent: -120, autoAlpha: 0, duration: T.exitD, ease: 'expo.in' }, tExit)
       .to(line, { width: '120%', autoAlpha: 0, duration: T.exitD, ease: 'expo.in' }, tExit)
-      // the backdrop of the counter (a photo) settles slowly, 1.12 > 1, while the number counts. It has reached 1 at t2, the instant the blinds open
-      .fromTo(bg, { scale: 1.12 }, { scale: 1, duration: t2, ease: 'power1.out' }, 0)
+      // the backdrop of the counter (a photo) settles slowly, 1.12 > 1, from the moment it comes up (outAt). It has reached 1 at t2, the instant the blinds open
+      .fromTo(bg, { scale: 1.12 }, { scale: 1, duration: t2 - LOGO_T.outAt, ease: 'power1.out' }, LOGO_T.outAt)
       // t2, the blinds: the slats (the same photo, same crop, waiting under the backdrop) take its place at once, so the swap is not seen, and #np-pre
-      // stops being a black ground (what shows between the slats as they leave is the hero). Without the slats' photos (paintSlats() failed or was
-      // late) the backdrop fades out over the dark slats instead
+      // stops being a ground (what shows between the slats as they leave is the hero: the ground and its grain go too, or the grain would double over the
+      // hero's own). Without the slats' photos (paintSlats() failed or was late) the backdrop fades out over the dark slats instead
       .call(function () {
         if (slatsOk) gsap.set(bg, { autoAlpha: 0 });
         else gsap.to(bg, { autoAlpha: 0, duration: T.dur * 0.4, ease: 'none' });
       }, null, t2)
       .set(el, { backgroundColor: 'rgba(0,0,0,0)' }, t2)
+      .set(ground, { autoAlpha: 0 }, t2)
       .to(slats, slatTo, t2)
       // phase 3: the catalog menu and the hero text come in; whatever is left of the overlay goes
       .call(function () { post('nav'); skip.hidden = true; }, null, tEnd)
@@ -216,7 +245,7 @@
     // (name first, "Fialho" a beat later); both leave with the counter, upwards, as the blinds start
     var kick = el.querySelector('.np-pre__kick-t'), kickRule = el.querySelector('.np-pre__kick-rule');
     var rises = el.querySelectorAll('.np-pre__rise'), rules = el.querySelectorAll('.np-pre__rule');
-    var tIn = 0.4;
+    var tIn = T0 + 0.4;
     tl.fromTo(kick, { autoAlpha: 0, y: 10 }, { autoAlpha: 1, y: 0, duration: 1.2, ease: 'power2.out' }, tIn)
       .fromTo(kickRule, { scaleX: 0 }, { scaleX: 1, duration: 1.4, ease: 'expo.out' }, tIn + 0.3)
       .fromTo(rises[0], { yPercent: 115 }, { yPercent: 0, duration: 1.6, ease: 'expo.out' }, tIn + 0.2)
@@ -236,21 +265,24 @@
     // after them: a big photo decoded and painted at the instant it is revealed is what showed as bands
     tl.call(function () {
       paintSlats(blinds, slats, rows, BACKDROP, 0.5, 0.12).then(function (ok) { slatsOk = ok; });
-    }, null, 1.5);
+    }, null, T0 + 1.5);
     tl.call(function () {
       var person = hero.querySelector('img.np-person');
       if (person && person.decode) person.decode().catch(function () {});
-    }, null, 2.5);
-    // The photo sits under the black cover (napele-preloader.css) until it is painted and has had two frames to be shown: the first thing
-    // the eye gets is the whole picture, not the few tiles of it that were ready. The timeout covers a hidden tab, where frames do not run.
-    var started = false;
+    }, null, T0 + 2.5);
+    // The photo and the logo sit under the cover (napele-preloader.css) until they are decoded (the photo painted) and have had two frames to be shown: the first
+    // thing the eye gets is the whole picture, not the few tiles of it that were ready. The timeout covers a hidden tab, where frames do not run.
+    // No logo (it failed or came too late): it is taken out and the timeline starts at outAt, with the photo coming up out of the ground and no logo phase
+    var started = false, logoOk = true;
     function go() {
       if (state.done || started) return;
       started = true;
+      if (!logoOk) logoEl.remove();
       root.classList.add('np-pre-ready');
-      tl.play();
+      tl.play(logoOk ? 0 : LOGO_T.outAt);
     }
-    Promise.all([fontReady, photoReady]).then(function () {
+    Promise.all([fontReady, photoReady, logoReady(logoImg)]).then(function (r) {
+      logoOk = r[2];
       requestAnimationFrame(function () { requestAnimationFrame(go); });
       setTimeout(go, 400);
     });

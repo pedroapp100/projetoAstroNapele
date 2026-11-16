@@ -4,23 +4,35 @@
    Everything below hangs off html.np-pre-on, which the script adds before the first paint and removes when it is done (or gives up). */
 
 /* ---- Lock: the page stays at the top while it plays. scrollbar-gutter keeps the width of the hero the same with and without the
-   scrollbar, so nothing shifts when the lock is lifted. The gutter is painted with the ground colour, black like everything the curtains
-   run over: in cream it was a light bar down the right edge for the whole 12 s. */
+   scrollbar, so nothing shifts when the lock is lifted. The gutter is painted with the ground colour, dark like everything the curtains
+   run over: in cream it was a light bar down the right edge for the whole 12 s.
+   --np-pre-veil is the ground of the opening: the dark of the hero's veil (napele.css --np-dark-rgb, 36,35,33; the fallback is the same colour for
+   the day this file loads without it), not a dead black. It is shared by this gutter, the first-paint cover and #np-pre, so no step is a jump. */
 html.np-pre-on{
+  --np-pre-veil:rgb(var(--np-dark-rgb,36,35,33));
   overflow:hidden;
   scrollbar-gutter:stable;
-  background:var(--np-black);
+  background:var(--np-pre-veil);
 }
 
-/* ---- First paint: a cover until the script has built #np-pre AND its backdrop photo is decoded (np-pre-ready), so the hero never flashes and
-   the photo never shows half-painted. Dark, like the counter backdrop photo. Above #np-pre on purpose: #np-pre is already there, being painted,
-   underneath. */
+/* ---- First paint: a cover until the script has built #np-pre AND its backdrop photo and logo are decoded (np-pre-ready), so the hero never flashes and
+   the photo never shows half-painted. The same ground as the logo phase, grain included (::after, below), so when it comes off nothing changes but the
+   logo fading in. Above #np-pre on purpose: #np-pre is already there, being painted, underneath. */
 html.np-pre-on:not(.np-pre-ready)::before{
   content:"";
   position:fixed;
   inset:0;
   z-index:10005;
-  background:var(--np-black);
+  background:var(--np-pre-veil);
+}
+html.np-pre-on:not(.np-pre-ready)::after{
+  content:"";
+  position:fixed;
+  inset:0;
+  z-index:10005;
+  pointer-events:none;
+  background:url("overview/wp-content/uploads/2024/02/noise-01.webp") repeat center center;   /* the site's own grain (the kit's .bg), as .np-pre__ground::after below */
+  opacity:.4;
 }
 
 /* ---- The hero stays where it is, under #np-pre (z 10000): the blinds slide off it and uncover it. Only its content waits for phase 3 (the script
@@ -37,7 +49,7 @@ html.np-pre-on .np-tiles__track{animation-play-state:paused}
 
 /* ---- The overlay. Units are cqw/cqh of the window (container-type:size), like the stage of the prototype. */
 #np-pre{
-  --np-pre-bg:var(--np-black);      /* the ground until the blinds open (the script then makes #np-pre transparent, so the hero shows between the slats). Black on purpose: the backdrop and the hero are dark, and a light ground here is a full-screen flash if the backdrop photo is late */
+  --np-pre-bg:var(--np-pre-veil);      /* the ground until the blinds open (the script then makes #np-pre transparent, so the hero shows between the slats). Dark on purpose: the backdrop and the hero are dark, and a light ground here is a full-screen flash if the backdrop photo is late */
   --np-pre-ink:var(--np-gold-100);     /* counter and line: light gold, on the dark photo behind the counter */
   --np-pre-grain:0;      /* grain over the photos, 0 = none (set to 0 at the owner's request: the photo shows exactly as it is). noise-white.png is ~34% alpha: .10 lifts a dark photo by about 6 levels, +-4 */
   position:fixed;
@@ -49,6 +61,32 @@ html.np-pre-on .np-tiles__track{animation-play-state:paused}
   background:var(--np-pre-bg);
   color:var(--np-pre-ink);
   font-family:"aeonik",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+
+/* phase 0 ground: the site's dark (the veil colour) under the site's own grain (the kit's .bg: noise-01.webp, repeated, opacity .4, the same layers the
+   footer and every dark section carry), so the logo never sits on a flat void. It is the lowest layer (z -1 in #np-pre's stacking context): the photo comes
+   up over it, and the script hides it when the blinds open, so the grain does not double over the hero's own. */
+.np-pre__ground{
+  position:absolute;
+  inset:0;
+  z-index:-1;
+  pointer-events:none;
+  background:var(--np-pre-veil);
+}
+.np-pre__ground::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:url("overview/wp-content/uploads/2024/02/noise-01.webp") repeat center center;
+  opacity:.4;
+}
+
+/* phase 0, the logo alone: centred, above the backdrop (z 1) and the blinds. The script fades it in, then out as the photo comes up.
+   Widths are in cqw of the window like everything else here: 26 cqw (at most 520 px) on a wide window, 58 cqw on a tall one (a phone) */
+.np-pre__logo{position:absolute;inset:0;z-index:3;display:flex;align-items:center;justify-content:center;pointer-events:none}
+.np-pre__logo img{display:block;width:min(26cqw,520px);height:auto;will-change:transform}
+@container (max-aspect-ratio:1/1){
+  .np-pre__logo img{width:58cqw}
 }
 
 /* counter backdrop: a photo (bgpreloader-fundo.webp, in assets/hero/curtains/: WebP of assets/Fundo Preloader  (2).png, 2560 px), as it is, no veil over it; the script zooms it 1.12 > 1 while the number counts and hides it, handing over to the slats, when the blinds open */
