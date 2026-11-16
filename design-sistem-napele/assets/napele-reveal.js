@@ -49,11 +49,40 @@
       }
     });
   }
+  /* WebKit (the iPhone's Safari) does not paint a headline's background-clip:text through the inline-block words inside it: the headline vanished while the
+     solid-colour text under it showed (measured: 0% light pixels, against ~10% once the gradient sits on the words). So a headline that is a clipped gradient
+     hands it down to its words (napele.css, "mask: headline words"): the headline stops painting it (.np-rv-grad), --np-grad keeps the gradient, and each word
+     paints its own slice of it, as wide as the whole headline (--np-gw) and shifted by where the word sits in it (--np-gx), so it still runs across the
+     headline as one. The slices are measured again when the headline or a word changes size (a wrap, the web font arriving, a rotated phone). */
+  function gradientToWords(h) {
+    var cs = getComputedStyle(h);
+    if ((cs.webkitBackgroundClip || cs.backgroundClip) !== 'text' || cs.backgroundImage === 'none') return;
+    h.style.setProperty('--np-grad', cs.backgroundImage);
+    h.classList.add('np-rv-grad');
+    var inner = $$('.np-rv-wi', h);
+    function place() {
+      var box = h.getBoundingClientRect();
+      inner.forEach(function (wi) {
+        wi.style.setProperty('--np-gx', (box.left - wi.getBoundingClientRect().left) + 'px');
+        wi.style.setProperty('--np-gw', box.width + 'px');
+      });
+    }
+    place();
+    if ('ResizeObserver' in window) {
+      var ro = new ResizeObserver(place);
+      ro.observe(h);
+      inner.forEach(function (wi) { ro.observe(wi); });
+    } else {
+      window.addEventListener('resize', place);
+    }
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(place);
+  }
   function split(h) {
     if (h.__npRvWords) return h.__npRvWords;
     var words = [];
     splitNode(h, words);
     h.__npRvWords = words;
+    gradientToWords(h);
     return words;
   }
   // the delay of each word: by line (the words of a line come in together, a hair apart), or one by one

@@ -1,8 +1,9 @@
 // Paridade e comportamento do site Astro contra o design system.
 // Requer o servidor em http://localhost:4321  (AGENTS.md: `astro dev --background`).
-import { defineConfig } from '@playwright/test';
+import { defineConfig, devices } from '@playwright/test';
 
-const viewport = (name, width, height) => ({ name, use: { viewport: { width, height } } });
+// usa o Google Chrome já instalado: nenhum navegador é baixado (o `channel` só existe para o Chromium, por isso não fica no `use` global)
+const viewport = (name, width, height) => ({ name, use: { channel: 'chrome', viewport: { width, height } } });
 
 export default defineConfig({
   testDir: './tests',
@@ -11,7 +12,6 @@ export default defineConfig({
   reporter: [['list']],
   use: {
     baseURL: 'http://localhost:4321',
-    channel: 'chrome', // usa o Google Chrome já instalado: nenhum navegador é baixado
     headless: true,
   },
   projects: [
@@ -19,5 +19,8 @@ export default defineConfig({
     viewport('tablet-l', 1024, 768),
     viewport('tablet', 768, 1024),
     viewport('mobile', 390, 844),
+    // iPhone: o WebKit do Playwright (o mesmo motor do Safari). Só roda os testes `ios-*`: os outros foram escritos contra o Chrome.
+    // Precisa de um download único: `npx playwright install webkit`.
+    { name: 'iphone', testMatch: /ios-.*\.spec\.mjs$/, use: { ...devices['iPhone 13'] } },
   ],
 });
