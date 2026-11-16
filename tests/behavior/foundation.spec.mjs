@@ -28,8 +28,9 @@ async function problemsOf(context, url) {
 test('a página não tem nenhum erro ou arquivo faltando além dos que o Overview original já tem', async ({ context }) => {
   const original = await problemsOf(context, '/assets/overview/index.html');
   const site = await problemsOf(context, '/');
-  // TEMPORÁRIO (remover na Tarefa 12): sem `data-e-type`/`data-settings` no markup (causa C7), o Elementor tenta
-  // carregar todos os chunks. Some sozinho quando cada seção voltar a ser cópia literal do index.html.
+  // Os chunks do Elementor (js/chunks/) não existem no export: o Overview original e o site os pedem do mesmo jeito (medido em 2026-11-16; os atributos
+  // `data-e-type`/`data-settings` dos 59 elementos são idênticos, então não era o markup). No site o napele-site.js registra os três como "sem efeito"
+  // e tests/behavior/elementor-chunks.spec.mjs exige zero pedidos e zero erros; este filtro só impede que o lado do original contamine a comparação.
   const chunkDoElementor = (p) => /elementor\/assets\/js\/chunks\/|failed to load chunk/.test(p);
   const novos = site.filter((p) => !original.includes(p) && !chunkDoElementor(p));
   expect(novos).toEqual([]);

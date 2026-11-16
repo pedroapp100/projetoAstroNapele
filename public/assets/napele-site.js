@@ -19,6 +19,20 @@
     });
   } catch (err) { /* sem o adaptador a navbar apenas não recebe as mensagens do pré-loader */ }
 
+  /* Módulos do Elementor que a página não usa. O Elementor 4 carrega "chunks" sob demanda (js/chunks/<nome>.min.js) e pede, para todo contêiner,
+     background-slideshow e background-video, e text-editor para o widget de texto. O export do design system não traz essa pasta, e a página não tem
+     vídeo de fundo, slideshow nem capitular: eram 3 pedidos que davam 404 (403 na Vercel) e ~150 erros no console em toda visita.
+     Antes de ir à rede o Elementor consulta window.__elementorChunks[nome] e espera { default: ClasseDoHandler }; aqui os três já nascem registrados
+     como um handler que não faz nada, então não há pedido nem erro. ATENÇÃO: se um dia a página ganhar vídeo ou slideshow de fundo, ou capitular no
+     texto, estes três têm de sair daqui e o js/chunks/ real do plugin entrar em /assets/overview/wp-content/plugins/elementor/assets/. */
+  var chunks = window.__elementorChunks = window.__elementorChunks || {};
+  function NoHandler() {}
+  NoHandler.prototype.getConstructorID = function () { return 'napele-no-handler'; };
+  NoHandler.prototype.onDestroy = function () {};
+  ['background-slideshow', 'background-video', 'text-editor'].forEach(function (nome) {
+    if (!chunks[nome]) chunks[nome] = { default: NoHandler };
+  });
+
   /* O que o napele-nav.js só faz no lado "iframe" (linhas 80–105 dele) e que no site precisa rodar na mesma página: o
      conteúdo do hero esmaece e sobe 60px enquanto o hero sai da tela (sem isso o texto desliza por baixo da navbar
      transparente) e a navbar vira vidro escuro depois de 70% da altura do hero. A navbar recebe {npNavScrolled}

@@ -67,3 +67,7 @@
 
 - [ ] **Step 1:** rodar a suíte de comportamento inteira e a paridade em `desktop` e `mobile`; comparar com a linha de base (só `paridade: clinica` no celular falha). `npm run build` termina sem erro.
 - [ ] **Step 2:** `git pull` (esperado: sem conflito). **Não** fazer `git push` sem o dono confirmar: é o que publica em produção.
+
+### Task 4 (acrescentada): erros de chunk do Elementor
+
+O dono pediu para acabar com os ~150 erros do console (3 módulos do Elementor que o export não traz: `background-video`, `background-slideshow`, `text-editor`; 403 na Vercel) e depois "aplicar a correção e publicar". O Elementor consulta `window.__elementorChunks[nome]` antes de ir à rede e espera `{ default: ClasseDoHandler }`; `public/assets/napele-site.js` (o adaptador do site, carregado antes do Elementor) registra os três como um handler que não faz nada. A página não usa vídeo/slideshow de fundo nem capitular (medido). Teste: `tests/behavior/elementor-chunks.spec.mjs` (zero pedidos a `/js/chunks/`, zero erros de chunk, o módulo é instanciável, o carrossel Swiper continua inicializado), visto falhar antes e passar depois.
