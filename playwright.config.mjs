@@ -19,8 +19,8 @@ export default defineConfig({
     viewport('tablet-l', 1024, 768),
     viewport('tablet', 768, 1024),
     viewport('mobile', 390, 844),
-    // iPhone: o WebKit do Playwright (o mesmo motor do Safari). Só roda os testes `ios-*`: os outros foram escritos contra o Chrome.
+    // iPhone: o WebKit do Playwright (o mesmo motor do Safari). Só roda os testes `ios-*` e `celular-*`: os outros foram escritos contra o Chrome.
     // Precisa de um download único: `npx playwright install webkit`.
-    { name: 'iphone', testMatch: /ios-.*\.spec\.mjs$/, use: { ...devices['iPhone 13'] } },
+    { name: 'iphone', testMatch: /(ios|celular)-.*\.spec\.mjs$/, use: { ...devices['iPhone 13'] } },
   ],
 });

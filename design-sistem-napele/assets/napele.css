@@ -274,8 +274,13 @@ body:is(.home,.np-treatment) .elementor-11 .elementor-element-d4f0def[data-np-ve
 body:is(.home,.np-treatment) .elementor-11 .elementor-element-d4f0def[data-np-veil="dark"] .elementor-element-5d30987 .elementor-icon-list-icon svg{fill:var(--np-gold-300)}
 /* name lockup: replaces the "Incididunt Ut" chip in the Overview hero. The doctor's name in gold script
    (assets/hero/nayana-fialho.svg, colour baked into the SVG, viewBox cropped to the lettering so its left edge
-   lines up with the headline). Sized by height; hidden on mobile like the chip it replaced. */
+   lines up with the headline). Sized by height. On a phone (up to 767px) it is no longer hidden, as the chip it replaced was: it sits centred between the photo
+   and the headline, over the lower part of her dark blazer (the hero's content is anchored to the bottom and the hero is a screen tall, so it takes the free
+   space above the headline and moves nothing). 44-56px tall (12.5vw), so the thin script stays legible, with a dark halo (two soft shadows) so the strokes keep their edge over her white blouse. */
 .elementor-11 .elementor-element-d4f0def .np-name img{display:block;height:calc(56 * var(--np-u));width:auto;max-width:100%}
+@media(max-width:767px){
+  .elementor-11 .elementor-element-d4f0def .np-name img{height:clamp(44px,12.5vw,56px);margin-inline:auto;filter:drop-shadow(0 0 7px rgba(0,0,0,.8)) drop-shadow(0 1px 2px rgba(0,0,0,.7))}
+}
 /* her dark blazer would melt into a dark veil: thin light rim + deeper shadow */
 .elementor-11 .elementor-element-d4f0def[data-np-veil="dark"] > img.np-person{
   filter:drop-shadow(0 0 1.5px rgba(var(--np-cream-rgb),.5)) drop-shadow(0 18px 40px rgba(0,0,0,.5));
