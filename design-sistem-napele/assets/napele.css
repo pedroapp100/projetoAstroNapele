@@ -1116,39 +1116,12 @@ body a.np-icon--ink:active{color:var(--np-gold-700)}
   .elementor-28 .elementor-element.elementor-element-2a748c7 img{width:calc(250 * var(--np-u));max-width:100%}
 }
 
-/* ---- Footer social icons: round gold-outline buttons, the same language as the lightbox arrows (.np-lb__nav) and the
-   secondary button. The Phosphor glyphs stay (same family as the rest of the icons); they just take the gold instead of the
-   loose cream. Hover fills with the primary's gold (var(--np-gold-100) -> var(--np-gold-500)) and lifts 3px, like the secondary button. */
-html body .elementor-28 .elementor-element.elementor-element-a4412bd .elementor-social-icons-wrapper{
-  display:flex;flex-wrap:wrap;gap:12px;
-}
-html body .elementor-28 .elementor-element.elementor-element-a4412bd .elementor-grid-item{margin:0;display:block}
-html body .elementor-28 .elementor-element.elementor-element-a4412bd .elementor-social-icon{
-  box-sizing:border-box;
-  display:inline-flex;align-items:center;justify-content:center;
-  width:44px;height:44px;padding:0;
-  border:1px solid rgba(var(--np-gold-300-rgb),.45);border-radius:50%;
-  background:rgba(var(--np-black-rgb),.6);
-  color:var(--np-gold-300);
-  transition:transform .35s cubic-bezier(.22,1,.36,1),background-color .35s,border-color .35s,color .35s,box-shadow .35s;
-}
-html body .elementor-28 .elementor-element.elementor-element-a4412bd .elementor-social-icon svg{width:22px;height:22px}
-html body .elementor-28 .elementor-element.elementor-element-a4412bd .elementor-social-icon svg path{fill:currentColor}
-html body .elementor-28 .elementor-element.elementor-element-a4412bd .elementor-social-icon:hover,
-html body .elementor-28 .elementor-element.elementor-element-a4412bd .elementor-social-icon:focus-visible{
-  background:linear-gradient(180deg,var(--np-btn-a),var(--np-btn-b));
-  border-color:var(--np-btn-b);
-  color:var(--np-black);
-  box-shadow:0 10px 26px rgba(var(--np-gold-500-rgb),.28);
-  transform:translateY(-3px);
-}
-html body .elementor-28 .elementor-element.elementor-element-a4412bd .elementor-social-icon:focus-visible{
-  outline:2px solid var(--np-gold-300);outline-offset:3px;
-}
-@media(prefers-reduced-motion:reduce){
-  html body .elementor-28 .elementor-element.elementor-element-a4412bd .elementor-social-icon:hover,
-  html body .elementor-28 .elementor-element.elementor-element-a4412bd .elementor-social-icon:focus-visible{transform:none}
-}
+/* ---- Footer social icons: Instagram, WhatsApp and location, the same three .np-icon links as the navbar (same glyphs, 26px in a 48px target, cream, gold 300 on hover).
+   They replace the old round gold-outline buttons (Instagram/YouTube/TikTok, hidden until napele-contact.js had an address). napele-contact.js feeds them through
+   data-np-icon like the navbar: Instagram has no href (aria-disabled) until CONTACT.instagram is filled, WhatsApp opens wa.me, the pin is a fixed Google Maps link.
+   The glyph sits 11px inside its 48px target, so the row is pulled 11px out to the left to put the first glyph on the bar's edge (the navbar does the same on the right). */
+html body .elementor-28 .elementor-element.elementor-element-a4412bd .np-foot-social{display:flex;align-items:center;gap:0;margin-left:-11px}
+html body .elementor-28 .elementor-element.elementor-element-a4412bd a.np-icon[aria-disabled="true"]{cursor:default}
 
 /* ---- Footer slogan: two files, one per width. The footer's bottom bar is sticky: it stays at the bottom of the screen and the slogan
    (in the same container, above the bar) is revealed from behind it as the page scrolls to the end, over a scroll distance equal to the
